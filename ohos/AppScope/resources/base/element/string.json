@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "app_name",
+      "value": "拾光机"
+    },
+    {
+      "name": "module_desc",
+      "value": "拾光机主模块"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "拾光机入口Ability"
+    }
+  ]
+}

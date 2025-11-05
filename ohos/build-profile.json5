@@ -1,0 +1,52 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "release",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "/Users/son/Desktop/AHEAD/doc/鸿蒙/ohos_app_release.p12",
+          "storePassword": "00000018C8D3130BD617FCF8961F3C7EEC2AC2AF5145423FF89C46A03F99F1D1C0962CE4844D9601",
+          "keyAlias": "ohos_app_release",
+          "keyPassword": "000000185759E6CD31D4BB3F7D544747C373B91C486B3D66D0F2328C1D06B7D92C1D87AF3A3DA502",
+          "signAlg": "SHA256withECDSA",
+          "profile": "/Users/son/Desktop/AHEAD/doc/鸿蒙/time_echo_profileRelease.p7b",
+          "certpath": "/Users/son/Desktop/AHEAD/doc/鸿蒙/pro.cer"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "release",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug"
+      },
+      {
+        "name": "profile"
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}
