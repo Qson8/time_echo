@@ -127,7 +127,52 @@ class JsonStorageService {
     return join(_storageDirectory!.path, fileName);
   }
 
-  /// 读取JSON文件
+  /// 读取JSON文件（公共方法，用于自定义文件）
+  Future<dynamic> readJsonFile(String fileName) async {
+    await _ensureInitialized();
+    try {
+      final file = File(_getFilePath(fileName));
+      if (!await file.exists()) {
+        return null;
+      }
+      final content = await file.readAsString();
+      if (content.isEmpty) {
+        return null;
+      }
+      return jsonDecode(content);
+    } catch (e) {
+      print('⚠️ 读取JSON文件失败 $fileName: $e');
+      return null;
+    }
+  }
+
+  /// 写入JSON文件（公共方法，用于自定义文件）
+  Future<void> writeJsonFile(String fileName, dynamic data) async {
+    await _ensureInitialized();
+    try {
+      final filePath = _getFilePath(fileName);
+      final file = File(filePath);
+      print('📁 [JsonStorage] 写入文件: $fileName');
+      print('📁 [JsonStorage] 文件路径: $filePath');
+      
+      final jsonString = const JsonEncoder.withIndent('  ').convert(data);
+      await file.writeAsString(jsonString);
+      
+      // 验证文件是否确实存在
+      if (await file.exists()) {
+        final fileSize = await file.length();
+        print('📁 [JsonStorage] ✅ 文件写入成功，文件大小: $fileSize 字节');
+      } else {
+        print('📁 [JsonStorage] ⚠️ 警告：文件写入后不存在');
+      }
+    } catch (e, stackTrace) {
+      print('❌ 写入JSON文件失败 $fileName: $e');
+      print('❌ 错误堆栈: $stackTrace');
+      rethrow;
+    }
+  }
+
+  /// 读取JSON文件（私有方法，内部使用）
   Future<Map<String, dynamic>> _readJsonFile(String fileName) async {
     try {
       final file = File(_getFilePath(fileName));

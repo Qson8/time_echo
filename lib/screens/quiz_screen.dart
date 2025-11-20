@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_theme.dart';
 import '../services/app_state_provider.dart';
 import '../services/voice_service.dart';
 import '../widgets/voice_control_widget.dart';
+import '../widgets/interactive_feedback.dart';
+import '../services/quiz_theme_service.dart';
+import '../services/quiz_sound_service.dart';
+import '../widgets/celebration_animation.dart';
 import 'quiz_result_screen.dart';
+import 'package:flutter/services.dart';
 
 /// 答题页面
 class QuizScreen extends StatefulWidget {
@@ -19,8 +25,16 @@ class _QuizScreenState extends State<QuizScreen>
     with TickerProviderStateMixin {
   late AnimationController _progressController;
   late AnimationController _questionController;
+  late AnimationController _correctAnimationController;
+  late AnimationController _wrongAnimationController;
   late Animation<double> _progressAnimation;
   late Animation<double> _questionAnimation;
+  late Animation<double> _correctAnimation;
+  late Animation<double> _wrongAnimation;
+
+  final QuizThemeService _themeService = QuizThemeService();
+  final QuizSoundService _soundService = QuizSoundService();
+  int _streakCount = 0; // 连击数
 
   @override
   void initState() {
@@ -50,6 +64,32 @@ class _QuizScreenState extends State<QuizScreen>
       curve: Curves.easeInOut,
     ));
 
+    // 正确答案动画控制器
+    _correctAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+    _correctAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _correctAnimationController,
+      curve: Curves.elasticOut,
+    ));
+
+    // 错误答案动画控制器
+    _wrongAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
+    _wrongAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _wrongAnimationController,
+      curve: Curves.easeInOut,
+    ));
+
     _startQuiz();
   }
 
@@ -57,10 +97,23 @@ class _QuizScreenState extends State<QuizScreen>
     try {
       final appState = Provider.of<AppStateProvider>(context, listen: false);
       
+      // 确保语音服务已初始化（如果启用了语音）
+      if (appState.voiceEnabled) {
+        print('🗣️ 检查语音服务状态...');
+        try {
+          await appState.voiceService.initialize(initialSpeed: appState.voiceSpeed);
+          appState.voiceService.setEnabled(appState.voiceEnabled);
+          print('🗣️ ✅ 语音服务已就绪: isEnabled=${appState.voiceService.isEnabled}');
+        } catch (e) {
+          print('🗣️ ⚠️ 语音服务初始化失败: $e');
+        }
+      }
+      
       // 调试信息
       print('🔍 QuizScreen._startQuiz 检查状态：');
       print('   isTestInProgress: ${appState.isTestInProgress}');
       print('   currentTestQuestions.length: ${appState.currentTestQuestions.length}');
+      print('   voiceEnabled: ${appState.voiceEnabled}');
       if (appState.currentTestQuestions.isNotEmpty) {
         print('   第一题分类: ${appState.currentTestQuestions.first.category}');
         print('   第一题年代: ${appState.currentTestQuestions.first.echoTheme}');
@@ -86,11 +139,14 @@ class _QuizScreenState extends State<QuizScreen>
         
         // 如果启用了语音，自动播放第一题
         if (appState.voiceEnabled) {
-          Future.delayed(const Duration(milliseconds: 500), () {
+          print('🗣️ 语音已启用，准备自动播放第一题');
+          Future.delayed(const Duration(milliseconds: 800), () {
             if (mounted && appState.currentQuestion != null) {
               _speakCurrentQuestion(appState);
             }
           });
+        } else {
+          print('🗣️ ⚠️ 语音未启用，跳过自动播放');
         }
         return;
       }
@@ -111,11 +167,14 @@ class _QuizScreenState extends State<QuizScreen>
       // 如果启用了语音，自动播放第一题
       // 添加短暂延迟，确保动画开始后再播放语音
       if (appState.voiceEnabled) {
-        Future.delayed(const Duration(milliseconds: 500), () {
+        print('🗣️ 语音已启用，准备自动播放第一题');
+        Future.delayed(const Duration(milliseconds: 800), () {
           if (mounted && appState.currentQuestion != null) {
             _speakCurrentQuestion(appState);
           }
         });
+      } else {
+        print('🗣️ ⚠️ 语音未启用，跳过自动播放');
       }
     } catch (e) {
       print('启动测试失败: $e');
@@ -135,45 +194,79 @@ class _QuizScreenState extends State<QuizScreen>
     
     _progressController.dispose();
     _questionController.dispose();
+    _correctAnimationController.dispose();
+    _wrongAnimationController.dispose();
+    _soundService.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('拾光'),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () => _showExitDialog(context),
-        ),
-        actions: [
-          Consumer<AppStateProvider>(
-            builder: (context, appState, child) {
-              return VoiceControlWidget(
-                voiceService: appState.voiceService,
-                isEnabled: appState.voiceEnabled,
-                currentSpeed: appState.voiceSpeed,
-                isCompact: true, // 在AppBar中使用紧凑模式
-                onToggle: () {
-                  appState.updateVoiceSettings(
-                    !appState.voiceEnabled,
-                    appState.voiceSpeed,
-                  );
-                },
-                onSpeedChanged: (speed) {
-                  appState.updateVoiceSettings(
-                    appState.voiceEnabled,
-                    speed,
-                  );
-                },
-              );
-            },
-          ),
-        ],
-      ),
-      body: Consumer<AppStateProvider>(
+    return Consumer<AppStateProvider>(
+      builder: (context, appState, child) {
+        // 根据当前题目获取主题
+        final theme = _themeService.getThemeForQuestion(appState.currentQuestion);
+        final gradient = _themeService.getBackgroundGradient(appState.currentQuestion);
+
+        return Theme(
+          data: theme,
+          child: Scaffold(
+            appBar: AppBar(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('拾光'),
+                  if (_streakCount > 0) ...[
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '连击 $_streakCount',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+              centerTitle: true,
+              leading: IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => _showExitDialog(context),
+              ),
+              actions: [
+                Consumer<AppStateProvider>(
+                  builder: (context, appState, child) {
+                    return VoiceControlWidget(
+                      voiceService: appState.voiceService,
+                      isEnabled: appState.voiceEnabled,
+                      currentSpeed: appState.voiceSpeed,
+                      isCompact: true, // 在AppBar中使用紧凑模式
+                      onToggle: () {
+                        appState.updateVoiceSettings(
+                          !appState.voiceEnabled,
+                          appState.voiceSpeed,
+                        );
+                      },
+                      onSpeedChanged: (speed) {
+                        appState.updateVoiceSettings(
+                          appState.voiceEnabled,
+                          speed,
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+            body: Consumer<AppStateProvider>(
         builder: (context, appState, child) {
           if (!appState.isTestInProgress || appState.currentQuestion == null) {
             return const Center(
@@ -186,28 +279,57 @@ class _QuizScreenState extends State<QuizScreen>
               // 进度条
               _buildProgressBar(appState),
               
-              // 题目区域
+              // 题目区域（带手势支持）
               Expanded(
-                child: AnimatedBuilder(
-                  animation: _questionAnimation,
-                  builder: (context, child) {
-                    return FadeTransition(
-                      opacity: _questionAnimation,
-                      child: SlideTransition(
-                        position: Tween<Offset>(
-                          begin: const Offset(0.3, 0),
-                          end: Offset.zero,
-                        ).animate(_questionAnimation),
-                        child: _buildQuestionContent(appState),
-                      ),
-                    );
+                child: GestureDetector(
+                  onHorizontalDragEnd: (details) {
+                    // 左滑下一题，右滑上一题
+                    if (details.primaryVelocity != null) {
+                      if (details.primaryVelocity! > 0) {
+                        // 右滑 - 上一题
+                        if (appState.currentQuestionIndex > 0) {
+                          _previousQuestion(appState);
+                        }
+                      } else {
+                        // 左滑 - 下一题
+                        final userAnswer = (appState.currentQuestionIndex < appState.userAnswers.length)
+                            ? appState.userAnswers[appState.currentQuestionIndex]
+                            : -1;
+                        if (userAnswer != -1) {
+                          _nextQuestion(appState);
+                        }
+                      }
+                    }
                   },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: gradient,
+                    ),
+                    child: AnimatedBuilder(
+                      animation: _questionAnimation,
+                      builder: (context, child) {
+                        return FadeTransition(
+                          opacity: _questionAnimation,
+                          child: SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(0.3, 0),
+                              end: Offset.zero,
+                            ).animate(_questionAnimation),
+                            child: _buildQuestionContent(appState),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
             ],
           );
         },
       ),
+          ),
+        );
+      },
     );
   }
 
@@ -257,7 +379,12 @@ class _QuizScreenState extends State<QuizScreen>
   /// 构建题目内容
   Widget _buildQuestionContent(AppStateProvider appState) {
     final question = appState.currentQuestion!;
-    final userAnswer = appState.userAnswers[appState.currentQuestionIndex];
+    // 安全获取用户答案，如果索引超出范围或未回答，返回 -1
+    final userAnswer = (appState.currentQuestionIndex < appState.userAnswers.length)
+        ? appState.userAnswers[appState.currentQuestionIndex]
+        : -1;
+    // 判断是否已回答（答案不为 -1 表示已回答）
+    final hasAnswered = userAnswer != -1;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -300,101 +427,106 @@ class _QuizScreenState extends State<QuizScreen>
                 ),
                 
                 // 语音播放按钮
-                if (appState.voiceEnabled) ...[
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      VoicePlayButton(
-                        voiceService: appState.voiceService,
-                        text: question.content,
-                        isEnabled: appState.voiceEnabled,
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    VoicePlayButton(
+                      voiceService: appState.voiceService,
+                      text: question.content,
+                      question: question.content,
+                      options: question.options,
+                      isEnabled: appState.voiceEnabled,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      appState.voiceEnabled ? '点击播放题目' : '请在设置中开启语音读题',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: appState.voiceEnabled ? Colors.black54 : Colors.grey,
                       ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        '点击播放题目',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
           
           const SizedBox(height: 24),
           
-          // 选项
+          // 选项（带动画效果）
           ...question.options.asMap().entries.map((entry) {
             final index = entry.key;
             final option = entry.value;
-            final isSelected = userAnswer == index;
+            final isSelected = hasAnswered && userAnswer == index;
+            final isCorrect = hasAnswered &&
+                index == question.correctAnswer;
+            final isWrong = hasAnswered &&
+                isSelected &&
+                index != question.correctAnswer;
             
+            Widget optionCard = InteractiveOptionCard(
+              optionText: option,
+              optionLabel: String.fromCharCode(65 + index),
+              isSelected: isSelected,
+              isCorrect: isCorrect,
+              isWrong: isWrong,
+              onTap: hasAnswered
+                  ? null
+                  : () => _selectAnswer(appState, index),
+              index: index,
+            );
+
+            // 正确答案动画效果（带庆祝动画）
+            if (isCorrect) {
+              optionCard = CelebrationAnimation(
+                isActive: isCorrect,
+                duration: const Duration(milliseconds: 1000),
+                child: AnimatedBuilder(
+                  animation: _correctAnimation,
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: 1.0 + (_correctAnimation.value * 0.1),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.green.withOpacity(_correctAnimation.value * 0.5),
+                              blurRadius: 20 * _correctAnimation.value,
+                              spreadRadius: 5 * _correctAnimation.value,
+                            ),
+                          ],
+                        ),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: optionCard,
+                ),
+              );
+            }
+
+            // 错误答案动画效果
+            if (isWrong) {
+              optionCard = AnimatedBuilder(
+                animation: _wrongAnimation,
+                builder: (context, child) {
+                  return Transform.translate(
+                    offset: Offset(
+                      (_wrongAnimation.value - 0.5) * 10,
+                      0,
+                    ),
+                    child: child,
+                  );
+                },
+                child: optionCard,
+              );
+            }
+
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
-              child: GestureDetector(
-                onTap: () => _selectAnswer(appState, index),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  padding: const EdgeInsets.all(16),
-                  decoration: AppTheme.answerOptionDecoration(
-                    isSelected,
-                    false,
-                    false,
-                  ),
-                  child: Row(
-                    children: [
-                      // 选项标识
-                      Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: isSelected 
-                              ? const Color(AppConstants.primaryColor)
-                              : Colors.transparent,
-                          border: Border.all(
-                            color: const Color(AppConstants.primaryColor),
-                            width: 2,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            String.fromCharCode(65 + index), // A, B, C, D
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: isSelected 
-                                  ? Colors.white 
-                                  : const Color(AppConstants.primaryColor),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      
-                      // 选项内容
-                      Expanded(
-                        child: Text(
-                          option,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: isSelected 
-                                ? const Color(AppConstants.primaryColor)
-                                : Colors.black87,
-                            fontWeight: isSelected 
-                                ? FontWeight.w500 
-                                : FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              child: optionCard,
             );
           }).toList(),
           
@@ -418,7 +550,7 @@ class _QuizScreenState extends State<QuizScreen>
               Expanded(
                 flex: 2,
                 child: ElevatedButton(
-                  onPressed: userAnswer != -1 ? () => _nextQuestion(appState) : null,
+                  onPressed: hasAnswered ? () => _nextQuestion(appState) : null,
                   child: Text(
                     appState.isLastQuestion ? '完成拾光' : '下一题',
                   ),
@@ -494,6 +626,28 @@ class _QuizScreenState extends State<QuizScreen>
 
   /// 选择答案
   void _selectAnswer(AppStateProvider appState, int answerIndex) {
+    final question = appState.currentQuestion!;
+    final isCorrect = answerIndex == question.correctAnswer;
+
+    // 播放音效和震动反馈
+    if (isCorrect) {
+      _soundService.playCorrectSound();
+      HapticFeedback.mediumImpact();
+      _correctAnimationController.forward(from: 0.0);
+      // 增加连击数
+      setState(() {
+        _streakCount++;
+      });
+    } else {
+      _soundService.playWrongSound();
+      HapticFeedback.heavyImpact();
+      _wrongAnimationController.forward(from: 0.0);
+      // 重置连击数
+      setState(() {
+        _streakCount = 0;
+      });
+    }
+
     appState.answerQuestion(answerIndex);
   }
 
@@ -508,6 +662,8 @@ class _QuizScreenState extends State<QuizScreen>
       
       // 如果启用了语音，朗读下一题
       if (appState.voiceEnabled && appState.currentQuestion != null) {
+        print('🗣️ 切换到下一题，准备朗读...');
+        await Future.delayed(const Duration(milliseconds: 300));
         await _speakCurrentQuestion(appState);
       }
     }
@@ -521,6 +677,8 @@ class _QuizScreenState extends State<QuizScreen>
     
     // 如果启用了语音，朗读上一题
     if (appState.voiceEnabled && appState.currentQuestion != null) {
+      print('🗣️ 切换到上一题，准备朗读...');
+      await Future.delayed(const Duration(milliseconds: 300));
       await _speakCurrentQuestion(appState);
     }
   }
@@ -551,22 +709,51 @@ class _QuizScreenState extends State<QuizScreen>
     await appState.toggleCollection(questionId);
     
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(wasCollected ? '已取消收藏' : '已收藏至拾光收藏夹'),
-          duration: const Duration(seconds: 1),
-        ),
-      );
+      if (wasCollected) {
+        InteractiveFeedback.showInfo(context, '已取消收藏');
+      } else {
+        InteractiveFeedback.showSuccess(context, '已收藏至拾光收藏夹');
+      }
     }
   }
 
   /// 朗读当前题目
   Future<void> _speakCurrentQuestion(AppStateProvider appState) async {
     if (appState.currentQuestion != null) {
-      await appState.voiceService.speakQuestion(
-        appState.currentQuestion!.content,
-        appState.currentQuestion!.options,
-      );
+      // 不在这里检查平台支持，让speak方法内部去检查和初始化
+      // 这样可以确保第一次调用时能够正确检测平台支持
+      
+      // 检查语音功能是否启用
+      if (!appState.voiceEnabled || !appState.voiceService.isEnabled) {
+        print('🗣️ ⚠️ 语音功能未启用，跳过自动播放');
+        return;
+      }
+      
+      try {
+        // 确保语音服务已初始化（这会自动检查平台支持）
+        if (!appState.voiceService.isEnabled) {
+          print('🗣️ ⚠️ 语音服务未启用，尝试重新初始化...');
+          await appState.voiceService.initialize();
+          // 重新设置启用状态
+          appState.voiceService.setEnabled(appState.voiceEnabled);
+        }
+        
+        print('🗣️ 开始朗读当前题目...');
+        // 自动播放时使用静默模式，不抛出异常
+        // speakQuestion内部会检查和初始化平台支持
+        await appState.voiceService.speakQuestion(
+          appState.currentQuestion!.content,
+          appState.currentQuestion!.options,
+          throwOnUnsupported: false, // 自动播放静默处理
+        );
+        print('🗣️ ✅ 题目朗读已启动');
+      } catch (e, stackTrace) {
+        // 这里不应该再捕获到 PlatformUnsupportedException，因为已经设置了 throwOnUnsupported: false
+        // 但为了安全起见，仍然捕获其他可能的异常
+        print('🗣️ ❌ 朗读题目失败: $e');
+        print('🗣️ ❌ 错误堆栈: $stackTrace');
+        // 静默处理，不显示错误，避免干扰用户体验
+      }
     }
   }
 

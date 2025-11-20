@@ -201,16 +201,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
   /// 构建语音设置区域
   Widget _buildVoiceSection(AppStateProvider appState) {
     print('🔍 _buildVoiceSection: voiceEnabled=${appState.voiceEnabled}');
+    final isPlatformSupported = appState.voiceService.isPlatformSupported;
+    
     return _buildSection(
       title: '语音设置',
       icon: Icons.volume_up,
       children: [
+        if (!isPlatformSupported) ...[
+          Container(
+            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.orange.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.orange.withOpacity(0.3)),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: Colors.orange[700], size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    '当前平台不支持语音读题功能',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.orange[700],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
         _buildSwitchTile(
           title: '拾光语音读题',
-          subtitle: '答题时自动读取题目内容',
+          subtitle: isPlatformSupported 
+              ? '答题时自动读取题目内容'
+              : '当前平台不支持此功能',
           icon: Icons.record_voice_over,
-          value: appState.voiceEnabled,
-          onChanged: (value) => _toggleVoice(appState, value),
+          value: appState.voiceEnabled && isPlatformSupported,
+          onChanged: isPlatformSupported 
+              ? (value) => _toggleVoice(appState, value)
+              : (_) {}, // 平台不支持时提供空函数
         ),
         if (appState.voiceEnabled)
           _buildListTile(
@@ -591,7 +623,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               // 应用简介
               const Text(
-                '拾光机是一款专为怀旧爱好者打造的离线问答应用，收录各类怀旧知识题库，涵盖动画、电视剧、流行音乐、历史事件、老物件等多个分类。通过精彩的题目，一起重温经典记忆，挑战你的怀旧知识力！',
+                '拾光机是一款专为怀旧爱好者打造的离线问答应用。无需网络连接，随时随地畅享80-90年代的经典回忆。通过答题测试，系统会智能计算你的"拾光年龄"，让你了解自己对那个年代的记忆深度。提供详细解析、学习报告、记忆胶囊等功能，让每一份时光记忆都值得珍藏。',
                 style: TextStyle(fontSize: 14, height: 1.5),
               ),
               const SizedBox(height: 16),
@@ -626,12 +658,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 8),
               _buildFeatureItem('离线答题：无需网络，随时随地畅享怀旧问答乐趣'),
-              _buildFeatureItem('题库丰富：持续更新，涵盖多类经典题材'),
-              _buildFeatureItem('收藏题目：喜欢的题目一键收藏，反复温习'),
-              _buildFeatureItem('成就系统：解锁趣味成就，见证成长足迹'),
-              _buildFeatureItem('答题统计：自动记录测试成绩，了解进步轨迹'),
-              _buildFeatureItem('个性化设置：支持字体大小、语音讲题等个性化体验'),
-              _buildFeatureItem('一键分享：将有趣题目分享给好友，唤起更多共鸣'),
+              _buildFeatureItem('题库丰富：持续更新，涵盖80-90年代影视、音乐、事件'),
+              _buildFeatureItem('详细解析：每道题提供解析、历史背景和知识点标签'),
+              _buildFeatureItem('拾光年龄：智能计算你的专属"拾光年龄"'),
+              _buildFeatureItem('学习报告：自动生成日报/周报/月报，了解学习情况'),
+              _buildFeatureItem('收藏题目：喜欢的题目一键收藏，添加个人笔记'),
+              _buildFeatureItem('记忆胶囊：创建专属记忆，记录与题目相关的回忆'),
+              _buildFeatureItem('每日挑战：每天3个挑战任务，完成获得奖励'),
+              _buildFeatureItem('成就系统：8种成就徽章，见证成长足迹'),
+              _buildFeatureItem('答题统计：可视化图表展示学习趋势和进步轨迹'),
+              _buildFeatureItem('个性化设置：支持字体大小、语音读题等个性化体验'),
+              _buildFeatureItem('一键分享：将有趣题目和学习报告分享给好友'),
               const SizedBox(height: 16),
               
               // 适用人群
@@ -647,6 +684,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _buildFeatureItem('怀旧动漫、综艺与影视剧爱好者'),
               _buildFeatureItem('想与朋友回忆童年、共话旧时光的你'),
               _buildFeatureItem('喜欢迎接知识新挑战、增长见识的你'),
+              _buildFeatureItem('希望了解自己"拾光年龄"的好奇者'),
+              _buildFeatureItem('需要离线学习工具的用户'),
+              _buildFeatureItem('老年用户（大字体、语音辅助）'),
+              const SizedBox(height: 16),
+              
+              // 核心特色
+              const Text(
+                '核心特色',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color(AppConstants.primaryColor),
+                ),
+              ),
+              const SizedBox(height: 8),
+              _buildFeatureItem('✅ 完全离线：无需网络，保护隐私，随时随地使用'),
+              _buildFeatureItem('✅ 老年友好：大字体、大按钮、语音读题，专为老年用户优化'),
+              _buildFeatureItem('✅ 智能学习：学习报告、数据分析，科学提升学习效果'),
+              _buildFeatureItem('✅ 怀旧主题：80-90年代复古设计，沉浸式体验'),
+              _buildFeatureItem('✅ 数据安全：所有数据存储在本地，不上传云端'),
+              _buildFeatureItem('✅ 无广告：纯净体验，无任何广告干扰'),
               const SizedBox(height: 16),
               
               // 无广告说明

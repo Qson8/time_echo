@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../constants/app_constants.dart';
 import '../services/voice_service.dart';
 
@@ -231,12 +232,16 @@ class VoicePlayButton extends StatefulWidget {
   final VoiceService voiceService;
   final String text;
   final bool isEnabled;
+  final String? question; // 题目内容（可选，如果提供则播放完整题目）
+  final List<String>? options; // 选项列表（可选，如果提供则播放完整题目）
 
   const VoicePlayButton({
     super.key,
     required this.voiceService,
     required this.text,
     this.isEnabled = true,
+    this.question,
+    this.options,
   });
 
   @override
@@ -248,6 +253,7 @@ class _VoicePlayButtonState extends State<VoicePlayButton>
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
   bool _isPlaying = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -298,11 +304,20 @@ class _VoicePlayButtonState extends State<VoicePlayButton>
                   ),
                 ],
               ),
-              child: Icon(
-                _isPlaying ? Icons.pause : Icons.play_arrow,
-                color: Colors.white,
-                size: 24,
-              ),
+              child: _isLoading
+                  ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : Icon(
+                      _isPlaying ? Icons.pause : Icons.play_arrow,
+                      color: Colors.white,
+                      size: 24,
+                    ),
             ),
           );
         },
@@ -312,30 +327,138 @@ class _VoicePlayButtonState extends State<VoicePlayButton>
 
   /// 切换播放状态
   Future<void> _togglePlayback() async {
+    if (!widget.isEnabled) {
+      print('🗣️ ⚠️ 语音功能未启用，无法播放');
+      // 显示提示信息
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('请先在设置中开启语音读题功能'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+      return;
+    }
+    
+    // 添加触觉反馈
+    HapticFeedback.lightImpact();
+    
     if (_isPlaying) {
-      await widget.voiceService.stop();
-      setState(() {
-        _isPlaying = false;
-      });
+      try {
+        await widget.voiceService.stop();
+        setState(() {
+          _isPlaying = false;
+        });
+      } catch (e) {
+        print('🗣️ ❌ 停止播放失败: $e');
+        setState(() {
+          _isPlaying = false;
+        });
+      }
     } else {
-      await widget.voiceService.speak(widget.text);
       setState(() {
-        _isPlaying = true;
+        _isLoading = true;
       });
       
-      // 模拟播放完成
-      Future.delayed(const Duration(seconds: 3), () {
-        if (mounted) {
-          setState(() {
-            _isPlaying = false;
-          });
+      try {
+        // 确保语音服务已初始化
+        if (!widget.voiceService.isEnabled) {
+          print('🗣️ ⚠️ 语音服务未启用，尝试重新初始化...');
+          await widget.voiceService.initialize();
         }
-      });
+        
+        // 如果提供了 question 和 options，使用 speakQuestion 播放完整题目
+        if (widget.question != null && widget.options != null && widget.options!.isNotEmpty) {
+          print('🗣️ 播放完整题目（包含选项）');
+          await widget.voiceService.speakQuestion(
+            widget.question!, 
+            widget.options!,
+            throwOnUnsupported: true, // 手动点击需要错误提示
+          );
+        } else {
+          // 否则只播放文本
+          print('🗣️ 播放文本内容');
+          await widget.voiceService.speak(
+            widget.text,
+            throwOnUnsupported: true, // 手动点击需要错误提示
+          );
+        }
+        
+        setState(() {
+          _isPlaying = true;
+          _isLoading = false;
+        });
+        
+        // 监听播放完成（通过检查 isSpeaking 状态）
+        _checkSpeakingStatus();
+      } catch (e, stackTrace) {
+        print('🗣️ ❌ 播放失败: $e');
+        print('🗣️ ❌ 错误堆栈: $stackTrace');
+        setState(() {
+          _isPlaying = false;
+          _isLoading = false;
+        });
+        
+        // 显示错误提示
+        if (mounted) {
+          String errorMessage = '播放失败';
+          bool isPlatformUnsupported = e.toString().contains('PlatformUnsupportedException') ||
+                                       e.toString().contains('不支持语音读题功能') ||
+                                       e.toString().contains('MissingPluginException');
+          
+          if (isPlatformUnsupported) {
+            errorMessage = '当前平台不支持语音读题功能';
+          } else {
+            errorMessage = '播放失败: ${e.toString()}';
+          }
+          
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorMessage),
+              duration: Duration(seconds: isPlatformUnsupported ? 3 : 2),
+              action: isPlatformUnsupported ? null : SnackBarAction(
+                label: '重试',
+                onPressed: () => _togglePlayback(),
+              ),
+            ),
+          );
+        }
+      }
     }
     
     _animationController.forward().then((_) {
       _animationController.reverse();
     });
+  }
+  
+  /// 检查语音播放状态
+  void _checkSpeakingStatus() {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        _pollSpeakingStatus();
+      }
+    });
+  }
+  
+  /// 轮询检查是否还在播放
+  void _pollSpeakingStatus() {
+    if (!mounted) return;
+    
+    final isSpeaking = widget.voiceService.isSpeaking;
+    if (!isSpeaking && _isPlaying) {
+      setState(() {
+        _isPlaying = false;
+        _isLoading = false;
+      });
+    } else if (isSpeaking && _isPlaying) {
+      // 继续检查
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted) {
+          _pollSpeakingStatus();
+        }
+      });
+    }
   }
 }
 

@@ -6,6 +6,7 @@ import '../constants/app_constants.dart';
 import '../constants/app_theme.dart';
 import '../services/app_state_provider.dart';
 import '../models/test_record.dart';
+import 'learning_report_screen.dart';
 
 /// 拾光统计页面
 class StatisticsScreen extends StatefulWidget {
@@ -30,6 +31,67 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       appBar: AppBar(
         title: const Text('拾光统计'),
         centerTitle: true,
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            onSelected: (value) {
+              if (value == 'daily') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LearningReportScreen(reportType: 'daily'),
+                  ),
+                );
+              } else if (value == 'weekly') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LearningReportScreen(reportType: 'weekly'),
+                  ),
+                );
+              } else if (value == 'monthly') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LearningReportScreen(reportType: 'monthly'),
+                  ),
+                );
+              }
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 'daily',
+                child: Row(
+                  children: [
+                    Icon(Icons.today, size: 20),
+                    SizedBox(width: 8),
+                    Text('学习日报'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'weekly',
+                child: Row(
+                  children: [
+                    Icon(Icons.date_range, size: 20),
+                    SizedBox(width: 8),
+                    Text('学习周报'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'monthly',
+                child: Row(
+                  children: [
+                    Icon(Icons.calendar_month, size: 20),
+                    SizedBox(width: 8),
+                    Text('学习月报'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       body: Consumer<AppStateProvider>(
         builder: (context, appState, child) {
@@ -62,6 +124,10 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                           _buildStatsCards(records),
                           const SizedBox(height: 24),
                           
+                          // 学习报告快捷入口
+                          _buildReportQuickAccess(),
+                          const SizedBox(height: 24),
+                          
                           // 图表区域
                           if (_selectedTab == 0)
                             _buildEchoAgeChart(records)
@@ -69,6 +135,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                             _buildAccuracyChart(records)
                           else
                             _buildOverviewChart(records),
+                          
+                          const SizedBox(height: 24),
+                          
+                          // 分类统计图表
+                          _buildCategoryChart(records),
                         ],
                       ),
                     ),
@@ -663,6 +734,282 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                 ),
               ),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// 构建学习报告快捷入口
+  Widget _buildReportQuickAccess() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.purple.withOpacity(0.1),
+            Colors.blue.withOpacity(0.1),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.purple.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Icons.assessment, color: Colors.purple, size: 20),
+              SizedBox(width: 8),
+              Text(
+                '学习报告',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.purple,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _buildReportButton(
+                  '日报',
+                  Icons.today,
+                  Colors.blue,
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LearningReportScreen(reportType: 'daily'),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildReportButton(
+                  '周报',
+                  Icons.date_range,
+                  Colors.green,
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LearningReportScreen(reportType: 'weekly'),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildReportButton(
+                  '月报',
+                  Icons.calendar_month,
+                  Colors.orange,
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LearningReportScreen(reportType: 'monthly'),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReportButton(String title, IconData icon, Color color, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: color.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: color, size: 24),
+            const SizedBox(height: 4),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 12,
+                color: color,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 构建分类统计图表
+  Widget _buildCategoryChart(List<TestRecord> records) {
+    if (records.isEmpty) return const SizedBox.shrink();
+
+    // 统计各分类的答题情况
+    final categoryStats = <String, Map<String, int>>{};
+    for (final record in records) {
+      if (record.categoryScores != null) {
+        for (final entry in record.categoryScores!.entries) {
+          final category = entry.key;
+          if (!categoryStats.containsKey(category)) {
+            categoryStats[category] = {'total': 0, 'count': 0};
+          }
+          categoryStats[category]!['total'] = (categoryStats[category]!['total'] ?? 0) + entry.value;
+          categoryStats[category]!['count'] = (categoryStats[category]!['count'] ?? 0) + 1;
+        }
+      }
+    }
+
+    if (categoryStats.isEmpty) return const SizedBox.shrink();
+
+    final categories = categoryStats.keys.toList();
+    final spots = categories.asMap().entries.map((entry) {
+      final index = entry.key;
+      final category = entry.value;
+      final total = categoryStats[category]!['total'] ?? 0;
+      return FlSpot(index.toDouble(), total.toDouble());
+    }).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          '分类统计',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          height: 300,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: BarChart(
+            BarChartData(
+              alignment: BarChartAlignment.spaceAround,
+              maxY: spots.isNotEmpty 
+                  ? (spots.map((s) => s.y).reduce((a, b) => a > b ? a : b) * 1.2)
+                  : 10,
+              gridData: FlGridData(
+                show: true,
+                drawVerticalLine: false,
+                getDrawingHorizontalLine: (value) {
+                  return FlLine(
+                    color: Colors.grey[300]!,
+                    strokeWidth: 1,
+                  );
+                },
+              ),
+              titlesData: FlTitlesData(
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 40,
+                    getTitlesWidget: (value, meta) {
+                      return Text(
+                        '${value.toInt()}',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 50,
+                    getTitlesWidget: (value, meta) {
+                      if (value.toInt() >= categories.length) return const Text('');
+                      final category = categories[value.toInt()];
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          category,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                rightTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                topTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+              ),
+              borderData: FlBorderData(
+                show: true,
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey[300]!),
+                  left: BorderSide(color: Colors.grey[300]!),
+                ),
+              ),
+              barGroups: spots.asMap().entries.map((entry) {
+                final index = entry.key;
+                final spot = entry.value;
+                final colors = [
+                  Colors.blue,
+                  Colors.green,
+                  Colors.orange,
+                  Colors.purple,
+                  Colors.red,
+                ];
+                return BarChartGroupData(
+                  x: index,
+                  barRods: [
+                    BarChartRodData(
+                      toY: spot.y,
+                      color: colors[index % colors.length],
+                      width: 20,
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(4),
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
+            ),
           ),
         ),
       ],

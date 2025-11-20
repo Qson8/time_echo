@@ -139,6 +139,8 @@ class AppStateProvider extends ChangeNotifier {
       print('    - 老年模式: $_elderlyMode');
       
       print('9. 初始化语音服务...');
+      // 延迟一点时间，确保鸿蒙插件已注册
+      await Future.delayed(const Duration(milliseconds: 500));
       await _voiceService.initialize(initialSpeed: _voiceSpeed);
       print('   语音服务初始化完成，速度: $_voiceSpeed');
       

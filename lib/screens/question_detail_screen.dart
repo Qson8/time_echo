@@ -4,15 +4,63 @@ import '../constants/app_constants.dart';
 import '../constants/app_theme.dart';
 import '../models/question.dart';
 import '../services/app_state_provider.dart';
+import '../services/question_service.dart';
 
 /// 题目详情页面
-class QuestionDetailScreen extends StatelessWidget {
+class QuestionDetailScreen extends StatefulWidget {
   final Question question;
 
   const QuestionDetailScreen({
     super.key,
     required this.question,
   });
+
+  @override
+  State<QuestionDetailScreen> createState() => _QuestionDetailScreenState();
+}
+
+class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
+  List<Question>? _relatedQuestions;
+  bool _loadingRelated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRelatedQuestions();
+  }
+
+  Future<void> _loadRelatedQuestions() async {
+    if (widget.question.relatedQuestionIds.isEmpty) return;
+    
+    setState(() {
+      _loadingRelated = true;
+    });
+    
+    try {
+      final questionService = QuestionService();
+      final related = <Question>[];
+      for (final id in widget.question.relatedQuestionIds) {
+        final q = await questionService.getQuestionById(id);
+        if (q != null) {
+          related.add(q);
+        }
+      }
+      
+      if (mounted) {
+        setState(() {
+          _relatedQuestions = related;
+          _loadingRelated = false;
+        });
+      }
+    } catch (e) {
+      print('加载相关题目失败: $e');
+      if (mounted) {
+        setState(() {
+          _loadingRelated = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +72,7 @@ class QuestionDetailScreen extends StatelessWidget {
           Consumer<AppStateProvider>(
             builder: (context, appState, child) {
               return FutureBuilder<bool>(
-                future: appState.isQuestionCollected(question.id),
+                future: appState.isQuestionCollected(widget.question.id),
                 builder: (context, snapshot) {
                   final isCollected = snapshot.data ?? false;
                   return IconButton(
@@ -57,8 +105,28 @@ class QuestionDetailScreen extends StatelessWidget {
             
             const SizedBox(height: 24),
             
+            // 知识点标签
+            if (widget.question.knowledgePoints.isNotEmpty)
+              _buildKnowledgePointsSection(),
+            
+            if (widget.question.knowledgePoints.isNotEmpty)
+              const SizedBox(height: 24),
+            
+            // 历史背景
+            if (widget.question.background != null && widget.question.background!.isNotEmpty)
+              _buildBackgroundSection(),
+            
+            if (widget.question.background != null && widget.question.background!.isNotEmpty)
+              const SizedBox(height: 24),
+            
             // 答案解析
             _buildExplanationSection(),
+            
+            const SizedBox(height: 24),
+            
+            // 相关题目
+            if (widget.question.relatedQuestionIds.isNotEmpty)
+              _buildRelatedQuestionsSection(),
           ],
         ),
       ),
@@ -77,9 +145,9 @@ class QuestionDetailScreen extends StatelessWidget {
           // 分类和难度标签
           Row(
             children: [
-              _buildCategoryTag(question.category),
+              _buildCategoryTag(widget.question.category),
               const SizedBox(width: 8),
-              _buildDifficultyTag(question.difficulty),
+              _buildDifficultyTag(widget.question.difficulty),
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -88,7 +156,7 @@ class QuestionDetailScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  question.echoTheme,
+                  widget.question.echoTheme,
                   style: const TextStyle(
                     fontSize: 10,
                     color: Color(AppConstants.primaryColor),
@@ -101,7 +169,7 @@ class QuestionDetailScreen extends StatelessWidget {
           
           // 题目内容
           Text(
-            question.content,
+            widget.question.content,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
@@ -128,10 +196,10 @@ class QuestionDetailScreen extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         
-        ...question.options.asMap().entries.map((entry) {
+        ...widget.question.options.asMap().entries.map((entry) {
           final index = entry.key;
           final option = entry.value;
-          final isCorrect = index == question.correctAnswer;
+          final isCorrect = index == widget.question.correctAnswer;
           
           return Container(
             margin: const EdgeInsets.only(bottom: 12),
@@ -233,7 +301,7 @@ class QuestionDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            question.explanation,
+            widget.question.detailedExplanation ?? widget.question.explanation,
             style: const TextStyle(
               fontSize: 16,
               height: 1.5,
@@ -242,6 +310,225 @@ class QuestionDetailScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  /// 构建知识点标签区域
+  Widget _buildKnowledgePointsSection() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.blue.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.blue.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(
+                Icons.school_outlined,
+                color: Colors.blue,
+                size: 20,
+              ),
+              SizedBox(width: 8),
+              Text(
+                '知识点',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: widget.question.knowledgePoints.map((point) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  point,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 构建历史背景区域
+  Widget _buildBackgroundSection() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.orange.withOpacity(0.1),
+            Colors.red.withOpacity(0.05),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.orange.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(
+                Icons.history,
+                color: Colors.orange,
+                size: 20,
+              ),
+              SizedBox(width: 8),
+              Text(
+                '历史背景',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orange,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            widget.question.background!,
+            style: const TextStyle(
+              fontSize: 15,
+              height: 1.6,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 构建相关题目区域
+  Widget _buildRelatedQuestionsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Row(
+          children: [
+            Icon(
+              Icons.link,
+              color: Color(AppConstants.primaryColor),
+              size: 20,
+            ),
+            SizedBox(width: 8),
+            Text(
+              '相关题目',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(AppConstants.primaryColor),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        if (_loadingRelated)
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: CircularProgressIndicator(),
+            ),
+          )
+        else if (_relatedQuestions == null || _relatedQuestions!.isEmpty)
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Center(
+              child: Text(
+                '暂无相关题目',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+          )
+        else
+          ..._relatedQuestions!.map((q) {
+            return Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.grey.withOpacity(0.3),
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: ListTile(
+                title: Text(
+                  q.content,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Row(
+                    children: [
+                      _buildCategoryTag(q.category),
+                      const SizedBox(width: 8),
+                      _buildDifficultyTag(q.difficulty),
+                    ],
+                  ),
+                ),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QuestionDetailScreen(question: q),
+                    ),
+                  );
+                },
+              ),
+            );
+          }).toList(),
+      ],
     );
   }
 
@@ -308,7 +595,7 @@ class QuestionDetailScreen extends StatelessWidget {
 
   /// 切换收藏状态
   Future<void> _toggleCollection(BuildContext context, AppStateProvider appState) async {
-    await appState.toggleCollection(question.id);
+    await appState.toggleCollection(widget.question.id);
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

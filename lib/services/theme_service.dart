@@ -251,13 +251,8 @@ class ThemeService {
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      cardTheme: CardTheme(
-        elevation: 2,
-        shadowColor: Colors.black.withOpacity(0.1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
+      // 注意：CardThemeData 在某些Flutter版本（如HarmonyOS）中可能不支持
+      // 我们将通过Card组件的默认样式来实现
       chipTheme: ChipThemeData(
         backgroundColor: Colors.white,
         selectedColor: vintagePrimary,
@@ -410,13 +405,8 @@ class ThemeService {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         hintStyle: TextStyle(color: Colors.grey[400]),
       ),
-      cardTheme: CardTheme(
-        elevation: 2,
-        shadowColor: Colors.black.withOpacity(0.1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-      ),
+      // 注意：CardThemeData 在某些Flutter版本（如HarmonyOS）中可能不支持
+      // 我们将通过Card组件的默认样式来实现
       chipTheme: ChipThemeData(
         backgroundColor: Colors.grey[100]!,
         selectedColor: modernPrimary,
@@ -516,12 +506,8 @@ class ThemeService {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         hintStyle: TextStyle(color: Colors.grey[600]),
       ),
-      cardTheme: CardTheme(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-      ),
+      // 注意：CardThemeData 在某些Flutter版本（如HarmonyOS）中可能不支持
+      // 我们将通过Card组件的默认样式来实现
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: darkPrimary,
         foregroundColor: Colors.black,
@@ -605,12 +591,8 @@ class ThemeService {
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       ),
-      cardTheme: CardTheme(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-      ),
+      // 注意：CardThemeData 在某些Flutter版本（如HarmonyOS）中可能不支持
+      // 我们将通过Card组件的默认样式来实现
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: elderlyGreen,
         foregroundColor: Colors.white,

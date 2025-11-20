@@ -104,18 +104,10 @@ class QuestionUpdateService {
       final List<dynamic> jsonList = json.decode(jsonString);
       
       final List<Question> questions = jsonList.map((json) {
-        return Question(
-          id: json['id'],
-          content: json['content'],
-          category: json['category'],
-          difficulty: json['difficulty'],
-          echoTheme: json['echo_theme'],
-          options: List<String>.from(json['options']),
-          correctAnswer: json['correct_answer'],
-          explanation: json['explanation'],
-          isNew: true, // 标记为新题
-          createdAt: DateTime.parse(json['created_at']),
-        );
+        // 使用 fromMap 确保新字段能正确解析
+        final question = Question.fromMap(json as Map<String, dynamic>);
+        // 标记为新题
+        return question.copyWith(isNew: true);
       }).toList();
 
       return questions;

@@ -85,6 +85,31 @@ dependencies:
   # 离线数据管理
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  
+  # 图片选择（支持鸿蒙）
+  image_picker: ^1.0.4
+  
+  # 音频录制（支持鸿蒙）
+  # 注意：record包在鸿蒙平台不兼容，已移除
+  # 录音功能在鸿蒙平台使用空实现（功能被禁用）
+  # 如需在Android/iOS使用录音，可以添加其他录音库
+  
+  # 音频播放（支持鸿蒙）
+  audioplayers: ^5.2.1
+  
+  # 截图/图片生成（支持鸿蒙）
+  # 注意：screenshot包在鸿蒙平台不兼容，已移除
+  # 分享功能将使用其他方式实现
+  
+  # 二维码生成（支持鸿蒙）
+  qr_flutter: ^4.1.0
+  
+  # 分享功能（支持鸿蒙，仅使用系统分享菜单）
+  share_plus: ^7.2.1
+  
+  # PDF生成（支持鸿蒙）
+  pdf: ^3.10.7
+  printing: ^5.11.1
 
 dev_dependencies:
   flutter_test:
@@ -96,6 +121,12 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+
+# 依赖覆盖：排除在鸿蒙平台上不兼容的包
+dependency_overrides:
+  # record_linux 在鸿蒙平台不兼容，使用空实现
+  # 注意：这会影响所有平台，但我们在代码中已经使用条件导入处理
+  # 如果需要在Android/iOS使用真实录音，可以移除这个覆盖
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

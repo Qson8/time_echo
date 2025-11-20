@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_theme.dart';
@@ -11,6 +12,8 @@ import 'quiz_config_screen.dart';
 import 'memory_detail_screen.dart';
 import '../services/memory_service.dart';
 import '../models/memory_record.dart';
+import '../services/share_service.dart';
+import 'package:share_plus/share_plus.dart';
 
 /// 测试结果页面
 class QuizResultScreen extends StatefulWidget {
@@ -72,6 +75,11 @@ class _QuizResultScreenState extends State<QuizResultScreen>
         centerTitle: true,
         automaticallyImplyLeading: false,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.share),
+            onPressed: () => _shareResult(context),
+            tooltip: '分享成绩',
+          ),
           IconButton(
             icon: const Icon(Icons.home),
             onPressed: () => _goHome(context),
@@ -510,6 +518,77 @@ class _QuizResultScreenState extends State<QuizResultScreen>
   }
 
   /// 返回首页
+  /// 分享成绩
+  Future<void> _shareResult(BuildContext context) async {
+    try {
+      final shareService = ShareService();
+      
+      // 获取成就列表（如果有）
+      final achievements = <String>[];
+      if (widget.testRecord.accuracy >= 0.9) {
+        achievements.add('答题高手');
+      }
+      if (widget.testRecord.totalQuestions >= 20) {
+        achievements.add('挑战达人');
+      }
+      
+      // 生成分享文本（由于screenshot包在鸿蒙平台不兼容，使用文本分享）
+      final shareText = shareService.generateShareText(
+        echoAge: widget.testRecord.echoAge,
+        accuracy: widget.testRecord.accuracy,
+        totalQuestions: widget.testRecord.totalQuestions,
+        correctAnswers: widget.testRecord.correctAnswers,
+        achievements: achievements,
+      );
+      
+      if (mounted) {
+        // 直接分享文本（鸿蒙平台可能不支持，添加错误处理）
+        try {
+          await Share.share(shareText, subject: '拾光机 - 我的拾光成绩');
+        } catch (e) {
+          // 如果分享失败（如鸿蒙平台不支持），显示文本内容供用户复制
+          if (mounted) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('分享内容'),
+                content: SingleChildScrollView(
+                  child: SelectableText(shareText),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('关闭'),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      // 复制到剪贴板
+                      await Clipboard.setData(ClipboardData(text: shareText));
+                      if (mounted) {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('已复制到剪贴板')),
+                        );
+                      }
+                    },
+                    child: const Text('复制'),
+                  ),
+                ],
+              ),
+            );
+          }
+        }
+      }
+    } catch (e) {
+      print('分享成绩失败: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('分享失败: $e')),
+        );
+      }
+    }
+  }
+
   void _goHome(BuildContext context) {
     print('🏠 返回首页按钮被点击');
     try {

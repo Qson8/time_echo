@@ -727,13 +727,23 @@ class _OfflineHomeTabState extends State<OfflineHomeTab>
       context: context,
       builder: (context) => OfflineFriendlyComponents.buildOfflineTipDialog(
         title: '关于拾光机',
-        content: '拾光机是一款专注于离线怀旧问答的Flutter应用。\n\n'
-                '特色功能：\n'
-                '• 全离线运行，保护隐私\n'
-                '• 怀旧主题内容\n'
-                '• 本地数据存储\n'
-                '• 成就系统\n'
-                '• 语音辅助',
+        content: '拾光机是一款专为怀旧爱好者打造的离线问答应用。\n\n'
+                '核心功能：\n'
+                '• 离线答题：无需网络，随时随地使用\n'
+                '• 详细解析：提供解析、历史背景和知识点\n'
+                '• 拾光年龄：智能计算专属"拾光年龄"\n'
+                '• 学习报告：自动生成日报/周报/月报\n'
+                '• 记忆胶囊：记录与题目相关的回忆\n'
+                '• 每日挑战：每天3个挑战任务\n'
+                '• 成就系统：8种成就徽章\n'
+                '• 收藏笔记：收藏题目并添加个人笔记\n'
+                '• 答题统计：可视化图表展示学习趋势\n'
+                '• 老年友好：大字体、语音读题\n\n'
+                '核心特色：\n'
+                '✅ 完全离线运行，保护隐私\n'
+                '✅ 无广告，纯净体验\n'
+                '✅ 数据安全，本地存储\n'
+                '✅ 怀旧主题，沉浸式体验',
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

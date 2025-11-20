@@ -22,7 +22,8 @@ class AccessibilityUtils {
   /// 检查是否为老年用户模式
   static bool isElderlyMode(BuildContext context) {
     final themeService = ThemeService();
-    return themeService.isElderlyFriendlyMode();
+    // 检查当前主题是否为老年友好主题
+    return themeService.currentTheme == ThemeType.elderly;
   }
 
   /// 获取适合的字体大小
