@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_theme.dart';
 import '../models/echo_achievement.dart';
@@ -12,106 +14,436 @@ class AchievementScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('我的拾光成就'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.help_outline),
-            onPressed: () => _showAchievementHelp(context),
+    // 设置状态栏样式，使其与导航条背景一致
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.transparent, // 透明，让渐变显示
+        statusBarIconBrightness: Brightness.light, // 白色图标
+        statusBarBrightness: Brightness.dark, // iOS状态栏样式
+      ),
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                const Color(AppConstants.primaryColor), // 顶部与导航条一致
+                const Color(AppConstants.primaryColor).withOpacity(0.3),
+                Colors.white,
+                const Color(AppConstants.secondaryColor).withOpacity(0.5),
+              ],
+              stops: const [0.0, 0.15, 0.3, 1.0],
+            ),
+          ),
+          child: Column(
+            children: [
+              // 自定义AppBar（包含状态栏区域）
+              _buildCustomAppBar(context),
+              
+              // 内容区域
+              Expanded(
+                child: Consumer<AppStateProvider>(
+                  builder: (context, appState, child) {
+                    // 检查是否有已解锁的成就
+                    if (appState.unlockedAchievementCount == 0) {
+                      return _buildEmptyView(context);
+                    }
+                    
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 成就统计
+                          AnimationConfiguration.staggeredList(
+                            position: 0,
+                            duration: const Duration(milliseconds: 600),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: FadeInAnimation(
+                                child: _buildAchievementStats(context, appState),
+                              ),
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 24),
+                          
+                          // 成就列表
+                          AnimationConfiguration.staggeredList(
+                            position: 1,
+                            duration: const Duration(milliseconds: 600),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: FadeInAnimation(
+                                child: _buildAchievementList(context, appState),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// 构建自定义AppBar
+  Widget _buildCustomAppBar(BuildContext context) {
+    // 获取状态栏高度
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+    // 检查是否可以返回（从底部导航进入时不显示返回按钮）
+    final canPop = Navigator.canPop(context);
+    
+    return Container(
+      padding: EdgeInsets.only(
+        top: statusBarHeight,
+        left: 16,
+        right: 16,
+        bottom: 12,
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(AppConstants.primaryColor),
+            const Color(AppConstants.primaryColor).withOpacity(0.9),
+            const Color(AppConstants.primaryColor).withOpacity(0.8),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+            spreadRadius: 2,
           ),
         ],
       ),
-      body: Consumer<AppStateProvider>(
-        builder: (context, appState, child) {
-          // 检查是否有已解锁的成就
-          if (appState.unlockedAchievementCount == 0) {
-            return _buildEmptyView(context);
-          }
-          
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // 成就统计
-                _buildAchievementStats(appState),
-                
-                const SizedBox(height: 24),
-                
-                // 成就列表
-                _buildAchievementList(appState),
-              ],
+      child: Row(
+        children: [
+          // 返回按钮 - 只在可以返回时显示
+          if (canPop) ...[
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () => Navigator.of(context).pop(),
+                tooltip: '返回',
+              ),
             ),
-          );
-        },
+            const SizedBox(width: 8),
+          ] else
+            const SizedBox(width: 48), // 占位，保持标题居中
+          
+          // 标题 - 使用与其他页面一致的字体大小
+          Expanded(
+            child: Text(
+              '我的拾光成就',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20, // 与其他页面AppBar标题一致
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                letterSpacing: 1.0, // 减少字间距
+                shadows: const [
+                  Shadow(
+                    color: Colors.black26,
+                    offset: Offset(0, 2),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          
+          // 帮助按钮 - 带背景
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.help_outline, color: Colors.white),
+              onPressed: () => _showAchievementHelp(context),
+              tooltip: '帮助',
+            ),
+          ),
+        ],
       ),
     );
   }
 
   /// 构建成就统计
-  Widget _buildAchievementStats(AppStateProvider appState) {
+  Widget _buildAchievementStats(BuildContext context, AppStateProvider appState) {
     final unlockedCount = appState.unlockedAchievementCount;
     final totalCount = appState.totalAchievementCount;
     final progress = totalCount > 0 ? unlockedCount / totalCount : 0.0;
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: AppTheme.vintageDecoration,
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.white,
+            const Color(AppConstants.secondaryColor),
+            Colors.white.withOpacity(0.8),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: const Color(AppConstants.primaryColor).withOpacity(0.2),
+          width: 2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(AppConstants.primaryColor).withOpacity(0.15),
+            blurRadius: 24,
+            offset: const Offset(0, 10),
+            spreadRadius: 3,
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Column(
         children: [
-          // 成就徽章图标
-          Container(
-            width: 80,
-            height: 80,
-            decoration: AppTheme.achievementBadgeDecoration,
-            child: const Icon(
-              Icons.emoji_events,
-              size: 40,
-              color: Colors.white,
-            ),
+          // 成就徽章图标 - 带光晕效果和动画
+          TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0.0, end: 1.0),
+            duration: const Duration(milliseconds: 1000),
+            curve: Curves.elasticOut,
+            builder: (context, value, child) {
+              return Transform.scale(
+                scale: value,
+                child: Container(
+                  width: 110,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        const Color(AppConstants.primaryColor),
+                        const Color(AppConstants.primaryColor).withOpacity(0.8),
+                        const Color(AppConstants.accentColor).withOpacity(0.9),
+                      ],
+                    ),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(AppConstants.primaryColor).withOpacity(0.5),
+                        blurRadius: 25,
+                        spreadRadius: 8,
+                      ),
+                      BoxShadow(
+                        color: const Color(AppConstants.accentColor).withOpacity(0.3),
+                        blurRadius: 15,
+                        spreadRadius: 3,
+                      ),
+                    ],
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // 外层光晕
+                      Container(
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(0.3),
+                        ),
+                      ),
+                      // 内层光晕
+                      Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(0.2),
+                        ),
+                      ),
+                      const Icon(
+                        Icons.emoji_events,
+                        size: 55,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
           
           // 成就标题
           const Text(
             '拾光成就',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 28,
               fontWeight: FontWeight.bold,
               color: Color(AppConstants.primaryColor),
-            ),
-          ),
-          const SizedBox(height: 8),
-          
-          // 成就进度
-          Text(
-            '已解锁 $unlockedCount/$totalCount 个成就',
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
+              letterSpacing: 3,
+              shadows: [
+                Shadow(
+                  color: Colors.black12,
+                  offset: Offset(0, 2),
+                  blurRadius: 4,
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 16),
           
-          // 进度条
-          LinearProgressIndicator(
-            value: progress,
-            backgroundColor: Colors.grey[300],
-            valueColor: const AlwaysStoppedAnimation<Color>(
-              Color(AppConstants.primaryColor),
+          // 成就进度 - 美化卡片
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  const Color(AppConstants.primaryColor).withOpacity(0.15),
+                  const Color(AppConstants.accentColor).withOpacity(0.1),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: const Color(AppConstants.primaryColor).withOpacity(0.3),
+                width: 1.5,
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: const Color(AppConstants.primaryColor).withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.star,
+                    size: 18,
+                    color: Color(AppConstants.primaryColor),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  '已解锁 $unlockedCount/$totalCount 个成就',
+                  style: const TextStyle(
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold,
+                    color: Color(AppConstants.primaryColor),
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 24),
           
-          // 进度百分比
-          Text(
-            '${(progress * 100).toStringAsFixed(1)}%',
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.black54,
+          // 进度条容器 - 增强设计
+          Container(
+            height: 16,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.grey[200],
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 6,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Stack(
+                children: [
+                  // 背景
+                  Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    color: Colors.grey[200],
+                  ),
+                  // 进度条
+                  FractionallySizedBox(
+                    widthFactor: progress,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(AppConstants.primaryColor),
+                            const Color(AppConstants.accentColor),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.white.withOpacity(0.3),
+                              Colors.transparent,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          
+          // 进度百分比 - 美化
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: const Color(AppConstants.accentColor).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: const Color(AppConstants.accentColor).withOpacity(0.3),
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  size: 20,
+                  color: const Color(AppConstants.accentColor),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '完成度 ${(progress * 100).toStringAsFixed(1)}%',
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Color(AppConstants.accentColor),
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -120,33 +452,64 @@ class AchievementScreen extends StatelessWidget {
   }
 
   /// 构建成就列表
-  Widget _buildAchievementList(AppStateProvider appState) {
+  Widget _buildAchievementList(BuildContext context, AppStateProvider appState) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          '成就列表',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Color(AppConstants.primaryColor),
-          ),
+        Row(
+          children: [
+            Container(
+              width: 4,
+              height: 24,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    const Color(AppConstants.primaryColor),
+                    const Color(AppConstants.accentColor),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              '成就列表',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Color(AppConstants.primaryColor),
+                letterSpacing: 1,
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 20),
         
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 0.9,
+            childAspectRatio: 0.85,
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
           ),
           itemCount: appState.achievements.length,
           itemBuilder: (context, index) {
             final achievement = appState.achievements[index];
-            return _buildAchievementCard(context, achievement);
+            return AnimationConfiguration.staggeredGrid(
+              position: index,
+              duration: const Duration(milliseconds: 500),
+              columnCount: 2,
+              child: ScaleAnimation(
+                scale: 0.9,
+                child: FadeInAnimation(
+                  child: _buildAchievementCard(context, achievement, index),
+                ),
+              ),
+            );
           },
         ),
       ],
@@ -154,79 +517,245 @@ class AchievementScreen extends StatelessWidget {
   }
 
   /// 构建成就卡片
-  Widget _buildAchievementCard(BuildContext context, EchoAchievement achievement) {
+  Widget _buildAchievementCard(BuildContext context, EchoAchievement achievement, int index) {
+    final isUnlocked = achievement.isUnlocked;
+    
     return GestureDetector(
       onTap: () => _showAchievementDetail(context, achievement),
       child: Container(
-        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: achievement.isUnlocked 
-              ? const Color(AppConstants.secondaryColor)
-              : Colors.grey[100],
-          borderRadius: BorderRadius.circular(12),
+          gradient: isUnlocked
+              ? LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.white,
+                    const Color(AppConstants.secondaryColor),
+                    Colors.white.withOpacity(0.9),
+                  ],
+                  stops: const [0.0, 0.5, 1.0],
+                )
+              : LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.grey[50]!,
+                    Colors.grey[100]!,
+                  ],
+                ),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: achievement.isUnlocked 
-                ? const Color(AppConstants.primaryColor)
-                : Colors.grey.withOpacity(0.3),
-            width: 1,
+            color: isUnlocked
+                ? const Color(AppConstants.primaryColor).withOpacity(0.4)
+                : Colors.grey.withOpacity(0.2),
+            width: isUnlocked ? 2.5 : 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
+              color: isUnlocked
+                  ? const Color(AppConstants.primaryColor).withOpacity(0.2)
+                  : Colors.black.withOpacity(0.06),
+              blurRadius: isUnlocked ? 16 : 8,
+              offset: Offset(0, isUnlocked ? 8 : 4),
+              spreadRadius: isUnlocked ? 3 : 1,
             ),
+            if (isUnlocked)
+              BoxShadow(
+                color: const Color(AppConstants.accentColor).withOpacity(0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
           ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
+        child: Stack(
           children: [
-            // 成就图标
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: achievement.isUnlocked 
-                    ? const Color(AppConstants.primaryColor)
-                    : Colors.grey,
-              ),
-              child: Icon(
-                _getAchievementIcon(achievement.id),
-                size: 20,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 8),
-            
-            // 成就名称
-            Flexible(
-              child: Text(
-                achievement.achievementName,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: achievement.isUnlocked 
-                      ? const Color(AppConstants.primaryColor)
-                      : Colors.grey,
+            // 背景装饰 - 多个圆形
+            if (isUnlocked) ...[
+              Positioned(
+                top: -15,
+                right: -15,
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        const Color(AppConstants.primaryColor).withOpacity(0.15),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
                 ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
               ),
-            ),
-            const SizedBox(height: 4),
+              Positioned(
+                bottom: -10,
+                left: -10,
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        const Color(AppConstants.accentColor).withOpacity(0.1),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
             
-            // 解锁状态
-            Text(
-              achievement.isUnlocked ? '已解锁' : '未解锁',
-              style: TextStyle(
-                fontSize: 10,
-                color: achievement.isUnlocked
-                    ? const Color(AppConstants.accentColor)
-                    : Colors.grey,
-                fontWeight: achievement.isUnlocked ? FontWeight.w500 : FontWeight.normal,
+            // 内容
+            Padding(
+              padding: const EdgeInsets.all(18),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // 成就图标 - 增强设计
+                  Container(
+                    width: 64,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      gradient: isUnlocked
+                          ? LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                const Color(AppConstants.primaryColor),
+                                const Color(AppConstants.primaryColor).withOpacity(0.8),
+                                const Color(AppConstants.accentColor),
+                              ],
+                            )
+                          : LinearGradient(
+                              colors: [
+                                Colors.grey[400]!,
+                                Colors.grey[500]!,
+                              ],
+                            ),
+                      shape: BoxShape.circle,
+                      boxShadow: isUnlocked
+                          ? [
+                              BoxShadow(
+                                color: const Color(AppConstants.primaryColor).withOpacity(0.4),
+                                blurRadius: 12,
+                                spreadRadius: 3,
+                              ),
+                              BoxShadow(
+                                color: const Color(AppConstants.accentColor).withOpacity(0.2),
+                                blurRadius: 6,
+                                spreadRadius: 1,
+                              ),
+                            ]
+                          : [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 6,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                    ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // 光晕效果
+                        if (isUnlocked)
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withOpacity(0.3),
+                            ),
+                          ),
+                        Icon(
+                          _getAchievementIcon(achievement.id),
+                          size: 32,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  
+                  // 成就名称
+                  Flexible(
+                    child: Text(
+                      achievement.achievementName,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: isUnlocked
+                            ? const Color(AppConstants.primaryColor)
+                            : Colors.grey[700],
+                        height: 1.3,
+                        letterSpacing: 0.3,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  
+                  // 解锁状态徽章 - 美化
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      gradient: isUnlocked
+                          ? LinearGradient(
+                              colors: [
+                                const Color(AppConstants.accentColor).withOpacity(0.25),
+                                const Color(AppConstants.accentColor).withOpacity(0.15),
+                              ],
+                            )
+                          : null,
+                      color: isUnlocked ? null : Colors.grey[200],
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: isUnlocked
+                            ? const Color(AppConstants.accentColor)
+                            : Colors.grey[400]!,
+                        width: 1.5,
+                      ),
+                      boxShadow: isUnlocked
+                          ? [
+                              BoxShadow(
+                                color: const Color(AppConstants.accentColor).withOpacity(0.2),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ]
+                          : null,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          isUnlocked ? Icons.check_circle : Icons.lock,
+                          size: 14,
+                          color: isUnlocked
+                              ? const Color(AppConstants.accentColor)
+                              : Colors.grey[600],
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          isUnlocked ? '已解锁' : '未解锁',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: isUnlocked
+                                ? const Color(AppConstants.accentColor)
+                                : Colors.grey[700],
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -263,84 +792,212 @@ class AchievementScreen extends StatelessWidget {
   void _showAchievementDetail(BuildContext context, EchoAchievement achievement) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(achievement.achievementName),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 成就图标
-            Center(
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: achievement.isUnlocked 
-                      ? const Color(AppConstants.primaryColor)
-                      : Colors.grey,
-                ),
-                child: Icon(
-                  _getAchievementIcon(achievement.id),
-                  size: 30,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            
-            // 达成条件
-            const Text(
-              '达成条件：',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              achievement.condition,
-              style: const TextStyle(fontSize: 14),
-            ),
-            const SizedBox(height: 12),
-            
-            // 奖励
-            const Text(
-              '奖励：',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              achievement.reward,
-              style: const TextStyle(fontSize: 14),
-            ),
-            
-            if (achievement.isUnlocked) ...[
-              const SizedBox(height: 12),
-              const Text(
-                '解锁时间：',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                _formatDate(achievement.unlockedAt),
-                style: const TextStyle(fontSize: 14),
-              ),
-            ],
-          ],
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('确定'),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.white,
+                const Color(AppConstants.secondaryColor),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(24),
           ),
-        ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // 成就图标
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    gradient: achievement.isUnlocked
+                        ? LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              const Color(AppConstants.primaryColor),
+                              const Color(AppConstants.accentColor),
+                            ],
+                          )
+                        : null,
+                    color: achievement.isUnlocked ? null : Colors.grey[300],
+                    shape: BoxShape.circle,
+                    boxShadow: achievement.isUnlocked
+                        ? [
+                            BoxShadow(
+                              color: const Color(AppConstants.primaryColor).withOpacity(0.3),
+                              blurRadius: 12,
+                              spreadRadius: 3,
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: Icon(
+                    _getAchievementIcon(achievement.id),
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                
+                // 成就名称
+                Text(
+                  achievement.achievementName,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Color(AppConstants.primaryColor),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                
+                // 信息卡片
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: const Color(AppConstants.primaryColor).withOpacity(0.2),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 达成条件
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.flag,
+                            size: 20,
+                            color: const Color(AppConstants.primaryColor),
+                          ),
+                          const SizedBox(width: 8),
+                          const Text(
+                            '达成条件',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Color(AppConstants.primaryColor),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 28),
+                        child: Text(
+                          achievement.condition,
+                          style: const TextStyle(fontSize: 14, height: 1.5),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      
+                      // 奖励
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.card_giftcard,
+                            size: 20,
+                            color: const Color(AppConstants.accentColor),
+                          ),
+                          const SizedBox(width: 8),
+                          const Text(
+                            '奖励',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Color(AppConstants.accentColor),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 28),
+                        child: Text(
+                          achievement.reward,
+                          style: const TextStyle(fontSize: 14, height: 1.5),
+                        ),
+                      ),
+                      
+                      if (achievement.isUnlocked) ...[
+                        const SizedBox(height: 16),
+                        const Divider(),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_today,
+                              size: 20,
+                              color: const Color(AppConstants.primaryColor).withOpacity(0.7),
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              '解锁时间',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Color(AppConstants.primaryColor),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 28),
+                          child: Text(
+                            _formatDate(achievement.unlockedAt),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: const Color(AppConstants.primaryColor).withOpacity(0.8),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                
+                // 确定按钮
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(AppConstants.primaryColor),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 2,
+                    ),
+                    child: const Text(
+                      '确定',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -349,48 +1006,195 @@ class AchievementScreen extends StatelessWidget {
   void _showAchievementHelp(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('拾光成就说明'),
-        content: const SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '成就系统说明：',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.white,
+                const Color(AppConstants.secondaryColor),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 标题
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: const Color(AppConstants.primaryColor).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.info_outline,
+                        color: Color(AppConstants.primaryColor),
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    const Text(
+                      '拾光成就说明',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Color(AppConstants.primaryColor),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(height: 12),
-              Text(
-                '• 拾光初遇：完成首次测试\n'
-                '• 影视拾光者：影视分类题库正确率≥90%\n'
-                '• 音乐回响者：音乐分类题库正确率≥90%\n'
-                '• 时代见证者：事件分类题库正确率≥90%\n'
-                '• 拾光速答手：单次测试单题平均耗时≤15秒\n'
-                '• 拾光挑战者：单次测试困难题正确率100%\n'
-                '• 拾光收藏家：收藏题目数量≥20道\n'
-                '• 拾光全勤人：连续7天每天完成1次测试',
-                style: TextStyle(fontSize: 14),
-              ),
-              SizedBox(height: 12),
-              Text(
-                '注意：成就数据仅保存在本地，卸载App将清空，珍惜每一份时光记忆～',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                  fontStyle: FontStyle.italic,
+                const SizedBox(height: 24),
+                
+                // 成就列表
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: const Color(AppConstants.primaryColor).withOpacity(0.2),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '成就系统说明：',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(AppConstants.primaryColor),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      _buildHelpItem('拾光初遇', '完成首次测试'),
+                      _buildHelpItem('影视拾光者', '影视分类题库正确率≥90%'),
+                      _buildHelpItem('音乐回响者', '音乐分类题库正确率≥90%'),
+                      _buildHelpItem('时代见证者', '事件分类题库正确率≥90%'),
+                      _buildHelpItem('拾光速答手', '单次测试单题平均耗时≤15秒'),
+                      _buildHelpItem('拾光挑战者', '单次测试困难题正确率100%'),
+                      _buildHelpItem('拾光收藏家', '收藏题目数量≥20道'),
+                      _buildHelpItem('拾光全勤人', '连续7天每天完成1次测试'),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 16),
+                
+                // 提示信息
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(AppConstants.accentColor).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: const Color(AppConstants.accentColor).withOpacity(0.3),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.lightbulb_outline,
+                        color: Color(AppConstants.accentColor),
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          '注意：成就数据仅保存在本地，卸载App将清空，珍惜每一份时光记忆～',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: const Color(AppConstants.accentColor).withOpacity(0.9),
+                            fontStyle: FontStyle.italic,
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                
+                // 确定按钮
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(AppConstants.primaryColor),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 2,
+                    ),
+                    child: const Text(
+                      '我知道了',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('确定'),
+      ),
+    );
+  }
+
+  /// 构建帮助项
+  Widget _buildHelpItem(String title, String description) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 6, right: 12),
+            width: 6,
+            height: 6,
+            decoration: BoxDecoration(
+              color: const Color(AppConstants.primaryColor),
+              shape: BoxShape.circle,
+            ),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Color(AppConstants.primaryColor),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.black87.withOpacity(0.8),
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -405,90 +1209,154 @@ class AchievementScreen extends StatelessWidget {
   /// 构建空视图
   Widget _buildEmptyView(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // 空状态图标
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey[100],
-                border: Border.all(
-                  color: Colors.grey[300]!,
-                  width: 2,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // 空状态图标 - 带动画效果
+              TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0.0, end: 1.0),
+                duration: const Duration(milliseconds: 800),
+                curve: Curves.easeOutBack,
+                builder: (context, value, child) {
+                  return Transform.scale(
+                    scale: value,
+                    child: Container(
+                      width: 140,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Colors.grey[200]!,
+                            Colors.grey[100]!,
+                          ],
+                        ),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: const Color(AppConstants.primaryColor).withOpacity(0.3),
+                          width: 3,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 20,
+                            spreadRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        Icons.emoji_events_outlined,
+                        size: 70,
+                        color: const Color(AppConstants.primaryColor).withOpacity(0.5),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 40),
+              
+              // 空状态标题
+              const Text(
+                '暂无成就',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color(AppConstants.primaryColor),
+                  letterSpacing: 2,
                 ),
               ),
-              child: Icon(
-                Icons.emoji_events_outlined,
-                size: 60,
-                color: Colors.grey[400],
-              ),
-            ),
-            const SizedBox(height: 32),
-            
-            // 空状态标题
-            const Text(
-              '暂无成就',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Color(AppConstants.primaryColor),
-              ),
-            ),
-            const SizedBox(height: 16),
-            
-            // 空状态描述
-            const Text(
-              '开始你的拾光之旅吧！\n完成拾光、收藏题目，解锁更多成就～',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black54,
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 32),
-            
-            // 开始按钮
-            ElevatedButton.icon(
-              onPressed: () {
-                // 跳转到答题页面
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const QuizScreen()),
-                );
-              },
-              icon: const Icon(Icons.play_arrow),
-              label: const Text('开始拾光'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(AppConstants.primaryColor),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 16,
+              const SizedBox(height: 16),
+              
+              // 空状态描述
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: const Color(AppConstants.primaryColor).withOpacity(0.2),
+                  ),
                 ),
-                shape: RoundedRectangleBorder(
+                child: const Text(
+                  '开始你的拾光之旅吧！\n完成拾光、收藏题目，解锁更多成就～',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
+                    height: 1.6,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 40),
+              
+              // 开始按钮
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(AppConstants.primaryColor).withOpacity(0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const QuizScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.play_arrow, size: 24),
+                  label: const Text(
+                    '开始拾光',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(AppConstants.primaryColor),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 18,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            
-            // 帮助按钮
-            TextButton.icon(
-              onPressed: () => _showAchievementHelp(context),
-              icon: const Icon(Icons.help_outline),
-              label: const Text('了解成就系统'),
-              style: TextButton.styleFrom(
-                foregroundColor: const Color(AppConstants.primaryColor),
+              const SizedBox(height: 16),
+              
+              // 帮助按钮
+              TextButton.icon(
+                onPressed: () => _showAchievementHelp(context),
+                icon: const Icon(Icons.help_outline, size: 20),
+                label: const Text(
+                  '了解成就系统',
+                  style: TextStyle(fontSize: 16),
+                ),
+                style: TextButton.styleFrom(
+                  foregroundColor: const Color(AppConstants.primaryColor),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
+

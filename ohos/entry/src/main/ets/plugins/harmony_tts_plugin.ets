@@ -3,12 +3,13 @@
  * 
  * 兼容性说明：
  * - 兼容 HarmonyOS SDK 12+ (API Level 12)
- * - 仅使用 Flutter 框架提供的 API，确保跨版本兼容性
- * - 不直接使用 HarmonyOS 系统 API，避免版本依赖问题
+ * - 使用鸿蒙系统TTS API实现简单的语音播放功能
  * 
  * @since SDK 12+
  */
 import { FlutterEngine, MethodChannel, MethodCall, Log } from '@ohos/flutter_ohos';
+import { tts } from '@ohos.multimedia.tts';
+import { BusinessError } from '@ohos.base';
 
 const TAG = "HarmonyTtsPlugin";
 const CHANNEL_NAME = "com.time_echo/harmony_tts";
@@ -18,30 +19,12 @@ interface MethodCallWithArg extends MethodCall {
   argument?: string | number | boolean | null;
 }
 
-// 定义 TTS 客户端接口
-interface TtsClient {
-  init?: (callback: (err?: Error) => void) => void;
-  speak?: (text: string, callback?: (err?: Error) => void) => void;
-  stop?: (callback?: (err?: Error) => void) => void;
-  setParameter?: (key: string, value: string) => void;
-}
-
-// 定义 TTS 参数接口
-interface TtsParams {
-  speed: number;
-  pitch: number;
-  volume: number;
-  voiceType: number;
-}
-
 export class HarmonyTtsPlugin {
-  private static ttsClient: TtsClient | null = null;
-  private static ttsHandle: number = -1;
+  private static ttsEngine: tts.TtsEngine | null = null;
   private static isInitialized: boolean = false;
   private static currentSpeed: number = 1.0;
-  private static currentPitch: number = 1.0;
-  private static currentVolume: number = 1.0;
   private static isSpeakingFlag: boolean = false;
+  private static speakTask: tts.TtsTask | null = null;
 
   static registerWith(flutterEngine: FlutterEngine): void {
     try {
@@ -146,23 +129,44 @@ export class HarmonyTtsPlugin {
 
   private static async initialize(): Promise<boolean> {
     try {
-      if (HarmonyTtsPlugin.isInitialized && (HarmonyTtsPlugin.ttsClient != null || HarmonyTtsPlugin.ttsHandle !== -1)) {
+      if (HarmonyTtsPlugin.isInitialized && HarmonyTtsPlugin.ttsEngine != null) {
         Log.i(TAG, "TTS already initialized");
         return true;
       }
 
-      Log.i(TAG, "Initializing HarmonyOS TTS engine...");
+      Log.i(TAG, "Initializing HarmonyOS TTS engine for simple playback...");
       
-      // 尝试使用系统 TTS（简化版本，不依赖特定 API）
-      // 由于 ArkTS 限制，我们使用一个简化的实现
-      HarmonyTtsPlugin.isInitialized = true;
-      Log.i(TAG, "TTS engine initialized (simplified mode)");
-      return true;
+      try {
+        // 创建TTS引擎实例（仅用于播放，不进行复杂合成）
+        HarmonyTtsPlugin.ttsEngine = await tts.createTtsEngine();
+        Log.i(TAG, "TTS engine created successfully");
+        
+        // 只设置基本的语速参数，使用系统默认的音量和音调
+        const params: tts.TtsParams = {
+          audioCapability: tts.AudioCapability.CAPABILITY_SPEED,
+          speed: HarmonyTtsPlugin.currentSpeed
+        };
+        
+        await HarmonyTtsPlugin.ttsEngine.setTtsParams(params);
+        Log.i(TAG, "TTS basic parameters set successfully");
+        
+        HarmonyTtsPlugin.isInitialized = true;
+        Log.i(TAG, "✅ TTS engine initialized for simple playback");
+        return true;
+      } catch (apiError) {
+        Log.e(TAG, "TTS API not available");
+        if (apiError instanceof BusinessError) {
+          Log.e(TAG, "Error code: " + apiError.code);
+          Log.e(TAG, "Error message: " + apiError.message);
+        }
+        HarmonyTtsPlugin.isInitialized = false;
+        HarmonyTtsPlugin.ttsEngine = null;
+        throw apiError;
+      }
     } catch (e) {
       Log.e(TAG, "Failed to initialize TTS engine");
       HarmonyTtsPlugin.isInitialized = false;
-      HarmonyTtsPlugin.ttsClient = null;
-      HarmonyTtsPlugin.ttsHandle = -1;
+      HarmonyTtsPlugin.ttsEngine = null;
       if (e instanceof Error) {
         throw e;
       } else {
@@ -173,7 +177,7 @@ export class HarmonyTtsPlugin {
 
   private static async speak(text: string): Promise<void> {
     try {
-      if (!HarmonyTtsPlugin.isInitialized) {
+      if (!HarmonyTtsPlugin.isInitialized || HarmonyTtsPlugin.ttsEngine == null) {
         await HarmonyTtsPlugin.initialize();
       }
 
@@ -182,34 +186,82 @@ export class HarmonyTtsPlugin {
         return;
       }
 
-      Log.i(TAG, "Speaking text: " + text.substring(0, Math.min(50, text.length)) + "...");
-      
-      // 简化实现：记录日志，实际 TTS 功能需要根据具体鸿蒙 API 实现
-      HarmonyTtsPlugin.isSpeakingFlag = true;
-      Log.i(TAG, "Speech started (simplified mode)");
-      
-      // 设置一个延迟来重置isSpeaking标志
-      setTimeout(() => {
-        HarmonyTtsPlugin.isSpeakingFlag = false;
-      }, text.length * 100); // 粗略估计：每个字符100ms
-    } catch (e) {
-      Log.e(TAG, "Failed to speak");
-      HarmonyTtsPlugin.isSpeakingFlag = false;
-      if (e instanceof Error) {
-        throw e;
-      } else {
-        throw new Error("Failed to speak");
+      if (HarmonyTtsPlugin.ttsEngine == null) {
+        Log.e(TAG, "TTS engine is null, cannot speak");
+        throw new Error("TTS engine not initialized");
       }
+
+      Log.i(TAG, "Playing text: " + text.substring(0, Math.min(50, text.length)) + "...");
+      
+      // 如果正在播放，先停止
+      if (HarmonyTtsPlugin.isSpeakingFlag && HarmonyTtsPlugin.speakTask != null) {
+        try {
+          await HarmonyTtsPlugin.ttsEngine.stop(HarmonyTtsPlugin.speakTask);
+          Log.i(TAG, "Stopped previous speech");
+        } catch (e) {
+          Log.w(TAG, "Failed to stop previous speech: " + e);
+        }
+      }
+      
+      // 开始语音播放（使用系统默认设置，不进行复杂合成）
+      HarmonyTtsPlugin.isSpeakingFlag = true;
+      
+      // 创建简单的TTS任务
+      const ttsTask: tts.TtsTask = {
+        text: text,
+        range: {
+          start: 0,
+          end: text.length
+        }
+      };
+      
+      HarmonyTtsPlugin.speakTask = ttsTask;
+      
+      // 设置播放完成回调
+      HarmonyTtsPlugin.ttsEngine.on('ttsFinish', () => {
+        Log.i(TAG, "TTS playback finished");
+        HarmonyTtsPlugin.isSpeakingFlag = false;
+        HarmonyTtsPlugin.speakTask = null;
+      });
+      
+      // 设置播放错误回调
+      HarmonyTtsPlugin.ttsEngine.on('ttsError', (err: BusinessError) => {
+        Log.e(TAG, "TTS playback error: " + err.message);
+        HarmonyTtsPlugin.isSpeakingFlag = false;
+        HarmonyTtsPlugin.speakTask = null;
+      });
+      
+      // 开始播放
+      await HarmonyTtsPlugin.ttsEngine.speak(ttsTask);
+      Log.i(TAG, "✅ Speech playback started");
+    } catch (e) {
+      Log.e(TAG, "Failed to play speech");
+      HarmonyTtsPlugin.isSpeakingFlag = false;
+      HarmonyTtsPlugin.speakTask = null;
+      if (e instanceof BusinessError) {
+        Log.e(TAG, "Error code: " + e.code);
+        Log.e(TAG, "Error message: " + e.message);
+      }
+      throw e;
     }
   }
 
   private static async stop(): Promise<void> {
     try {
+      if (HarmonyTtsPlugin.ttsEngine != null && HarmonyTtsPlugin.speakTask != null) {
+        await HarmonyTtsPlugin.ttsEngine.stop(HarmonyTtsPlugin.speakTask);
+        Log.i(TAG, "Speech stopped successfully");
+      }
       HarmonyTtsPlugin.isSpeakingFlag = false;
-      Log.i(TAG, "Speech stopped");
+      HarmonyTtsPlugin.speakTask = null;
     } catch (e) {
       Log.e(TAG, "Failed to stop speech");
+      if (e instanceof BusinessError) {
+        Log.e(TAG, "Error code: " + e.code);
+        Log.e(TAG, "Error message: " + e.message);
+      }
       HarmonyTtsPlugin.isSpeakingFlag = false;
+      HarmonyTtsPlugin.speakTask = null;
       if (e instanceof Error) {
         throw e;
       } else {
@@ -220,15 +272,10 @@ export class HarmonyTtsPlugin {
 
   private static async setLanguage(language: string): Promise<void> {
     try {
-      // 鸿蒙TTS会自动根据系统语言设置，这里只记录
-      Log.i(TAG, "Language set to: " + language);
+      // 使用系统默认语言，不进行额外设置
+      Log.i(TAG, "Language will use system default: " + language);
     } catch (e) {
-      Log.e(TAG, "Failed to set language");
-      if (e instanceof Error) {
-        throw e;
-      } else {
-        throw new Error("Failed to set language");
-      }
+      Log.w(TAG, "Language setting ignored: " + e);
     }
   }
 
@@ -237,43 +284,41 @@ export class HarmonyTtsPlugin {
       // 鸿蒙TTS的语速范围是0.5-2.0
       HarmonyTtsPlugin.currentSpeed = Math.max(0.5, Math.min(2.0, rate));
       Log.i(TAG, "Speech rate set to: " + HarmonyTtsPlugin.currentSpeed);
+      
+      // 如果TTS引擎已初始化，更新语速参数
+      if (HarmonyTtsPlugin.isInitialized && HarmonyTtsPlugin.ttsEngine != null) {
+        const params: tts.TtsParams = {
+          audioCapability: tts.AudioCapability.CAPABILITY_SPEED,
+          speed: HarmonyTtsPlugin.currentSpeed
+        };
+        await HarmonyTtsPlugin.ttsEngine.setTtsParams(params);
+        Log.i(TAG, "Speech rate updated");
+      }
     } catch (e) {
       Log.e(TAG, "Failed to set speech rate");
-      if (e instanceof Error) {
-        throw e;
-      } else {
-        throw new Error("Failed to set speech rate");
+      if (e instanceof BusinessError) {
+        Log.e(TAG, "Error code: " + e.code);
+        Log.e(TAG, "Error message: " + e.message);
       }
+      // 不抛出异常，允许继续使用默认语速
     }
   }
 
   private static async setPitch(pitch: number): Promise<void> {
     try {
-      // 鸿蒙TTS的音调范围是0.5-2.0
-      HarmonyTtsPlugin.currentPitch = Math.max(0.5, Math.min(2.0, pitch));
-      Log.i(TAG, "Pitch set to: " + HarmonyTtsPlugin.currentPitch);
+      // 音调功能已移除，仅保留基本播放
+      Log.i(TAG, "Pitch setting not supported in simple playback mode");
     } catch (e) {
-      Log.e(TAG, "Failed to set pitch");
-      if (e instanceof Error) {
-        throw e;
-      } else {
-        throw new Error("Failed to set pitch");
-      }
+      Log.w(TAG, "Pitch setting ignored: " + e);
     }
   }
 
   private static async setVolume(volume: number): Promise<void> {
     try {
-      // 鸿蒙TTS的音量范围是0.0-1.0
-      HarmonyTtsPlugin.currentVolume = Math.max(0.0, Math.min(1.0, volume));
-      Log.i(TAG, "Volume set to: " + HarmonyTtsPlugin.currentVolume);
+      // 音量功能已移除，使用系统默认音量
+      Log.i(TAG, "Volume setting not supported in simple playback mode, using system default");
     } catch (e) {
-      Log.e(TAG, "Failed to set volume");
-      if (e instanceof Error) {
-        throw e;
-      } else {
-        throw new Error("Failed to set volume");
-      }
+      Log.w(TAG, "Volume setting ignored: " + e);
     }
   }
 

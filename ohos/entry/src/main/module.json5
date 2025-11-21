@@ -34,7 +34,9 @@
       }
     ],
     "requestPermissions": [
-      {"name" :  "ohos.permission.INTERNET"}
+      {"name" :  "ohos.permission.INTERNET"},
+      {"name": "ohos.permission.MICROPHONE"},
+      {"name": "ohos.permission.USE_BLUETOOTH_SCO"}
     ]
   }
 }
