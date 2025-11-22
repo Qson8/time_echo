@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import '../constants/app_constants.dart';
 import '../services/intelligent_learning_assistant.dart';
+import '../services/app_state_provider.dart';
 
 /// 智能学习助手界面
 class IntelligentLearningAssistantScreen extends StatefulWidget {
@@ -73,57 +75,100 @@ class _IntelligentLearningAssistantScreenState extends State<IntelligentLearning
 
   /// 加载学习数据
   Future<void> _loadLearningData() async {
+    if (!mounted) return;
+    
+    setState(() {
+      _isLoading = true;
+    });
+    
     try {
       final learningPlan = await _assistant.generateLearningPlan();
       final dailyReminder = await _assistant.generateDailyReminder();
       
-      setState(() {
-        _learningPlan = learningPlan;
-        _dailyReminder = dailyReminder;
-        _isLoading = false;
-      });
-    } catch (e) {
-      print('加载学习数据失败: $e');
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _learningPlan = learningPlan;
+          _dailyReminder = dailyReminder;
+          _isLoading = false;
+        });
+      }
+    } catch (e, stackTrace) {
+      print('❌ 加载学习数据失败: $e');
+      print('❌ 错误堆栈: $stackTrace');
+      
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        
+        // 显示错误提示
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('加载数据失败: ${e.toString()}'),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
+            action: SnackBarAction(
+              label: '重试',
+              textColor: Colors.white,
+              onPressed: () => _loadLearningData(),
+            ),
+          ),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: _buildAppBar(),
-      body: FadeTransition(
-        opacity: _fadeAnimation,
-        child: Column(
-          children: [
-            // 标签页
-            _buildTabBar(),
-            
-            // 内容区域
-            Expanded(
-              child: IndexedStack(
-                index: _currentTabIndex,
+      body: _isLoading
+          ? const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildDailyReminderTab(),
-                  _buildLearningPlanTab(),
-                  _buildProgressTab(),
-                  _buildSuggestionsTab(),
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16),
+                  Text(
+                    '正在加载学习数据...',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : FadeTransition(
+              opacity: _fadeAnimation,
+              child: Column(
+                children: [
+                  // 标签页
+                  _buildTabBar(),
+                  
+                  // 内容区域
+                  Expanded(
+                    child: IndexedStack(
+                      index: _currentTabIndex,
+                      children: [
+                        _buildDailyReminderTab(),
+                        _buildLearningPlanTab(),
+                        _buildProgressTab(),
+                        _buildSuggestionsTab(),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -133,14 +178,24 @@ class _IntelligentLearningAssistantScreenState extends State<IntelligentLearning
       title: const Text('智能学习助手'),
       centerTitle: true,
       elevation: 0,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
+      iconTheme: const IconThemeData(color: Colors.black87),
+      titleTextStyle: const TextStyle(
+        color: Colors.black87,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
       actions: [
         IconButton(
           icon: const Icon(Icons.refresh),
           onPressed: () {
             HapticFeedback.lightImpact();
+            setState(() {
+              _isLoading = true;
+            });
             _loadLearningData();
           },
+          tooltip: '刷新',
         ),
       ],
     );
@@ -209,7 +264,13 @@ class _IntelligentLearningAssistantScreenState extends State<IntelligentLearning
 
   /// 构建每日提醒标签页
   Widget _buildDailyReminderTab() {
-    if (_dailyReminder == null) return const SizedBox();
+    if (_dailyReminder == null) {
+      return _buildEmptyState(
+        icon: Icons.today,
+        title: '暂无今日提醒',
+        subtitle: '正在生成您的个性化学习提醒...',
+      );
+    }
     
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -547,7 +608,13 @@ class _IntelligentLearningAssistantScreenState extends State<IntelligentLearning
 
   /// 构建学习计划标签页
   Widget _buildLearningPlanTab() {
-    if (_learningPlan == null) return const SizedBox();
+    if (_learningPlan == null) {
+      return _buildEmptyState(
+        icon: Icons.assignment,
+        title: '暂无学习计划',
+        subtitle: '正在为您制定个性化学习计划...',
+      );
+    }
     
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -924,14 +991,590 @@ class _IntelligentLearningAssistantScreenState extends State<IntelligentLearning
 
   /// 构建进度标签页
   Widget _buildProgressTab() {
-    return const Center(
-      child: Text('进度页面开发中'),
+    return Consumer<AppStateProvider>(
+      builder: (context, appState, child) {
+        final testRecords = appState.testRecords;
+        final totalTests = testRecords.length;
+        final totalQuestions = testRecords.fold<int>(
+          0, 
+          (sum, record) => sum + record.totalQuestions,
+        );
+        final totalCorrect = testRecords.fold<int>(
+          0, 
+          (sum, record) => sum + record.correctAnswers,
+        );
+        final avgAccuracy = totalTests > 0
+            ? testRecords.fold<double>(0, (sum, record) => sum + record.accuracy) / totalTests
+            : 0.0;
+        
+        // 计算各分类的统计
+        // categoryScores存储的是题目数量，不是百分比
+        final categoryStats = <String, Map<String, dynamic>>{};
+        for (final record in testRecords) {
+          for (final entry in record.categoryScores.entries) {
+            final category = entry.key;
+            if (!categoryStats.containsKey(category)) {
+              categoryStats[category] = {
+                'total': 0,
+                'correct': 0,
+              };
+            }
+            // entry.value是该分类的题目数量
+            final categoryQuestionCount = entry.value;
+            categoryStats[category]!['total'] = (categoryStats[category]!['total'] as int) + categoryQuestionCount;
+            // 根据整体准确率估算该分类的正确数（accuracy是百分比格式，需要除以100）
+            final accuracyRatio = (record.accuracy / 100).clamp(0.0, 1.0);
+            final estimatedCorrect = (categoryQuestionCount * accuracyRatio).round();
+            categoryStats[category]!['correct'] = (categoryStats[category]!['correct'] as int) + estimatedCorrect;
+          }
+        }
+        
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 总体统计卡片
+              _buildOverallStatsCard(
+                totalTests: totalTests,
+                totalQuestions: totalQuestions,
+                totalCorrect: totalCorrect,
+                avgAccuracy: avgAccuracy,
+              ),
+              
+              const SizedBox(height: 16),
+              
+              // 分类统计卡片
+              if (categoryStats.isNotEmpty) ...[
+                _buildCategoryStatsCard(categoryStats),
+                const SizedBox(height: 16),
+              ],
+              
+              // 最近拾光记录
+              if (testRecords.isNotEmpty) ...[
+                _buildRecentTestsCard(testRecords.take(5).toList()),
+              ] else
+                _buildEmptyProgressCard(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+  
+  /// 构建总体统计卡片
+  Widget _buildOverallStatsCard({
+    required int totalTests,
+    required int totalQuestions,
+    required int totalCorrect,
+    required double avgAccuracy,
+  }) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.analytics,
+                  color: const Color(AppConstants.primaryColor),
+                  size: 24,
+                ),
+                const SizedBox(width: 12),
+                const Text(
+                  '总体统计',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 20),
+            
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatBox(
+                    '总拾光数',
+                    '$totalTests',
+                    Icons.quiz,
+                    Colors.blue,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildStatBox(
+                    '总题目数',
+                    '$totalQuestions',
+                    Icons.help_outline,
+                    Colors.green,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 12),
+            
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatBox(
+                    '正确数',
+                    '$totalCorrect',
+                    Icons.check_circle,
+                    Colors.orange,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildStatBox(
+                    '平均正确率',
+                    // avgAccuracy已经是百分比格式（0-100），不需要再乘以100
+                    '${avgAccuracy.clamp(0.0, 100.0).toStringAsFixed(1)}%',
+                    Icons.trending_up,
+                    const Color(AppConstants.primaryColor),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  /// 构建统计盒子
+  Widget _buildStatBox(String label, String value, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: color.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 28),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  /// 构建分类统计卡片
+  Widget _buildCategoryStatsCard(Map<String, Map<String, dynamic>> categoryStats) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.category,
+                  color: const Color(AppConstants.primaryColor),
+                  size: 24,
+                ),
+                const SizedBox(width: 12),
+                const Text(
+                  '分类统计',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 16),
+            
+            ...categoryStats.entries.map((entry) {
+              final category = entry.key;
+              final stats = entry.value;
+              final total = stats['total'] as int;
+              final correct = stats['correct'] as int;
+              final accuracy = total > 0 ? correct / total : 0.0;
+              
+              return Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Colors.grey.withOpacity(0.2),
+                    width: 1,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          category,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          '${(accuracy * 100).toStringAsFixed(1)}%',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(AppConstants.primaryColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    LinearProgressIndicator(
+                      value: accuracy,
+                      backgroundColor: Colors.grey.withOpacity(0.3),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        const Color(AppConstants.primaryColor),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '正确: $correct / 总数: $total',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  /// 构建最近拾光记录卡片
+  Widget _buildRecentTestsCard(List<dynamic> recentRecords) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.history,
+                  color: const Color(AppConstants.primaryColor),
+                  size: 24,
+                ),
+                const SizedBox(width: 12),
+                const Text(
+                  '最近拾光',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 16),
+            
+            ...recentRecords.asMap().entries.map((entry) {
+              final index = entry.key;
+              final record = entry.value;
+              return Container(
+                margin: EdgeInsets.only(bottom: index < recentRecords.length - 1 ? 12 : 0),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: _getAccuracyColor(record.accuracy).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Icon(
+                        Icons.quiz,
+                        color: _getAccuracyColor(record.accuracy),
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${record.testTime.month}月${record.testTime.day}日 ${record.testTime.hour}:${record.testTime.minute.toString().padLeft(2, '0')}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            '${record.correctAnswers}/${record.totalQuestions} 题正确',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // record.accuracy已经是百分比格式（0-100），不需要再乘以100
+                    Text(
+                      '${record.accuracy.clamp(0.0, 100.0).toStringAsFixed(0)}%',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: _getAccuracyColor(record.accuracy),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  /// 构建空进度卡片
+  Widget _buildEmptyProgressCard() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: const Color(AppConstants.primaryColor).withOpacity(0.2),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: const Color(AppConstants.primaryColor).withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.analytics_outlined,
+              size: 50,
+              color: const Color(AppConstants.primaryColor).withOpacity(0.6),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            '还没有拾光记录',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey[800],
+              fontWeight: FontWeight.bold,
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '开始你的第一次拾光吧',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[600],
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  const Color(AppConstants.primaryColor),
+                  const Color(AppConstants.primaryColor).withOpacity(0.8),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(AppConstants.primaryColor).withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.quiz,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  '开始拾光',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  /// 获取准确率颜色
+  Color _getAccuracyColor(double accuracy) {
+    if (accuracy >= 0.8) {
+      return Colors.green;
+    } else if (accuracy >= 0.6) {
+      return Colors.orange;
+    } else {
+      return Colors.red;
+    }
+  }
+  
+  /// 构建通用空白状态
+  Widget _buildEmptyState({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+  }) {
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.all(32),
+        padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 32),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: const Color(AppConstants.primaryColor).withOpacity(0.2),
+            width: 1.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 20,
+              offset: const Offset(0, 4),
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: const Color(AppConstants.primaryColor).withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                size: 40,
+                color: const Color(AppConstants.primaryColor).withOpacity(0.6),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.grey[800],
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.5,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[600],
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   /// 构建建议标签页
   Widget _buildSuggestionsTab() {
-    if (_learningPlan == null) return const SizedBox();
+    if (_learningPlan == null) {
+      return _buildEmptyState(
+        icon: Icons.lightbulb_outline,
+        title: '暂无学习建议',
+        subtitle: '完成更多拾光后，将为您提供个性化建议',
+      );
+    }
     
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),

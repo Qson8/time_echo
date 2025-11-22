@@ -243,7 +243,7 @@ class OfflineDataService {
     final retention = retentionPeriod ?? const Duration(days: 30);
     final cutoffTime = DateTime.now().subtract(retention).millisecondsSinceEpoch;
     
-    // 清理过期的测试记录
+    // 清理过期的拾光记录
     final testRecords = _offlineData['testRecords'] as List? ?? [];
     final filteredRecords = testRecords.where((record) {
       final testTime = record['testTime'] as int? ?? 0;
@@ -359,12 +359,12 @@ class OfflineDataService {
       }
     }
     
-    // 检查测试记录
+    // 检查拾光记录
     final testRecords = _offlineData['testRecords'] as List? ?? [];
     for (int i = 0; i < testRecords.length; i++) {
       final record = testRecords[i] as Map<String, dynamic>;
       if (record['id'] == null || record['testTime'] == null) {
-        issues.add('测试记录 $i 数据不完整');
+        issues.add('拾光记录 $i 数据不完整');
       }
     }
     

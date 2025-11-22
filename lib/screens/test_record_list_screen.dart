@@ -183,7 +183,7 @@ class TestRecordListScreen extends StatelessWidget {
     );
   }
 
-  /// 格式化测试时间
+  /// 格式化拾光时间
   String _formatTestTime(DateTime testTime) {
     final now = DateTime.now();
     final difference = now.difference(testTime);

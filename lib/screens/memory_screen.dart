@@ -5,6 +5,7 @@ import '../constants/app_theme.dart';
 import '../models/memory_record.dart';
 import '../services/memory_service.dart';
 import 'memory_detail_screen.dart';
+import 'memory_view_screen.dart';
 
 /// 时光回忆页面
 class MemoryScreen extends StatefulWidget {
@@ -572,7 +573,7 @@ class _MemoryScreenState extends State<MemoryScreen>
   ) async {
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => MemoryDetailScreen(memory: memory),
+        builder: (context) => MemoryViewScreen(memory: memory),
       ),
     );
     

@@ -160,9 +160,11 @@ class LearningReportService {
       final total = stats['total'] as int;
       final count = stats['count'] as int;
       if (count > 0) {
-        // 估算正确数（基于总准确率）
-        final estimatedCorrect = (total * avgAccuracy / 100).round();
-        categoryAccuracy[category] = (estimatedCorrect / total * 100);
+        // 估算正确数（基于总准确率，avgAccuracy已经是百分比格式）
+        final accuracyRatio = (avgAccuracy / 100).clamp(0.0, 1.0);
+        final estimatedCorrect = (total * accuracyRatio).round();
+        final accuracy = (estimatedCorrect / total * 100);
+        categoryAccuracy[category] = accuracy.clamp(0.0, 100.0);
       }
     });
 
@@ -222,9 +224,9 @@ class LearningReportService {
 
     // 学习频率洞察
     if (totalCount >= 5) {
-      insights.add('🔥 你非常勤奋，完成了$totalCount 次拾光测试！');
+      insights.add('🔥 你非常勤奋，完成了$totalCount 次拾光！');
     } else if (totalCount >= 3) {
-      insights.add('✨ 你完成了$totalCount 次拾光测试，继续保持！');
+      insights.add('✨ 你完成了$totalCount 次拾光，继续保持！');
     }
 
     // 拾光年龄洞察
@@ -374,7 +376,7 @@ class LearningReportService {
     if (report.statistics.isNotEmpty) {
       buffer.writeln('【统计数据】');
       final stats = report.statistics;
-      buffer.writeln('总测试次数：${stats['total_count'] ?? 0}');
+      buffer.writeln('总拾光次数：${stats['total_count'] ?? 0}');
       buffer.writeln('总答题数：${stats['total_questions'] ?? 0}');
       buffer.writeln('平均准确率：${(stats['avg_accuracy'] ?? 0.0).toStringAsFixed(1)}%');
       buffer.writeln('平均拾光年龄：${(stats['avg_echo_age'] ?? 0.0).toStringAsFixed(0)}岁');

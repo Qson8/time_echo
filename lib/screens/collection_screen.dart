@@ -10,7 +10,9 @@ import 'quiz_config_screen.dart';
 
 /// 收藏页面
 class CollectionScreen extends StatefulWidget {
-  const CollectionScreen({super.key});
+  final bool hideAppBar;
+  
+  const CollectionScreen({super.key, this.hideAppBar = false});
 
   @override
   State<CollectionScreen> createState() => _CollectionScreenState();
@@ -59,7 +61,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: widget.hideAppBar ? null : AppBar(
         title: const Text('拾光收藏夹'),
         centerTitle: true,
         actions: [
@@ -94,6 +96,26 @@ class _CollectionScreenState extends State<CollectionScreen> {
             children: [
               // 批量操作栏
               if (_isBatchMode) _buildBatchActionBar(appState),
+              
+              // 如果没有 AppBar，在顶部添加批量操作按钮
+              if (widget.hideAppBar && !_isBatchMode && appState.collectedQuestions.isNotEmpty)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.checklist),
+                        onPressed: () {
+                          setState(() {
+                            _isBatchMode = true;
+                          });
+                        },
+                        tooltip: '批量操作',
+                      ),
+                    ],
+                  ),
+                ),
               
               // 收藏列表
               Expanded(

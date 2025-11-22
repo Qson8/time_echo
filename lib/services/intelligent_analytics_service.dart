@@ -168,12 +168,16 @@ class IntelligentAnalyticsService {
         record.categoryScores.containsKey(category)).toList();
       
       if (categoryRecords.isNotEmpty) {
+        // categoryScores存储的是题目数量，不是百分比
         final totalQuestions = categoryRecords.fold<int>(0, (sum, record) => 
           sum + record.categoryScores[category]!);
-        final correctAnswers = categoryRecords.fold<int>(0, (sum, record) => 
-          sum + (record.categoryScores[category]! * record.accuracy).round());
+        // 根据整体准确率估算该分类的正确数（accuracy是百分比格式，需要除以100）
+        final correctAnswers = categoryRecords.fold<int>(0, (sum, record) {
+          final accuracyRatio = (record.accuracy / 100).clamp(0.0, 1.0);
+          return sum + (record.categoryScores[category]! * accuracyRatio).round();
+        });
         
-        final accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0.0;
+        final accuracy = totalQuestions > 0 ? (correctAnswers / totalQuestions) : 0.0;
         final improvement = _calculateCategoryImprovement(categoryRecords, category);
         final strength = _calculateCategoryStrength(accuracy, improvement);
         
@@ -298,8 +302,8 @@ class IntelligentAnalyticsService {
   double _calculateChallengeAcceptance(List<TestRecord> testRecords) {
     if (testRecords.isEmpty) return 0.0;
     
-    // 简化实现：基于测试频率计算挑战接受度
-    final testFrequency = testRecords.length / 30.0; // 假设30天内的测试频率
+    // 简化实现：基于拾光频率计算挑战接受度
+    final testFrequency = testRecords.length / 30.0; // 假设30天内的拾光频率
     return (testFrequency / 1.0).clamp(0.0, 1.0); // 每天一次为满分
   }
 
@@ -467,7 +471,7 @@ class IntelligentAnalyticsService {
 
     // 基于时间模式的建议
     if (pattern.timePattern.timeConsistency < 0.5) {
-      suggestions.add('建议在固定时间进行测试，提高学习一致性');
+      suggestions.add('建议在固定时间进行拾光，提高学习一致性');
     }
 
     // 基于难度偏好的建议

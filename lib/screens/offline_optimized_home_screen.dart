@@ -288,7 +288,7 @@ class _OfflineHomeTabState extends State<OfflineHomeTab>
             
             const SizedBox(height: 24),
             
-            // 最近测试
+            // 最近拾光
             _buildRecentTestsSection(),
             
             const SizedBox(height: 24),
@@ -554,7 +554,7 @@ class _OfflineHomeTabState extends State<OfflineHomeTab>
     return OfflineFriendlyComponents.buildLocalLearningStats(stats: _stats);
   }
 
-  /// 构建最近测试区域
+  /// 构建最近拾光区域
   Widget _buildRecentTestsSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -592,7 +592,7 @@ class _OfflineHomeTabState extends State<OfflineHomeTab>
     );
   }
 
-  /// 构建测试记录卡片
+  /// 构建拾光记录卡片
   Widget _buildTestRecordCard(Map<String, dynamic> test) {
     final testTime = DateTime.parse(test['test_time']);
     final accuracy = test['accuracy'] as double;
@@ -632,8 +632,9 @@ class _OfflineHomeTabState extends State<OfflineHomeTab>
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  // accuracy从数据库读取，是百分比格式（0-100），不需要再乘以100
                   Text(
-                    '准确率: ${(accuracy * 100).toInt()}% | 用时: ${test['total_time']}秒',
+                    '准确率: ${accuracy.clamp(0.0, 100.0).toInt()}% | 用时: ${test['total_time']}秒',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey[600],
@@ -671,7 +672,7 @@ class _OfflineHomeTabState extends State<OfflineHomeTab>
     return Colors.red;
   }
 
-  /// 开始测试
+  /// 开始拾光
   void _startQuiz() {
     Navigator.push(
       context,
@@ -679,9 +680,9 @@ class _OfflineHomeTabState extends State<OfflineHomeTab>
     );
   }
 
-  /// 开始随机测试
+  /// 开始随机拾光
   void _startRandomQuiz() {
-    // 实现随机测试逻辑
+    // 实现随机拾光逻辑
     _startQuiz();
   }
 

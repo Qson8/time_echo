@@ -126,12 +126,12 @@ class _QuizScreenState extends State<QuizScreen>
         print('   题目分类分布: ${appState.currentTestQuestions.map((q) => q.category).toSet()}');
         print('   题目年代分布: ${appState.currentTestQuestions.map((q) => q.echoTheme).toSet()}');
         
-        // 确保测试状态正确设置
+        // 确保拾光状态正确设置
         if (!appState.isTestInProgress) {
-          print('⚠️ 检测到题目存在但测试未标记为进行中，这可能是旧状态，需要重新启动测试');
+          print('⚠️ 检测到题目存在但拾光未标记为进行中，这可能是旧状态，需要重新启动拾光');
           // 如果是旧状态，应该清除并重新启动
           // 但这里不自动清除，因为可能是从定制页面刚进入的
-          // 如果确实有问题，会在后续的测试中发现
+          // 如果确实有问题，会在后续的拾光中发现
         }
         
         _progressController.forward();
@@ -151,13 +151,13 @@ class _QuizScreenState extends State<QuizScreen>
         return;
       }
       
-      // 如果没有测试在进行，使用默认方式启动测试
-      print('🔄 启动新的测试（使用默认配置）');
+      // 如果没有拾光在进行，使用默认方式启动拾光
+      print('🔄 启动新的拾光（使用默认配置）');
       print('⚠️ 警告：这可能会覆盖定制配置的题目！');
       await appState.startTest().timeout(
         const Duration(seconds: 10),
         onTimeout: () {
-          print('测试启动超时');
+          print('拾光启动超时');
         },
       );
       
@@ -177,7 +177,7 @@ class _QuizScreenState extends State<QuizScreen>
         print('🗣️ ⚠️ 语音未启用，跳过自动播放');
       }
     } catch (e) {
-      print('启动测试失败: $e');
+      print('启动拾光失败: $e');
       // 即使失败也显示题目（如果有示例题目）
     }
   }
@@ -239,7 +239,7 @@ class _QuizScreenState extends State<QuizScreen>
               centerTitle: true,
               leading: IconButton(
                 icon: const Icon(Icons.close),
-                onPressed: () => _showExitDialog(context),
+                onPressed: () => _showExitDialog(context, appState),
               ),
               actions: [
                 Consumer<AppStateProvider>(
@@ -477,7 +477,7 @@ class _QuizScreenState extends State<QuizScreen>
               index: index,
             );
 
-            // 正确答案动画效果（带庆祝动画）
+            // 正确答案动画效果（带庆祝动画，移除放大效果）
             if (isCorrect) {
               optionCard = CelebrationAnimation(
                 isActive: isCorrect,
@@ -485,21 +485,18 @@ class _QuizScreenState extends State<QuizScreen>
                 child: AnimatedBuilder(
                   animation: _correctAnimation,
                   builder: (context, child) {
-                    return Transform.scale(
-                      scale: 1.0 + (_correctAnimation.value * 0.1),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.green.withOpacity(_correctAnimation.value * 0.5),
-                              blurRadius: 20 * _correctAnimation.value,
-                              spreadRadius: 5 * _correctAnimation.value,
-                            ),
-                          ],
-                        ),
-                        child: child,
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.green.withOpacity(_correctAnimation.value * 0.5),
+                            blurRadius: 20 * _correctAnimation.value,
+                            spreadRadius: 5 * _correctAnimation.value,
+                          ),
+                        ],
                       ),
+                      child: child,
                     );
                   },
                   child: optionCard,
@@ -683,7 +680,7 @@ class _QuizScreenState extends State<QuizScreen>
     }
   }
 
-  /// 完成测试
+  /// 完成拾光
   Future<void> _completeQuiz(AppStateProvider appState) async {
     try {
       final testRecord = await appState.completeTest();
@@ -758,7 +755,17 @@ class _QuizScreenState extends State<QuizScreen>
   }
 
   /// 显示退出对话框
-  void _showExitDialog(BuildContext context) {
+  void _showExitDialog(BuildContext context, AppStateProvider appState) {
+    // 计算已答题数量（答案不为 -1 表示已答题）
+    final answeredCount = appState.userAnswers.where((answer) => answer >= 0).length;
+    
+    // 如果已答题数量为 0，直接退出，不显示弹窗
+    if (answeredCount == 0) {
+      Navigator.of(context).pop(); // 直接返回上一页
+      return;
+    }
+    
+    // 如果已答题数量 > 0，显示弹窗提示
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

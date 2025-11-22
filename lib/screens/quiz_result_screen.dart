@@ -6,16 +6,17 @@ import '../constants/app_theme.dart';
 import '../models/test_record.dart';
 import '../services/app_state_provider.dart';
 import '../services/local_storage_service.dart';
-import 'home_screen.dart';
+import 'enhanced_home_screen.dart';
 import 'quiz_screen.dart';
 import 'quiz_config_screen.dart';
 import 'memory_detail_screen.dart';
+import 'memory_view_screen.dart';
 import '../services/memory_service.dart';
 import '../models/memory_record.dart';
 import '../services/share_service.dart';
 import 'package:share_plus/share_plus.dart';
 
-/// 测试结果页面
+/// 拾光结果页面
 class QuizResultScreen extends StatefulWidget {
   final TestRecord testRecord;
 
@@ -33,6 +34,9 @@ class _QuizResultScreenState extends State<QuizResultScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
+  
+  MemoryRecord? _relatedMemory; // 关联的回忆记录
+  bool _isLoadingMemory = true; // 是否正在加载回忆
 
   @override
   void initState() {
@@ -59,6 +63,49 @@ class _QuizResultScreenState extends State<QuizResultScreen>
     ));
 
     _animationController.forward();
+    _checkRelatedMemory(); // 检查是否有对应的回忆
+  }
+  
+  /// 检查是否有对应的回忆记录
+  Future<void> _checkRelatedMemory() async {
+    try {
+      final memoryService = MemoryService();
+      final allMemories = await memoryService.getAllMemories();
+      
+      // 查找与当前拾光记录关联的回忆
+      // 匹配条件：memoryDate 与 testTime 相同（允许1秒误差），且包含"拾光"标签
+      final testTime = widget.testRecord.testTime;
+      MemoryRecord? relatedMemory;
+      
+      try {
+        relatedMemory = allMemories.firstWhere(
+          (memory) {
+            // 检查时间是否匹配（允许1秒误差）
+            final timeDiff = (memory.memoryDate.difference(testTime).inSeconds).abs();
+            final hasEchoTag = memory.hasTag('拾光');
+            return timeDiff <= 1 && hasEchoTag;
+          },
+        );
+      } catch (e) {
+        // 没有找到匹配的回忆
+        relatedMemory = null;
+      }
+      
+      if (mounted) {
+        setState(() {
+          _relatedMemory = relatedMemory;
+          _isLoadingMemory = false;
+        });
+      }
+    } catch (e) {
+      print('检查关联回忆失败: $e');
+      if (mounted) {
+        setState(() {
+          _relatedMemory = null;
+          _isLoadingMemory = false;
+        });
+      }
+    }
   }
 
   @override
@@ -327,48 +374,86 @@ class _QuizResultScreenState extends State<QuizResultScreen>
 
   /// 构建记录回忆提示卡片
   Widget _buildMemoryPromptCard(BuildContext context) {
+    // 如果正在加载，显示加载状态
+    if (_isLoadingMemory) {
+      return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.purple.withOpacity(0.1),
+              Colors.pink.withOpacity(0.1),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.purple.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    
+    // 如果已记录回忆，显示已记录状态
+    final hasMemory = _relatedMemory != null;
+    
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Colors.purple.withOpacity(0.1),
-            Colors.pink.withOpacity(0.1),
-          ],
+          colors: hasMemory
+              ? [
+                  Colors.green.withOpacity(0.1),
+                  Colors.teal.withOpacity(0.1),
+                ]
+              : [
+                  Colors.purple.withOpacity(0.1),
+                  Colors.pink.withOpacity(0.1),
+                ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Colors.purple.withOpacity(0.3),
+          color: hasMemory
+              ? Colors.green.withOpacity(0.3)
+              : Colors.purple.withOpacity(0.3),
           width: 1,
         ),
       ),
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
               Icon(
-                Icons.favorite,
-                color: Colors.purple,
+                hasMemory ? Icons.check_circle : Icons.favorite,
+                color: hasMemory ? Colors.green : Colors.purple,
                 size: 24,
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
-                '这题让你想起什么？',
+                hasMemory ? '回忆已记录' : '这题让你想起什么？',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.purple,
+                  color: hasMemory ? Colors.green.shade700 : Colors.purple,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 12),
-          const Text(
-            '记录下这段答题带来的回忆吧，让它成为你独特的怀旧档案～',
-            style: TextStyle(
+          Text(
+            hasMemory
+                ? '你已经为这次拾光之旅记录了回忆，可以在时光回忆中查看～'
+                : '记录下这段答题带来的回忆吧，让它成为你独特的怀旧档案～',
+            style: const TextStyle(
               fontSize: 14,
               color: Colors.black87,
               height: 1.5,
@@ -376,32 +461,114 @@ class _QuizResultScreenState extends State<QuizResultScreen>
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: () => _recordMemory(context),
-              icon: const Icon(Icons.edit),
-              label: const Text('记录回忆'),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.purple,
-                side: const BorderSide(color: Colors.purple),
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+          if (hasMemory) ...[
+            // 已记录状态：显示查看回忆按钮
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () => _viewMemory(context),
+                icon: const Icon(Icons.visibility),
+                label: const Text('查看回忆'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
             ),
-          ),
+            const SizedBox(height: 8),
+            // 编辑回忆按钮
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () => _editMemory(context),
+                icon: const Icon(Icons.edit),
+                label: const Text('编辑回忆'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.green.shade700,
+                  side: BorderSide(color: Colors.green.shade700),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ),
+          ] else ...[
+            // 未记录状态：显示记录回忆按钮
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () => _recordMemory(context),
+                icon: const Icon(Icons.edit),
+                label: const Text('记录回忆'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.purple,
+                  side: const BorderSide(color: Colors.purple),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
+  }
+  
+  /// 查看回忆
+  Future<void> _viewMemory(BuildContext context) async {
+    if (_relatedMemory == null) return;
+    
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => MemoryViewScreen(
+          memory: _relatedMemory!,
+        ),
+      ),
+    );
+    
+    // 如果编辑了回忆，重新检查
+    if (result == true && mounted) {
+      await _checkRelatedMemory();
+    }
+  }
+  
+  /// 编辑回忆
+  Future<void> _editMemory(BuildContext context) async {
+    if (_relatedMemory == null) return;
+    
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => MemoryDetailScreen(
+          memory: _relatedMemory!,
+        ),
+      ),
+    );
+    
+    // 如果编辑成功，重新检查回忆
+    if (result == true && mounted) {
+      await _checkRelatedMemory();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('回忆已更新'),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   /// 记录回忆
   Future<void> _recordMemory(BuildContext context) async {
     final memoryService = MemoryService();
     
-    // 根据测试记录推断年代和分类
+    // 根据拾光记录推断年代和分类
     // 从categoryScores中获取最高分的分类
     String dominantCategory = '影视';
     if (widget.testRecord.categoryScores.isNotEmpty) {
@@ -436,13 +603,16 @@ class _QuizResultScreenState extends State<QuizResultScreen>
             memoryDate: widget.testRecord.testTime,
             createTime: DateTime.now(),
             mood: '怀念',
-            tags: ['拾光测试'],
+            tags: ['拾光'],
           ),
         ),
       ),
     );
     
     if (result == true && mounted) {
+      // 重新检查关联的回忆
+      await _checkRelatedMemory();
+      
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('回忆已记录到时光回忆'),
@@ -485,20 +655,20 @@ class _QuizResultScreenState extends State<QuizResultScreen>
     );
   }
 
-  /// 开始新测试
+  /// 开始新拾光
   Future<void> _startNewTest(BuildContext context) async {
-    print('🔄 再来一次：清除旧测试状态并导航到定制页面');
+    print('🔄 再来一次：清除旧拾光状态并导航到定制页面');
     
     try {
       // 获取 AppStateProvider 实例
       final appState = Provider.of<AppStateProvider>(context, listen: false);
       final localStorageService = LocalStorageService();
       
-      // 清除测试状态
+      // 清除拾光状态
       appState.resetTest();
       await localStorageService.clearTestState();
       
-      print('✅ 测试状态已清除');
+      print('✅ 拾光状态已清除');
       
       // 导航到定制页面，让用户重新选择配置
       if (mounted) {
@@ -507,7 +677,7 @@ class _QuizResultScreenState extends State<QuizResultScreen>
         );
       }
     } catch (e) {
-      print('❌ 清除测试状态失败: $e');
+      print('❌ 清除拾光状态失败: $e');
       // 即使失败也导航到定制页面
       if (mounted) {
         Navigator.of(context).pushReplacement(
@@ -603,7 +773,7 @@ class _QuizResultScreenState extends State<QuizResultScreen>
       Navigator.of(context).popUntil((route) => route.isFirst);
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const EnhancedHomeScreen()),
         );
       }
       print('🏠 ✅ 导航到首页成功');

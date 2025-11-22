@@ -251,7 +251,7 @@ class JsonStorageService {
         'achievement_name': '拾光初遇',
         'achievement_icon': 'icons/echo_badge_first.png',
         'reward': '解锁拾光徽章・初遇',
-        'condition': '完成首次测试',
+        'condition': '完成首次拾光',
         'is_unlocked': false,
         'unlocked_at': '',
       },
@@ -314,7 +314,7 @@ class JsonStorageService {
         'achievement_name': '拾光全勤人',
         'achievement_icon': 'icons/echo_badge_attendance.png',
         'reward': '解锁全勤徽章+随机语录',
-        'condition': '连续7天每天测试',
+        'condition': '连续7天每天拾光',
         'is_unlocked': false,
         'unlocked_at': '',
       },
@@ -449,9 +449,9 @@ class JsonStorageService {
     }
   }
 
-  // ========== 测试记录相关方法 ==========
+  // ========== 拾光记录相关方法 ==========
 
-  /// 获取所有测试记录
+  /// 获取所有拾光记录
   Future<List<TestRecord>> getAllTestRecords() async {
     await _ensureInitialized();
     final data = await _readJsonFile(_testRecordsFile);
@@ -461,7 +461,7 @@ class JsonStorageService {
         .toList();
   }
 
-  /// 添加测试记录
+  /// 添加拾光记录
   Future<int> addTestRecord(TestRecord record) async {
     await _ensureInitialized();
     final data = await _readJsonFile(_testRecordsFile);
@@ -494,7 +494,7 @@ class JsonStorageService {
     return newId;
   }
 
-  /// 根据ID获取测试记录
+  /// 根据ID获取拾光记录
   Future<TestRecord?> getTestRecordById(int id) async {
     final records = await getAllTestRecords();
     try {
@@ -504,7 +504,7 @@ class JsonStorageService {
     }
   }
 
-  /// 删除指定的测试记录
+  /// 删除指定的拾光记录
   Future<void> deleteTestRecord(int id) async {
     await _ensureInitialized();
     final data = await _readJsonFile(_testRecordsFile);
@@ -520,7 +520,7 @@ class JsonStorageService {
     });
   }
 
-  /// 清除所有测试记录
+  /// 清除所有拾光记录
   Future<void> clearAllTestRecords() async {
     await _ensureInitialized();
     await _writeJsonFile(_testRecordsFile, {

@@ -99,7 +99,7 @@ class OfflineFriendlyComponents {
                     Colors.blue,
                   ),
                   _buildStatItem(
-                    '测试次数',
+                    '拾光次数',
                     '${stats['total_tests'] ?? 0}',
                     Icons.analytics,
                     Colors.green,
@@ -760,7 +760,7 @@ class OfflineFriendlyComponents {
               children: [
                 Expanded(
                   child: _buildStatItem(
-                    '总测试',
+                    '总拾光',
                     '${stats['total_tests'] ?? 0}',
                     Icons.quiz,
                     Colors.blue,

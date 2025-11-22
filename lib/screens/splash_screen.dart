@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_theme.dart';
 import '../services/app_state_provider.dart';
-import 'home_screen.dart';
+import 'enhanced_home_screen.dart';
 
 /// 启动页
 class SplashScreen extends StatefulWidget {
@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen>
       _timeoutTimer = Timer(const Duration(seconds: 10), () {
         if (mounted) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) => const EnhancedHomeScreen()),
           );
         }
       });
@@ -72,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen>
       
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const EnhancedHomeScreen()),
         );
       }
     } catch (e) {
@@ -82,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen>
       // 即使出错也要跳转到首页
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const EnhancedHomeScreen()),
         );
       }
     }

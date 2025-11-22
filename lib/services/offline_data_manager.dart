@@ -55,13 +55,13 @@ class OfflineDataManager {
     return allQuestions.where((q) => q.difficulty == difficulty).toList();
   }
 
-  /// 保存测试记录
+  /// 保存拾光记录
   Future<void> saveTestRecord(TestRecord record) async {
     await _ensureInitialized();
     await _storage.addTestRecord(record);
   }
 
-  /// 获取所有测试记录
+  /// 获取所有拾光记录
   Future<List<TestRecord>> getAllTestRecords() async {
     await _ensureInitialized();
     return await _storage.getAllTestRecords();
@@ -139,8 +139,8 @@ class OfflineDataManager {
       'total_tests': testRecords.length,
       'total_correct': testRecords.fold<int>(0, (sum, r) => sum + r.correctAnswers),
       'best_accuracy': testRecords.isEmpty ? 0.0 : testRecords.map((r) => r.accuracy).reduce((a, b) => a > b ? a : b),
-      'current_streak': 0, // 可以从测试记录中计算
-      'longest_streak': 0, // 可以从测试记录中计算
+      'current_streak': 0, // 可以从拾光记录中计算
+      'longest_streak': 0, // 可以从拾光记录中计算
     };
   }
 

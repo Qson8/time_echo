@@ -173,11 +173,12 @@ class ResponsiveTheme {
       ),
       
       // 对话框主题
-      dialogTheme: DialogThemeData(
+      dialogTheme: const DialogTheme(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
+      ).copyWith(
         titleTextStyle: fontSizeService.buildTitleStyle(
           color: Colors.black87,
         ),

@@ -240,7 +240,7 @@ class _LearningReportScreenState extends State<LearningReportScreen> {
           children: [
             Expanded(
               child: _buildStatCard(
-                '测试次数',
+                '拾光次数',
                 '${stats['total_count'] ?? 0}',
                 Icons.quiz,
                 Colors.blue,

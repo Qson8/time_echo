@@ -126,7 +126,8 @@ class ShareService {
                 const SizedBox(height: 12),
                 _buildStatRow('正确数', '$correctAnswers'),
                 const SizedBox(height: 12),
-                _buildStatRow('准确率', '${(accuracy * 100).toInt()}%'),
+                // accuracy已经是百分比格式（0-100），不需要再乘以100
+                _buildStatRow('准确率', '${accuracy.clamp(0.0, 100.0).toInt()}%'),
               ],
             ),
           ),
@@ -246,7 +247,8 @@ class ShareService {
     buffer.writeln('📊 答题统计：');
     buffer.writeln('总题数：$totalQuestions');
     buffer.writeln('正确数：$correctAnswers');
-    buffer.writeln('准确率：${(accuracy * 100).toInt()}%');
+    // accuracy已经是百分比格式（0-100），不需要再乘以100
+    buffer.writeln('准确率：${accuracy.clamp(0.0, 100.0).toInt()}%');
     
     if (achievements != null && achievements.isNotEmpty) {
       buffer.writeln('');

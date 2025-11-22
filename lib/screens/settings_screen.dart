@@ -10,7 +10,9 @@ import 'quiz_config_screen.dart';
 
 /// 设置页面
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  final bool hideAppBar;
+  
+  const SettingsScreen({super.key, this.hideAppBar = false});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -21,7 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     print('🔍 SettingsScreen build() 被调用');
     return Scaffold(
-      appBar: AppBar(
+      appBar: widget.hideAppBar ? null : AppBar(
         title: const Text('设置'),
         centerTitle: true,
       ),
@@ -48,7 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 
                 const SizedBox(height: 24),
                 
-                // 拾光测试设置
+                // 拾光设置
                 _buildQuizSettingsSection(appState),
                 
                 const SizedBox(height: 24),
@@ -74,12 +76,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       title: '个性化设置',
       icon: Icons.person,
       children: [
-        _buildListTile(
-          title: '拾光评语风格',
-          subtitle: appState.commentStyle,
-          icon: Icons.format_quote,
-          onTap: () => _showCommentStyleDialog(appState),
-        ),
+        // 暂时隐藏拾光评语风格设置
+        // _buildListTile(
+        //   title: '拾光评语风格',
+        //   subtitle: appState.commentStyle,
+        //   icon: Icons.format_quote,
+        //   onTap: () => _showCommentStyleDialog(appState),
+        // ),
         _buildListTile(
           title: '字体大小',
           subtitle: appState.fontSize,
@@ -90,10 +93,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  /// 构建拾光测试设置区域
+  /// 构建拾光设置区域
   Widget _buildQuizSettingsSection(AppStateProvider appState) {
     return _buildSection(
-      title: '拾光测试设置',
+      title: '拾光设置',
       icon: Icons.quiz,
       children: [
         _buildListTile(
@@ -188,12 +191,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           value: appState.elderlyMode,
           onChanged: (value) => _toggleElderlyMode(appState, value),
         ),
-        _buildListTile(
-          title: '主题设置',
-          subtitle: themeProvider.getThemeName(themeProvider.currentTheme),
-          icon: Icons.palette,
-          onTap: () => _showThemeDialog(themeProvider),
-        ),
+        // 暂时隐藏主题设置，统一使用拾光复古主题
+        // _buildListTile(
+        //   title: '主题设置',
+        //   subtitle: themeProvider.getThemeName(themeProvider.currentTheme),
+        //   icon: Icons.palette,
+        //   onTap: () => _showThemeDialog(themeProvider),
+        // ),
       ],
     );
   }
@@ -623,7 +627,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               // 应用简介
               const Text(
-                '拾光机是一款专为怀旧爱好者打造的离线问答应用。无需网络连接，随时随地畅享80-90年代的经典回忆。通过答题测试，系统会智能计算你的"拾光年龄"，让你了解自己对那个年代的记忆深度。提供详细解析、学习报告、记忆胶囊等功能，让每一份时光记忆都值得珍藏。',
+                '拾光机是一款专为怀旧爱好者打造的离线问答应用。无需网络连接，随时随地畅享80-90年代的经典回忆。通过答题拾光，系统会智能计算你的"拾光年龄"，让你了解自己对那个年代的记忆深度。提供详细解析、学习报告、记忆胶囊等功能，让每一份时光记忆都值得珍藏。',
                 style: TextStyle(fontSize: 14, height: 1.5),
               ),
               const SizedBox(height: 16),
@@ -920,7 +924,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       );
 
       if (confirmed == true) {
-        // 重置测试状态
+        // 重置拾光状态
         appState.resetTest();
         
         // 清除所有数据

@@ -113,7 +113,7 @@ class EchoAchievementService {
     List<int>? userAnswers,
   }) async {
     print('🏆 ========== 开始检查成就 ==========');
-    print('🏆 测试记录 ID: ${testRecord.id}');
+    print('🏆 拾光记录 ID: ${testRecord.id}');
     print('🏆 正确率: ${testRecord.accuracy}%');
     print('🏆 总题目数: ${testRecord.totalQuestions}');
     print('🏆 分类得分: ${testRecord.categoryScores}');
@@ -130,16 +130,16 @@ class EchoAchievementService {
       
       final List<EchoAchievement> newAchievements = [];
 
-      // 检查拾光初遇成就（检查是否是第一次完成测试）
+      // 检查拾光初遇成就（检查是否是第一次完成拾光）
       print('🏆 ========== 开始检查拾光初遇成就 ==========');
       
-      // 获取测试记录的基本信息
+      // 获取拾光记录的基本信息
       final testRecordId = testRecord.id;
-      print('🏆 📝 测试记录 ID: $testRecordId');
+      print('🏆 📝 拾光记录 ID: $testRecordId');
       
       // 方法1：查询数据库中的记录总数（包含刚保存的这条）
       final totalRecordCount = await _getTotalRecordCount();
-      print('🏆 📊 当前测试记录总数: $totalRecordCount');
+      print('🏆 📊 当前拾光记录总数: $totalRecordCount');
       
       // 方法2：验证成就ID=1是否存在
       final achievement1 = await getAchievementById(1);
@@ -155,10 +155,10 @@ class EchoAchievementService {
         final isAlreadyUnlocked = await isAchievementUnlocked(1);
         print('🏆 🔍 验证解锁状态查询结果: $isAlreadyUnlocked');
         
-        // 判断是否为首次测试的多种条件
+        // 判断是否为首次拾光的多种条件
         // 条件1：记录总数刚好是1（说明这是第一条记录）
         // 条件2：记录ID为1（如果是数据库自增，第一条记录通常是1）
-        // 条件3：如果成就未解锁且这是第一条或第二条记录（容错，因为可能有测试数据）
+        // 条件3：如果成就未解锁且这是第一条或第二条记录（容错，因为可能有拾光数据）
         final isFirstTestByCount = (totalRecordCount == 1);
         final isFirstTestById = (testRecordId == 1);
         final isFirstTest = isFirstTestByCount || isFirstTestById;
@@ -166,10 +166,10 @@ class EchoAchievementService {
         print('🏆 🔍 判断结果:');
         print('   - 按记录总数判断（总数==1）: $isFirstTestByCount');
         print('   - 按记录ID判断（ID==1）: $isFirstTestById');
-        print('   - 综合判断为首次测试: $isFirstTest');
+        print('   - 综合判断为首次拾光: $isFirstTest');
         
         if (isFirstTest && !isAlreadyUnlocked) {
-          print('🏆 🎯 检测到首次测试且成就未解锁，准备解锁拾光初遇成就...');
+          print('🏆 🎯 检测到首次拾光且成就未解锁，准备解锁拾光初遇成就...');
           try {
             await unlockAchievement(1);
             print('🏆 ✅ 解锁操作完成，正在验证...');
@@ -205,10 +205,10 @@ class EchoAchievementService {
             print('🏆 📅 解锁时间: ${unlockedAchievement.unlockedAt}');
           }
         } else {
-          print('🏆 ℹ️ 不满足首次测试条件，跳过拾光初遇成就');
+          print('🏆 ℹ️ 不满足首次拾光条件，跳过拾光初遇成就');
           print('🏆 📊 详情: 记录ID=$testRecordId, 记录总数=$totalRecordCount');
           if (!isFirstTest) {
-            print('🏆 💡 提示: 这可能是第二次或更多次测试');
+            print('🏆 💡 提示: 这可能是第二次或更多次拾光');
           }
         }
       }
@@ -304,7 +304,7 @@ class EchoAchievementService {
         }
       }
 
-      // 检查拾光记忆大师成就（累计测试次数≥30）
+      // 检查拾光记忆大师成就（累计拾光次数≥30）
       // 重用之前已获取的 totalRecordCount 变量
       if (totalRecordCount >= 30 && !await isAchievementUnlocked(12)) {
         await unlockAchievement(12);
@@ -327,16 +327,16 @@ class EchoAchievementService {
     } catch (e, stackTrace) {
       print('🏆 ❌ 检查并解锁成就失败: $e');
       print('🏆 ❌ 错误堆栈: $stackTrace');
-      print('🏆 ⚠️ 注意：返回空列表，不影响测试完成流程');
-      // 返回空列表，不影响测试完成流程
+      print('🏆 ⚠️ 注意：返回空列表，不影响拾光完成流程');
+      // 返回空列表，不影响拾光完成流程
       return [];
     }
   }
   
-  /// 获取测试记录总数（用于判断是否首次测试）
+  /// 获取拾光记录总数（用于判断是否首次拾光）
   Future<int> _getTotalRecordCount() async {
     try {
-      print('🏆 🔍 查询测试记录总数...');
+      print('🏆 🔍 查询拾光记录总数...');
       
       // 使用 TestRecordService 获取记录
       final testRecordService = TestRecordService();
@@ -351,11 +351,11 @@ class EchoAchievementService {
         print('🏆 📋 前几条记录的ID: $recordIds');
       }
       
-      print('🏆 ✅ 测试记录总数查询成功: $count');
+      print('🏆 ✅ 拾光记录总数查询成功: $count');
       
       return count;
     } catch (e, stackTrace) {
-      print('🏆 ❌ 获取测试记录总数失败: $e');
+      print('🏆 ❌ 获取拾光记录总数失败: $e');
       print('🏆 ❌ 错误堆栈: $stackTrace');
       return 0;
     }
@@ -402,7 +402,7 @@ class EchoAchievementService {
     }
   }
   
-  /// 检查拾光全勤人成就（连续7天每天完成1次测试）
+  /// 检查拾光全勤人成就（连续7天每天完成1次拾光）
   Future<void> checkAttendanceAchievement() async {
     try {
       final testRecordService = TestRecordService();

@@ -347,19 +347,25 @@ class _VoicePlayButtonState extends State<VoicePlayButton>
     if (_isPlaying) {
       try {
         await widget.voiceService.stop();
-        setState(() {
-          _isPlaying = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isPlaying = false;
+          });
+        }
       } catch (e) {
         print('🗣️ ❌ 停止播放失败: $e');
-        setState(() {
-          _isPlaying = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isPlaying = false;
+          });
+        }
       }
     } else {
-      setState(() {
-        _isLoading = true;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
       
       try {
         // 确保语音服务已初始化
@@ -385,20 +391,26 @@ class _VoicePlayButtonState extends State<VoicePlayButton>
           );
         }
         
-        setState(() {
-          _isPlaying = true;
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isPlaying = true;
+            _isLoading = false;
+          });
+        }
         
         // 监听播放完成（通过检查 isSpeaking 状态）
-        _checkSpeakingStatus();
+        if (mounted) {
+          _checkSpeakingStatus();
+        }
       } catch (e, stackTrace) {
         print('🗣️ ❌ 播放失败: $e');
         print('🗣️ ❌ 错误堆栈: $stackTrace');
-        setState(() {
-          _isPlaying = false;
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isPlaying = false;
+            _isLoading = false;
+          });
+        }
         
         // 显示错误提示
         if (mounted) {
@@ -445,19 +457,32 @@ class _VoicePlayButtonState extends State<VoicePlayButton>
   void _pollSpeakingStatus() {
     if (!mounted) return;
     
-    final isSpeaking = widget.voiceService.isSpeaking;
-    if (!isSpeaking && _isPlaying) {
-      setState(() {
-        _isPlaying = false;
-        _isLoading = false;
-      });
-    } else if (isSpeaking && _isPlaying) {
-      // 继续检查
-      Future.delayed(const Duration(milliseconds: 300), () {
+    try {
+      final isSpeaking = widget.voiceService.isSpeaking;
+      if (!isSpeaking && _isPlaying) {
         if (mounted) {
-          _pollSpeakingStatus();
+          setState(() {
+            _isPlaying = false;
+            _isLoading = false;
+          });
         }
-      });
+      } else if (isSpeaking && _isPlaying) {
+        // 继续检查
+        Future.delayed(const Duration(milliseconds: 300), () {
+          if (mounted) {
+            _pollSpeakingStatus();
+          }
+        });
+      }
+    } catch (e) {
+      print('🗣️ ❌ 检查播放状态失败: $e');
+      // 如果检查失败，重置状态
+      if (mounted) {
+        setState(() {
+          _isPlaying = false;
+          _isLoading = false;
+        });
+      }
     }
   }
 }

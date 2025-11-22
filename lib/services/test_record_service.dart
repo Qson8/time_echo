@@ -3,7 +3,7 @@ import '../models/question.dart';
 import '../models/era_statistics.dart';
 import 'json_storage_service.dart';
 
-/// 测试记录服务类（使用JSON文件存储）
+/// 拾光记录服务类（使用JSON文件存储）
 class TestRecordService {
   static final TestRecordService _instance = TestRecordService._internal();
   factory TestRecordService() => _instance;
@@ -11,9 +11,9 @@ class TestRecordService {
 
   final _storage = JsonStorageService();
 
-  /// 添加测试记录
+  /// 添加拾光记录
   Future<int> addTestRecord(TestRecord record) async {
-    print('📝 ========== 添加测试记录 ==========');
+    print('📝 ========== 添加拾光记录 ==========');
     print('📝 📋 记录信息:');
     print('   - 初始ID: ${record.id}');
     print('   - 总题目数: ${record.totalQuestions}');
@@ -24,7 +24,7 @@ class TestRecordService {
       print('📝 💾 使用JSON存储保存...');
       final beforeRecords = await _storage.getAllTestRecords();
       final beforeTotal = beforeRecords.length;
-      print('📝 📊 保存前测试记录总数: $beforeTotal');
+      print('📝 📊 保存前拾光记录总数: $beforeTotal');
       
       final insertedId = await _storage.addTestRecord(record);
       print('📝 ✅ JSON存储保存成功');
@@ -32,9 +32,9 @@ class TestRecordService {
       
       final afterRecords = await _storage.getAllTestRecords();
       final afterTotal = afterRecords.length;
-      print('📝 📊 保存后测试记录总数: $afterTotal');
+      print('📝 📊 保存后拾光记录总数: $afterTotal');
       
-      print('📝 ========== 测试记录保存完成 ==========');
+      print('📝 ========== 拾光记录保存完成 ==========');
       return insertedId;
     } catch (e, stackTrace) {
       print('📝 ❌ JSON存储保存失败: $e');
@@ -43,36 +43,36 @@ class TestRecordService {
     }
   }
 
-  /// 获取所有测试记录
+  /// 获取所有拾光记录
   Future<List<TestRecord>> getAllTestRecords() async {
     try {
       final records = await _storage.getAllTestRecords();
-      // 按测试时间降序排序
+      // 按拾光时间降序排序
       records.sort((a, b) => b.testTime.compareTo(a.testTime));
       return records;
     } catch (e) {
-      print('获取测试记录失败: $e');
+      print('获取拾光记录失败: $e');
       return [];
     }
   }
 
-  /// 获取最近的测试记录
+  /// 获取最近的拾光记录
   Future<List<TestRecord>> getRecentTestRecords(int limit) async {
     final allRecords = await getAllTestRecords();
     return allRecords.take(limit).toList();
   }
 
-  /// 根据ID获取测试记录
+  /// 根据ID获取拾光记录
   Future<TestRecord?> getTestRecordById(int id) async {
     try {
       return await _storage.getTestRecordById(id);
     } catch (e) {
-      print('获取测试记录失败: $e');
+      print('获取拾光记录失败: $e');
       return null;
     }
   }
 
-  /// 获取测试记录总数
+  /// 获取拾光记录总数
   Future<int> getTestRecordCount() async {
     final records = await getAllTestRecords();
     return records.length;
@@ -111,7 +111,7 @@ class TestRecordService {
     return records.first;
   }
 
-  /// 获取连续测试天数
+  /// 获取连续拾光天数
   Future<int> getConsecutiveTestDays() async {
     final records = await getAllTestRecords();
     if (records.isEmpty) return 0;
@@ -173,40 +173,83 @@ class TestRecordService {
     }
     
     // 计算加权年龄：根据各年代的答对率加权
-    // 权重 = 答对率 * 该年代题目数量
-    // 如果对某个年代答对率高，说明记忆更深刻，应该更倾向于那个年代的年龄
+    // 逻辑修正：
+    // 1. 答对率越高，说明对那个年代越熟悉，年龄应该更接近那个年代
+    // 2. 如果整体准确率很低，说明用户对所有年代都不熟悉，应该返回默认年龄或较低年龄
+    // 3. 只考虑答对率较高的年代参与计算，避免低准确率年代影响结果
     double weightedAge = 0.0;
     double totalWeight = 0.0;
     
+    // 计算整体准确率
+    int totalQuestions = 0;
+    int totalCorrect = 0;
+    eraStats.forEach((era, stats) {
+      totalQuestions += stats.totalCount;
+      totalCorrect += stats.correctCount;
+    });
+    final overallAccuracy = totalQuestions > 0 ? totalCorrect / totalQuestions : 0.0;
+    
     print('📊 开始计算拾光年龄，各年代统计：');
+    print('📊 整体准确率: ${(overallAccuracy * 100).toStringAsFixed(1)}%');
+    
+    // 如果整体准确率太低（<25%），说明用户对所有年代都不熟悉，返回默认年龄
+    if (overallAccuracy < 0.25) {
+      print('📊 ⚠️ 整体准确率过低（<25%），返回默认年龄35岁');
+      return 35;
+    }
+    
+    // 设置最低准确率阈值（40%），只有超过此阈值的年代才参与计算
+    // 这样可以确保只有用户真正熟悉的年代才会影响年龄计算
+    const minAccuracyThreshold = 0.4;
     
     eraStats.forEach((era, stats) {
       if (stats.totalCount > 0) {
         final accuracy = stats.correctCount / stats.totalCount;
         final eraAge = _getAgeForEra(era);
         
-        // 权重计算：答对率越高、题目越多，权重越大
-        // 答对率高的年代，说明记忆更清晰，应该更偏向那个年代的年龄
-        final weight = accuracy * accuracy * stats.totalCount; // 答对率平方，让高答对率的影响更大
+        // 优化权重计算：
+        // 1. 只考虑准确率 >= 40% 的年代参与主要计算
+        // 2. 权重 = (准确率 - 阈值)² * 题目数量
+        //    这样确保：准确率越高权重越大，且准确率必须明显超过阈值才有意义
+        double weight = 0.0;
+        if (accuracy >= minAccuracyThreshold) {
+          // 对于超过阈值的年代，使用调整后的准确率计算权重
+          final adjustedAccuracy = (accuracy - minAccuracyThreshold) / (1.0 - minAccuracyThreshold); // 归一化到0-1
+          weight = adjustedAccuracy * adjustedAccuracy * stats.totalCount; // 使用调整后的准确率平方
+        }
+        // 低于阈值的年代不参与计算（weight = 0）
         
-        weightedAge += eraAge * weight;
-        totalWeight += weight;
-        
-        print('📊 $era: 答对 ${stats.correctCount}/${stats.totalCount} = ${(accuracy * 100).toStringAsFixed(1)}%, 对应年龄=$eraAge岁, 权重=$weight');
+        if (weight > 0) {
+          weightedAge += eraAge * weight;
+          totalWeight += weight;
+          print('📊 $era: 答对 ${stats.correctCount}/${stats.totalCount} = ${(accuracy * 100).toStringAsFixed(1)}%, 对应年龄=$eraAge岁, 权重=$weight');
+        } else {
+          print('📊 $era: 答对 ${stats.correctCount}/${stats.totalCount} = ${(accuracy * 100).toStringAsFixed(1)}%, 对应年龄=$eraAge岁, 权重=0 (低于阈值${(minAccuracyThreshold * 100).toInt()}%)');
+        }
       }
     });
     
-    if (totalWeight == 0) {
-      print('📊 没有有效统计数据，返回默认年龄35岁');
-      return 35; // 默认年龄
+    if (totalWeight == 0 || totalWeight < 0.1) {
+      print('📊 ⚠️ 没有符合条件的年代（准确率>=40%），根据整体准确率返回调整后的默认年龄');
+      // 如果整体准确率在25%-40%之间，返回一个基于整体准确率调整的年龄
+      // 准确率越低，年龄越接近默认值35岁
+      final adjustedDefaultAge = (35 + (overallAccuracy - 0.25) * 20).round(); // 25%时35岁，40%时38岁
+      return adjustedDefaultAge.clamp(15, 80);
     }
     
     // 计算最终年龄
     final calculatedAge = (weightedAge / totalWeight).round();
-    print('📊 ✅ 计算完成：加权年龄 = $calculatedAge岁');
+    print('📊 ✅ 计算完成：加权年龄 = $calculatedAge岁 (总权重=$totalWeight)');
+    
+    // 根据整体准确率进一步调整年龄：
+    // 整体准确率越高，年龄越接近计算结果；整体准确率越低，年龄越接近默认值
+    // 这样可以避免：即使某个年代准确率高，但整体准确率低时，年龄也不会异常偏高
+    final accuracyFactor = overallAccuracy.clamp(0.4, 1.0); // 只考虑40%以上的准确率
+    final adjustedAge = (calculatedAge * accuracyFactor + 35 * (1 - accuracyFactor)).round();
+    print('📊 ✅ 根据整体准确率(${(overallAccuracy * 100).toStringAsFixed(1)}%)调整后年龄 = $adjustedAge岁');
     
     // 确保年龄在合理范围内（15-80岁）
-    return calculatedAge.clamp(15, 80);
+    return adjustedAge.clamp(15, 80);
   }
   
   /// 从主题中提取年代
@@ -248,24 +291,24 @@ class TestRecordService {
     return 35; // 默认年龄
   }
 
-  /// 删除指定的测试记录
+  /// 删除指定的拾光记录
   Future<bool> deleteTestRecord(int id) async {
     try {
       await _storage.deleteTestRecord(id);
       return true;
     } catch (e) {
-      print('删除测试记录失败: $e');
+      print('删除拾光记录失败: $e');
       return false;
     }
   }
 
-  /// 清除所有测试记录
+  /// 清除所有拾光记录
   Future<void> clearAllRecords() async {
     try {
       await _storage.clearAllTestRecords();
-      print('✅ 所有测试记录已清除');
+      print('✅ 所有拾光记录已清除');
     } catch (e) {
-      print('❌ 清除测试记录失败: $e');
+      print('❌ 清除拾光记录失败: $e');
       rethrow;
     }
   }

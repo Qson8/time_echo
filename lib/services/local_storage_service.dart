@@ -181,13 +181,13 @@ class LocalStorageService {
     }
   }
 
-  /// 保存测试状态
+  /// 保存拾光状态
   Future<void> saveTestState(Map<String, dynamic> testState) async {
     final stateStr = jsonEncode(testState);
     await setString('test_state', stateStr);
   }
 
-  /// 获取测试状态
+  /// 获取拾光状态
   Future<Map<String, dynamic>?> getTestState() async {
     final stateStr = await getString('test_state');
     if (stateStr == null) return null;
@@ -195,20 +195,20 @@ class LocalStorageService {
     try {
       return jsonDecode(stateStr) as Map<String, dynamic>;
     } catch (e) {
-      print('解析测试状态失败: $e');
+      print('解析拾光状态失败: $e');
       return null;
     }
   }
 
-  /// 清除测试状态
+  /// 清除拾光状态
   Future<void> clearTestState() async {
-    print('🗑️ 清除测试状态...');
+    print('🗑️ 清除拾光状态...');
     try {
       await remove('test_state');
-      print('🗑️ ✅ 测试状态已清除');
+      print('🗑️ ✅ 拾光状态已清除');
     } catch (e) {
-      print('🗑️ ⚠️ 清除测试状态失败: $e');
-      // 即使失败也继续执行，不影响测试完成
+      print('🗑️ ⚠️ 清除拾光状态失败: $e');
+      // 即使失败也继续执行，不影响拾光完成
     }
   }
 
@@ -293,12 +293,12 @@ class LocalStorageService {
     return await getBool(AppConstants.keyFirstLaunch) ?? true;
   }
 
-  /// 保存最后测试日期
+  /// 保存最后拾光日期
   Future<void> setLastTestDate(DateTime date) async {
     await setString(AppConstants.keyLastTestDate, date.toIso8601String());
   }
 
-  /// 获取最后测试日期
+  /// 获取最后拾光日期
   Future<DateTime?> getLastTestDate() async {
     final dateString = await getString(AppConstants.keyLastTestDate);
     if (dateString != null) {
@@ -340,27 +340,27 @@ class LocalStorageService {
     return await getBool('question_update_status') ?? false;
   }
 
-  /// 保存连续测试天数
+  /// 保存连续拾光天数
   Future<void> setConsecutiveTestDays(int days) async {
     await setInt('consecutive_test_days', days);
   }
 
-  /// 获取连续测试天数
+  /// 获取连续拾光天数
   Future<int> getConsecutiveTestDays() async {
     return await getInt('consecutive_test_days') ?? 0;
   }
 
-  /// 保存总测试次数
+  /// 保存总拾光次数
   Future<void> setTotalTestCount(int count) async {
     await setInt('total_test_count', count);
   }
 
-  /// 获取总测试次数
+  /// 获取总拾光次数
   Future<int> getTotalTestCount() async {
     return await getInt('total_test_count') ?? 0;
   }
 
-  /// 增加测试次数
+  /// 增加拾光次数
   Future<void> incrementTestCount() async {
     final currentCount = await getTotalTestCount();
     await setTotalTestCount(currentCount + 1);

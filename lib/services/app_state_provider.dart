@@ -88,7 +88,7 @@ class AppStateProvider extends ChangeNotifier {
     return null;
   }
 
-  // 测试进度
+  // 拾光进度
   double get testProgress {
     if (_currentTestQuestions.isEmpty) return 0.0;
     return (_currentQuestionIndex + 1) / _currentTestQuestions.length;
@@ -125,11 +125,15 @@ class AppStateProvider extends ChangeNotifier {
       await _loadCollectedQuestions();
       print('   收藏数据加载完成，共 ${_collectedQuestions.length} 题');
       
-      print('7. 加载新题目数量...');
+      print('7. 加载拾光记录...');
+      await _loadTestRecords();
+      print('   拾光记录加载完成，共 ${_testRecords.length} 条记录');
+      
+      print('8. 加载新题目数量...');
       await _loadNewQuestionCount();
       print('   新题目数量: $_newQuestionCount');
       
-      print('8. 加载用户设置...');
+      print('9. 加载用户设置...');
       await _loadUserSettings();
       print('   用户设置加载完成');
       print('    - 语音开关: $_voiceEnabled');
@@ -138,7 +142,7 @@ class AppStateProvider extends ChangeNotifier {
       print('    - 字体大小: $_fontSize');
       print('    - 老年模式: $_elderlyMode');
       
-      print('9. 初始化语音服务...');
+      print('10. 初始化语音服务...');
       // 延迟一点时间，确保鸿蒙插件已注册
       await Future.delayed(const Duration(milliseconds: 500));
       await _voiceService.initialize(initialSpeed: _voiceSpeed);
@@ -204,6 +208,23 @@ class AppStateProvider extends ChangeNotifier {
       print('⚠️ 加载收藏失败: $e');
       print('⚠️ 错误堆栈: $stackTrace');
       _collectedQuestions = [];
+      notifyListeners();
+    }
+  }
+
+  /// 加载拾光记录
+  Future<void> _loadTestRecords() async {
+    try {
+      print('📝 _loadTestRecords 开始加载...');
+      _testRecords = await _testRecordService.getAllTestRecords();
+      // 按时间倒序排序（最新的在前）
+      _testRecords.sort((a, b) => b.testTime.compareTo(a.testTime));
+      print('✅ 成功加载 ${_testRecords.length} 条拾光记录');
+      notifyListeners();
+    } catch (e, stackTrace) {
+      print('⚠️ 加载拾光记录失败: $e');
+      print('⚠️ 错误堆栈: $stackTrace');
+      _testRecords = [];
       notifyListeners();
     }
   }
@@ -300,7 +321,7 @@ class AppStateProvider extends ChangeNotifier {
     }
   }
 
-  /// 开始测试
+  /// 开始拾光
   Future<void> startTest({
     int questionCount = 10,
     QuestionSelectionMode? mode,
@@ -358,12 +379,12 @@ class AppStateProvider extends ChangeNotifier {
     _testStartTime = DateTime.now();
     _isTestInProgress = true;
     
-    // 保存测试状态
+    // 保存拾光状态
     await _saveTestState();
     notifyListeners();
   }
 
-  /// 根据过滤条件开始测试
+  /// 根据过滤条件开始拾光
   Future<void> startTestWithFilters({
     required int questionCount,
     QuestionSelectionMode? mode,
@@ -371,7 +392,7 @@ class AppStateProvider extends ChangeNotifier {
     List<String>? eras,
     List<String>? difficulties,
   }) async {
-    // 清除旧的测试状态，确保开始全新的测试
+    // 清除旧的拾光状态，确保开始全新的拾光
     _currentTestQuestions = [];
     _currentQuestionIndex = 0;
     _userAnswers = [];
@@ -503,7 +524,7 @@ class AppStateProvider extends ChangeNotifier {
     _testStartTime = DateTime.now();
     _isTestInProgress = true;
     
-    // 保存测试状态
+    // 保存拾光状态
     await _saveTestState();
     notifyListeners();
   }
@@ -597,7 +618,7 @@ class AppStateProvider extends ChangeNotifier {
   void answerQuestion(int answerIndex) {
     if (_currentQuestionIndex < _userAnswers.length) {
       _userAnswers[_currentQuestionIndex] = answerIndex;
-      _saveTestState(); // 异步保存测试状态，不等待完成
+      _saveTestState(); // 异步保存拾光状态，不等待完成
       notifyListeners();
     }
   }
@@ -606,7 +627,7 @@ class AppStateProvider extends ChangeNotifier {
   void nextQuestion() {
     if (_currentQuestionIndex < _currentTestQuestions.length - 1) {
       _currentQuestionIndex++;
-      _saveTestState(); // 异步保存测试状态，不等待完成
+      _saveTestState(); // 异步保存拾光状态，不等待完成
       notifyListeners();
     }
   }
@@ -615,22 +636,23 @@ class AppStateProvider extends ChangeNotifier {
   void previousQuestion() {
     if (_currentQuestionIndex > 0) {
       _currentQuestionIndex--;
-      _saveTestState(); // 异步保存测试状态，不等待完成
+      _saveTestState(); // 异步保存拾光状态，不等待完成
       notifyListeners();
     }
   }
 
-  /// 完成测试
+  /// 完成拾光
   Future<TestRecord> completeTest() async {
-    print('🎯 开始完成测试流程...');
+    print('🎯 开始完成拾光流程...');
     if (!_isTestInProgress || _testStartTime == null) {
-      throw Exception('测试未开始');
+      throw Exception('拾光未开始');
     }
 
-    print('🎯 计算测试结果...');
+    print('🎯 计算拾光结果...');
     final totalTime = DateTime.now().difference(_testStartTime!).inSeconds;
     final correctAnswers = _calculateCorrectAnswers();
-    final accuracy = (correctAnswers / _currentTestQuestions.length) * 100;
+    // 计算准确率（百分比格式，0-100）
+    final accuracy = ((correctAnswers / _currentTestQuestions.length) * 100).clamp(0.0, 100.0);
     
     // 计算各分类得分
     final categoryScores = _calculateCategoryScores();
@@ -644,7 +666,7 @@ class AppStateProvider extends ChangeNotifier {
     // 生成评语
     final comment = _generateComment(accuracy);
 
-    // 创建测试记录
+    // 创建拾光记录
     final testRecord = TestRecord(
       id: 0, // 数据库会自动分配ID
       totalQuestions: _currentTestQuestions.length,
@@ -657,18 +679,18 @@ class AppStateProvider extends ChangeNotifier {
       categoryScores: categoryScores,
     );
 
-    print('🎯 ========== 保存测试记录 ==========');
-    print('🎯 📝 测试记录信息:');
+    print('🎯 ========== 保存拾光记录 ==========');
+    print('🎯 📝 拾光记录信息:');
     print('   - 初始ID: ${testRecord.id}');
     print('   - 总题目数: ${testRecord.totalQuestions}');
     print('   - 正确答案数: ${testRecord.correctAnswers}');
     print('   - 正确率: ${testRecord.accuracy}%');
     
-    // 保存测试记录
+    // 保存拾光记录
     try {
       print('🎯 💾 调用 TestRecordService.addTestRecord()...');
       final recordId = await _testRecordService.addTestRecord(testRecord);
-      print('🎯 ✅ 测试记录已保存');
+      print('🎯 ✅ 拾光记录已保存');
       print('🎯 📊 返回的记录ID: $recordId');
       print('🎯 🔍 记录ID验证: ${recordId > 0 ? "有效" : "可能无效"}');
       
@@ -684,7 +706,7 @@ class AppStateProvider extends ChangeNotifier {
         categoryScores: testRecord.categoryScores,
       );
       
-      print('🎯 📋 构建更新后的测试记录对象');
+      print('🎯 📋 构建更新后的拾光记录对象');
       print('🎯 📊 更新后记录ID: ${updatedTestRecord.id}');
 
       // 等待一小段时间确保数据库写入完成（特别是鸿蒙平台）
@@ -693,7 +715,7 @@ class AppStateProvider extends ChangeNotifier {
 
       print('🎯 ========== 开始检查成就 ==========');
       print('🎯 🎮 传入的参数:');
-      print('   - 测试记录ID: ${updatedTestRecord.id}');
+      print('   - 拾光记录ID: ${updatedTestRecord.id}');
       print('   - 题目数量: ${_currentTestQuestions?.length ?? 0}');
       print('   - 答案数量: ${_userAnswers?.length ?? 0}');
       
@@ -715,8 +737,8 @@ class AppStateProvider extends ChangeNotifier {
         print('🎯 ℹ️ 本次没有解锁新成就');
       }
       
-      print('🎯 清除测试状态...');
-      // 清除保存的测试状态
+      print('🎯 清除拾光状态...');
+      // 清除保存的拾光状态
       await _localStorageService.clearTestState();
       
       // 更新状态
@@ -732,13 +754,17 @@ class AppStateProvider extends ChangeNotifier {
       final finalUnlockedCount = _achievements.where((a) => a.isUnlocked).length;
       print('🎯 ✅ 成就数据重新加载完成，当前已解锁: $finalUnlockedCount 个');
       
+      print('🎯 重新加载拾光记录...');
+      await _loadTestRecords(); // 重新加载拾光记录，确保首页显示最新记录
+      print('🎯 ✅ 拾光记录重新加载完成，当前共 ${_testRecords.length} 条记录');
+      
       notifyListeners();
-      print('🎯 ✅ 测试完成流程全部完成');
+      print('🎯 ✅ 拾光完成流程全部完成');
       return updatedTestRecord;
     } catch (e, stackTrace) {
-      print('🎯 ❌ 完成测试时出错: $e');
+      print('🎯 ❌ 完成拾光时出错: $e');
       print('🎯 ❌ 错误堆栈: $stackTrace');
-      // 即使保存失败，也更新状态，避免测试无法完成
+      // 即使保存失败，也更新状态，避免拾光无法完成
       _isTestInProgress = false;
       notifyListeners();
       rethrow; // 重新抛出错误，让调用者知道
@@ -757,26 +783,16 @@ class AppStateProvider extends ChangeNotifier {
   }
 
   /// 计算各分类得分
+  /// 返回每个分类的题目数量（不是百分比）
   Map<String, int> _calculateCategoryScores() {
-    final Map<String, List<int>> categoryAnswers = {};
+    final Map<String, int> categoryScores = {};
     
     for (int i = 0; i < _currentTestQuestions.length; i++) {
       final question = _currentTestQuestions[i];
-      final userAnswer = _userAnswers[i];
-      final isCorrect = userAnswer == question.correctAnswer;
-      
-      if (!categoryAnswers.containsKey(question.category)) {
-        categoryAnswers[question.category] = [];
-      }
-      categoryAnswers[question.category]!.add(isCorrect ? 1 : 0);
+      final category = question.category;
+      // 统计每个分类的题目数量
+      categoryScores[category] = (categoryScores[category] ?? 0) + 1;
     }
-    
-    final Map<String, int> categoryScores = {};
-    categoryAnswers.forEach((category, answers) {
-      final correctCount = answers.where((a) => a == 1).length;
-      final totalCount = answers.length;
-      categoryScores[category] = ((correctCount / totalCount) * 100).round();
-    });
     
     return categoryScores;
   }
@@ -942,7 +958,7 @@ class AppStateProvider extends ChangeNotifier {
     print('========== 老年友好模式更新完成 ==========');
   }
 
-  /// 重置测试
+  /// 重置拾光
   void resetTest() {
     _currentTestQuestions = [];
     _currentQuestionIndex = 0;
@@ -1012,7 +1028,7 @@ class AppStateProvider extends ChangeNotifier {
     return await _updateService.getUpdatePromptMessage();
   }
 
-  /// 获取最近的测试记录
+  /// 获取最近的拾光记录
   Future<List<TestRecord>> getRecentTestRecords(int limit) async {
     return await _testRecordService.getRecentTestRecords(limit);
   }
@@ -1026,37 +1042,61 @@ class AppStateProvider extends ChangeNotifier {
   /// 清除所有数据
   Future<void> clearAllData() async {
     try {
-      // 清除测试记录
+      print('🗑️ 开始清除所有数据...');
+      
+      // 清除拾光记录
+      print('🗑️ 清除拾光记录...');
       await _testRecordService.clearAllRecords();
       
       // 清除收藏
+      print('🗑️ 清除收藏...');
       await _collectionService.clearAllCollections();
       
       // 重置成就
+      print('🗑️ 重置成就...');
       await _achievementService.resetAllAchievements();
       
-      // 清除本地存储（包括测试状态）
+      // 清除本地存储（包括拾光状态）
+      print('🗑️ 清除本地存储...');
       await _localStorageService.clear();
       
       // 清空内存中的数据列表
+      print('🗑️ 清空内存数据...');
       _achievements = [];
       _collectedQuestions = [];
+      _testRecords = []; // 清空拾光记录列表
+      _newQuestionCount = 0; // 重置新题目数量
       
-      // 重新加载数据
+      // 重置拾光状态
+      _currentTestQuestions = [];
+      _currentQuestionIndex = 0;
+      _userAnswers = [];
+      _questionTimes = [];
+      _testStartTime = null;
+      _isTestInProgress = false;
+      _currentTestRecord = null;
+      
+      // 重新加载数据（确保数据同步）
+      print('🗑️ 重新加载数据...');
       await _loadQuestions();
       await _loadAchievements();
       await _loadCollectedQuestions();
+      await _loadTestRecords(); // 重新加载拾光记录（应该是空的）
+      await _loadNewQuestionCount(); // 重新加载新题目数量
       await _loadUserSettings();
+      
+      print('🗑️ ✅ 所有数据清除完成');
       
       // 强制通知所有监听者
       notifyListeners();
-    } catch (e) {
-      print('清除数据失败: $e');
+    } catch (e, stackTrace) {
+      print('🗑️ ❌ 清除数据失败: $e');
+      print('🗑️ ❌ 错误堆栈: $stackTrace');
       rethrow;
     }
   }
 
-  /// 保存测试状态
+  /// 保存拾光状态
   Future<void> _saveTestState() async {
     if (!_isTestInProgress) return;
     
@@ -1070,11 +1110,11 @@ class AppStateProvider extends ChangeNotifier {
       };
       await _localStorageService.saveTestState(state);
     } catch (e) {
-      print('保存测试状态失败: $e');
+      print('保存拾光状态失败: $e');
     }
   }
 
-  /// 恢复测试状态
+  /// 恢复拾光状态
   Future<bool> restoreTestState() async {
     try {
       final state = await _localStorageService.getTestState();
@@ -1086,7 +1126,7 @@ class AppStateProvider extends ChangeNotifier {
       // 通过ID获取题目
       _currentTestQuestions = await _questionService.getQuestionsByIds(questionIds);
       if (_currentTestQuestions.isEmpty) {
-        print('未找到题目，清除测试状态');
+        print('未找到题目，清除拾光状态');
         await _localStorageService.clearTestState();
         return false;
       }
@@ -1101,7 +1141,7 @@ class AppStateProvider extends ChangeNotifier {
         try {
           _testStartTime = DateTime.parse(startTimeStr);
         } catch (e) {
-          print('解析测试开始时间失败: $e，使用当前时间');
+          print('解析拾光开始时间失败: $e，使用当前时间');
           _testStartTime = DateTime.now();
         }
       }
@@ -1110,14 +1150,14 @@ class AppStateProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     } catch (e) {
-      print('恢复测试状态失败: $e');
+      print('恢复拾光状态失败: $e');
       // 清除损坏的状态
       await _localStorageService.clearTestState();
       return false;
     }
   }
 
-  /// 检查是否有未完成的测试
+  /// 检查是否有未完成的拾光
   Future<bool> hasIncompleteTest() async {
     try {
       final state = await _localStorageService.getTestState();
@@ -1129,12 +1169,12 @@ class AppStateProvider extends ChangeNotifier {
       // 检查是否完成了所有题目
       return questionIds.isNotEmpty && currentIndex < questionIds.length;
     } catch (e) {
-      print('检查未完成测试失败: $e');
+      print('检查未完成拾光失败: $e');
       return false;
     }
   }
 
-  /// 获取未完成测试进度
+  /// 获取未完成拾光进度
   Future<Map<String, dynamic>?> getIncompleteTestProgress() async {
     try {
       final state = await _localStorageService.getTestState();
@@ -1149,7 +1189,7 @@ class AppStateProvider extends ChangeNotifier {
         'progress': questionIds.isNotEmpty ? (currentIndex + 1) / questionIds.length : 0.0,
       };
     } catch (e) {
-      print('获取测试进度失败: $e');
+      print('获取拾光进度失败: $e');
       return null;
     }
   }

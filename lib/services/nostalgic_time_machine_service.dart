@@ -118,7 +118,7 @@ class NostalgicTimeMachineService {
     } else if (bestAccuracy >= 0.7) {
       personalizedComment = '你对那个年代有着深刻的理解，继续探索吧！';
     } else {
-      personalizedComment = '每一次测试都是时光的重新发现，加油！';
+      personalizedComment = '每一次拾光都是时光的重新发现，加油！';
     }
     
     // 生成学习建议
@@ -146,7 +146,7 @@ class NostalgicTimeMachineService {
     final bestAccuracy = stats['best_accuracy'] ?? 0.0;
     
     if (totalTests < 5) {
-      suggestions.add('多进行测试，熟悉不同年代的题目');
+      suggestions.add('多进行拾光，熟悉不同年代的题目');
       suggestions.add('尝试不同分类的题目，拓宽知识面');
     } else if (bestAccuracy < 0.6) {
       suggestions.add('重点关注薄弱分类，加强练习');
@@ -174,11 +174,11 @@ class NostalgicTimeMachineService {
     }
     
     if (totalTests < 10) {
-      recommendations.add('完成10次测试，解锁连续成就');
+      recommendations.add('完成10次拾光，解锁连续成就');
     }
     
     recommendations.add('收藏喜欢的题目，建立个人时光收藏夹');
-    recommendations.add('尝试挑战模式，测试你的极限');
+    recommendations.add('尝试挑战模式，拾光你的极限');
     
     return recommendations;
   }
@@ -192,14 +192,14 @@ class NostalgicTimeMachineService {
       return LearningPath(
         stage: '初学者',
         description: '开始你的时光之旅',
-        nextGoal: '完成5次测试',
+        nextGoal: '完成5次拾光',
         progress: totalTests / 5,
       );
     } else if (totalTests < 20) {
       return LearningPath(
         stage: '探索者',
         description: '深入探索不同年代',
-        nextGoal: '完成20次测试',
+        nextGoal: '完成20次拾光',
         progress: totalTests / 20,
       );
     } else if (bestAccuracy < 0.8) {
@@ -223,19 +223,21 @@ class NostalgicTimeMachineService {
   Future<TimeJourney> _generateTimeJourney(List<dynamic> testRecords) async {
     final journey = <TimeJourneyStep>[];
     
-    // 根据测试记录生成时光之旅步骤
+    // 根据拾光记录生成时光之旅步骤
     for (int i = 0; i < testRecords.length && i < 10; i++) {
       final record = testRecords[i];
       final testTime = DateTime.parse(record['test_time']);
-      final accuracy = record['accuracy'] as double;
+      // accuracy从数据库读取，是百分比格式（0-100）
+      final accuracy = (record['accuracy'] as double).clamp(0.0, 100.0);
+      final accuracyRatio = accuracy / 100.0; // 转换为小数格式用于比较
       
       journey.add(TimeJourneyStep(
         date: testTime,
-        title: '时光测试 ${i + 1}',
-        description: '准确率: ${(accuracy * 100).toInt()}%',
-        achievement: accuracy >= 0.8 ? '优秀' : accuracy >= 0.6 ? '良好' : '继续努力',
-        icon: _getJourneyIcon(accuracy),
-        color: _getJourneyColor(accuracy),
+        title: '时光拾光 ${i + 1}',
+        description: '准确率: ${accuracy.toInt()}%',
+        achievement: accuracyRatio >= 0.8 ? '优秀' : accuracyRatio >= 0.6 ? '良好' : '继续努力',
+        icon: _getJourneyIcon(accuracyRatio),
+        color: _getJourneyColor(accuracyRatio),
       ));
     }
     
@@ -257,7 +259,7 @@ class NostalgicTimeMachineService {
     
     if (totalTests > 0) {
       moments.add(NostalgicMoment(
-        title: '第一次时光测试',
+        title: '第一次时光拾光',
         description: '你开始了这段美妙的时光之旅',
         date: DateTime.now().subtract(Duration(days: totalTests)),
         icon: Icons.star,

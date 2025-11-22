@@ -176,7 +176,8 @@ class DailyChallengeService {
       switch (challenge.type) {
         case ChallengeType.accuracy:
           // 准确率挑战：检查本次答题的准确率
-          final accuracy = (record.accuracy * 100).toInt();
+          // record.accuracy已经是百分比格式（0-100），不需要再乘以100
+          final accuracy = record.accuracy.clamp(0.0, 100.0).toInt();
           if (accuracy >= challenge.targetValue) {
             newValue = challenge.targetValue;
           } else {

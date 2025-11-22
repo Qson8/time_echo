@@ -83,7 +83,7 @@ class IntelligentRecommendationSystem {
   String _calculateOptimalDifficulty(List<TestRecord> testRecords) {
     if (testRecords.isEmpty) return '中等';
     
-    // 计算最近5次测试的平均准确率
+    // 计算最近5次拾光的平均准确率
     final recentRecords = testRecords.take(5).toList();
     final averageAccuracy = recentRecords.map((r) => r.accuracy).reduce((a, b) => a + b) / recentRecords.length;
     
@@ -346,7 +346,7 @@ class IntelligentRecommendationSystem {
       'recommendations': [
         '每天保持一定的学习量',
         '重点关注薄弱环节',
-        '定期进行自我测试',
+        '定期进行自我拾光',
         '保持学习兴趣和动力',
       ],
       'tips': [

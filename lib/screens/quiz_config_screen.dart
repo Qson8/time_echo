@@ -624,7 +624,7 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
         selectionMode: modeStr,
       );
       
-      // 开始测试，传入配置参数
+      // 开始拾光，传入配置参数
       await appState.startTestWithFilters(
         questionCount: _questionCount,
         mode: _selectionMode,
@@ -698,7 +698,7 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
         Navigator.of(context).pop(); // 关闭加载对话框
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('开始测试失败：$e'),
+            content: Text('开始拾光失败：$e'),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 3),
           ),

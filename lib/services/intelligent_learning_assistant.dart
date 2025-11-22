@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 import '../constants/app_constants.dart';
 import '../services/offline_data_manager.dart';
+import '../models/test_record.dart';
 import '../widgets/animated_widgets.dart';
 
 /// 智能学习助手系统
@@ -61,7 +62,26 @@ class IntelligentLearningAssistant {
     final categoryScores = <String, List<double>>{};
 
     for (final record in testRecords) {
-      final testTime = DateTime.parse(record['test_time']);
+      // 处理TestRecord对象或Map格式
+      DateTime testTime;
+      int totalTime;
+      Map<String, dynamic> categoryScoresData;
+      
+      if (record is TestRecord) {
+        testTime = record.testTime;
+        totalTime = record.totalTime;
+        categoryScoresData = record.categoryScores.map((k, v) => MapEntry(k, v));
+      } else {
+        // Map格式（兼容旧代码）
+        testTime = record['test_time'] is DateTime 
+            ? record['test_time'] 
+            : DateTime.parse(record['test_time'].toString());
+        totalTime = record['total_time'] is int 
+            ? record['total_time'] 
+            : int.parse(record['total_time'].toString());
+        categoryScoresData = record['category_scores'] as Map<String, dynamic>? ?? {};
+      }
+      
       final hour = testTime.hour;
       
       // 时间偏好分析
@@ -78,15 +98,15 @@ class IntelligentLearningAssistant {
       timeCounts[timeSlot] = (timeCounts[timeSlot] ?? 0) + 1;
       
       // 会话时长分析
-      sessionDurations.add(record['total_time']);
+      sessionDurations.add(totalTime);
       
       // 难度偏好分析（简化）
       difficultyCounts['medium'] = (difficultyCounts['medium'] ?? 0) + 1;
       
       // 分类表现分析
-      final categoryScoresData = record['category_scores'] as Map<String, dynamic>;
       categoryScoresData.forEach((category, score) {
-        categoryScores.putIfAbsent(category, () => []).add(score.toDouble());
+        final scoreValue = score is int ? score.toDouble() : (score as num).toDouble();
+        categoryScores.putIfAbsent(category, () => []).add(scoreValue);
       });
     }
 
@@ -127,8 +147,9 @@ class IntelligentLearningAssistant {
   String _determineLearningStyle(List<dynamic> testRecords) {
     if (testRecords.isEmpty) return 'visual';
     
-    // 基于测试记录分析学习风格
-    // 简化实现
+    // 基于拾光记录分析学习风格
+    // 简化实现：可以根据拾光频率、准确率等分析
+    // 目前返回默认值
     return 'visual';
   }
 
@@ -136,9 +157,28 @@ class IntelligentLearningAssistant {
   String _assessMotivationLevel(List<dynamic> testRecords) {
     if (testRecords.isEmpty) return 'high';
     
-    final recentTests = testRecords.take(7).toList();
-    if (recentTests.length >= 5) return 'high';
-    if (recentTests.length >= 3) return 'medium';
+      // 计算最近7天的拾光次数
+    final now = DateTime.now();
+    final sevenDaysAgo = now.subtract(const Duration(days: 7));
+    
+    int recentTestCount = 0;
+    for (final record in testRecords) {
+      DateTime testTime;
+      if (record is TestRecord) {
+        testTime = record.testTime;
+      } else {
+        testTime = record['test_time'] is DateTime 
+            ? record['test_time'] 
+            : DateTime.parse(record['test_time'].toString());
+      }
+      
+      if (testTime.isAfter(sevenDaysAgo)) {
+        recentTestCount++;
+      }
+    }
+    
+    if (recentTestCount >= 5) return 'high';
+    if (recentTestCount >= 3) return 'medium';
     return 'low';
   }
 
@@ -156,7 +196,7 @@ class IntelligentLearningAssistant {
     // 短期目标（1-2周）
     if (totalTests < 10) {
       goals.add(LearningGoal(
-        title: '完成10次测试',
+        title: '完成10次拾光',
         description: '建立学习习惯',
         target: 10,
         current: totalTests,
@@ -387,7 +427,7 @@ class IntelligentLearningAssistant {
     
     if (totalTests < 10) {
       tasks.add(DailyTask(
-        title: '完成1次测试',
+        title: '完成1次拾光',
         description: '保持学习习惯',
         estimatedTime: 5,
         priority: 'high',

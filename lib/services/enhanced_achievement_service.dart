@@ -43,9 +43,9 @@ class EnhancedAchievementSystem {
     if (testRecords.isNotEmpty && !_isAchievementUnlocked('拾光初遇', currentAchievements)) {
       unlockedAchievements.add(_createAchievement(
         '拾光初遇',
-        '完成首次测试',
+        '完成首次拾光',
         '解锁拾光徽章・初遇',
-        '完成你的第一次拾光测试',
+        '完成你的第一次拾光',
         Icons.star,
       ));
     }
@@ -137,7 +137,7 @@ class EnhancedAchievementSystem {
         !_isAchievementUnlocked('拾光全勤人', currentAchievements)) {
       unlockedAchievements.add(_createAchievement(
         '拾光全勤人',
-        '连续7天每天测试',
+        '连续7天每天拾光',
         '解锁全勤徽章+随机语录',
         '你的坚持令人敬佩',
         Icons.calendar_today,
@@ -171,7 +171,7 @@ class EnhancedAchievementSystem {
         !_isAchievementUnlocked('拾光夜猫子', currentAchievements)) {
       unlockedAchievements.add(_createAchievement(
         '拾光夜猫子',
-        '在深夜时段完成测试',
+        '在深夜时段完成拾光',
         '解锁夜猫子徽章+夜间主题',
         '夜晚的拾光者',
         Icons.nightlight_round,
@@ -183,7 +183,7 @@ class EnhancedAchievementSystem {
         !_isAchievementUnlocked('拾光早起鸟', currentAchievements)) {
       unlockedAchievements.add(_createAchievement(
         '拾光早起鸟',
-        '在早晨时段完成测试',
+        '在早晨时段完成拾光',
         '解锁早起鸟徽章+晨间主题',
         '清晨的拾光者',
         Icons.wb_sunny,
@@ -195,7 +195,7 @@ class EnhancedAchievementSystem {
         !_isAchievementUnlocked('拾光完美主义者', currentAchievements)) {
       unlockedAchievements.add(_createAchievement(
         '拾光完美主义者',
-        '获得满分测试',
+        '获得满分拾光',
         '解锁完美徽章+金色主题',
         '追求完美的拾光者',
         Icons.diamond,
@@ -217,7 +217,7 @@ class EnhancedAchievementSystem {
         !_isAchievementUnlocked('拾光坚持者', currentAchievements)) {
       unlockedAchievements.add(_createAchievement(
         '拾光坚持者',
-        '连续30天每天测试',
+        '连续30天每天拾光',
         '解锁坚持徽章+永久VIP',
         '你的坚持感动了时光',
         Icons.trending_up,
@@ -229,7 +229,7 @@ class EnhancedAchievementSystem {
         !_isAchievementUnlocked('拾光马拉松', currentAchievements)) {
       unlockedAchievements.add(_createAchievement(
         '拾光马拉松',
-        '连续100天每天测试',
+        '连续100天每天拾光',
         '解锁马拉松徽章+传奇称号',
         '你是拾光界的传奇',
         Icons.flag,
@@ -246,10 +246,14 @@ class EnhancedAchievementSystem {
     
     if (categoryRecords.isEmpty) return false;
     
+    // categoryScores存储的是题目数量，不是百分比
     final totalQuestions = categoryRecords.fold<int>(0, (sum, record) => 
       sum + record.categoryScores[category]!);
-    final correctAnswers = categoryRecords.fold<int>(0, (sum, record) => 
-      sum + (record.categoryScores[category]! * record.accuracy).round());
+    // 根据整体准确率估算该分类的正确数（accuracy是百分比格式，需要除以100）
+    final correctAnswers = categoryRecords.fold<int>(0, (sum, record) {
+      final accuracyRatio = (record.accuracy / 100).clamp(0.0, 1.0);
+      return sum + (record.categoryScores[category]! * accuracyRatio).round();
+    });
     
     return totalQuestions > 0 && (correctAnswers / totalQuestions) >= threshold;
   }
@@ -384,12 +388,17 @@ class EnhancedAchievementSystem {
     
     if (categoryRecords.isEmpty) return 0.0;
     
+    // categoryScores存储的是题目数量，不是百分比
     final totalQuestions = categoryRecords.fold<int>(0, (sum, record) => 
       sum + record.categoryScores[category]!);
-    final correctAnswers = categoryRecords.fold<int>(0, (sum, record) => 
-      sum + (record.categoryScores[category]! * record.accuracy).round());
+    // 根据整体准确率估算该分类的正确数（accuracy是百分比格式，需要除以100）
+    final correctAnswers = categoryRecords.fold<int>(0, (sum, record) {
+      final accuracyRatio = (record.accuracy / 100).clamp(0.0, 1.0);
+      return sum + (record.categoryScores[category]! * accuracyRatio).round();
+    });
     
-    return totalQuestions > 0 ? (correctAnswers / totalQuestions) / 0.9 : 0.0;
+    final progress = totalQuestions > 0 ? (correctAnswers / totalQuestions) / 0.9 : 0.0;
+    return progress.clamp(0.0, 1.0);
   }
 
   /// 获取速度进度

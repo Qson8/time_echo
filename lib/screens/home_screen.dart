@@ -245,7 +245,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                       if (appState.newQuestionCount > 0)
                         const SizedBox(height: 20),
                       
-                      // 未完成测试提示
+                      // 未完成拾光提示
                       if (_hasIncompleteTest)
                         AnimationUtils.slideIn(
                           child: _buildIncompleteTestCard(context, appState),
@@ -276,7 +276,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                       
                       const SizedBox(height: 30),
                       
-                      // 最近测试
+                      // 最近拾光
                       _buildRecentTestsSection(context, appState),
                       
                       const SizedBox(height: 20),
@@ -330,7 +330,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
     );
   }
 
-  /// 构建未完成测试卡片
+  /// 构建未完成拾光卡片
   Widget _buildIncompleteTestCard(BuildContext context, AppStateProvider appState) {
     return FutureBuilder<Map<String, dynamic>?>(
       future: appState.getIncompleteTestProgress(),
@@ -968,7 +968,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
     );
   }
 
-  /// 构建最近测试区域
+  /// 构建最近拾光区域
   Widget _buildRecentTestsSection(BuildContext context, AppStateProvider appState) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -997,7 +997,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
           ],
         ),
         const SizedBox(height: 16),
-        // 显示最近的测试记录
+        // 显示最近的拾光记录
         Consumer<AppStateProvider>(
           builder: (context, appState, child) {
             return FutureBuilder<List<TestRecord>>(
@@ -1126,7 +1126,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
     );
   }
 
-  /// 开始测试
+  /// 开始拾光
   Future<void> _startQuiz(BuildContext context) async {
     final localStorageService = LocalStorageService();
     final appState = Provider.of<AppStateProvider>(context, listen: false);
@@ -1135,8 +1135,8 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
     final hasConfig = await localStorageService.hasQuizConfig();
     
     if (hasConfig) {
-      // 有保存的配置，直接使用配置启动测试
-      print('📋 检测到保存的定制配置，直接启动测试');
+      // 有保存的配置，直接使用配置启动拾光
+      print('📋 检测到保存的定制配置，直接启动拾光');
       
       try {
         final config = await localStorageService.getQuizConfig();
@@ -1179,11 +1179,11 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
               break;
           }
           
-          // 清除旧的测试状态
+          // 清除旧的拾光状态
           appState.resetTest();
           await localStorageService.clearTestState();
           
-          // 使用保存的配置启动测试
+          // 使用保存的配置启动拾光
           await appState.startTestWithFilters(
             questionCount: questionCount,
             mode: mode,
@@ -1204,10 +1204,10 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
             );
           }
           
-          print('✅ 使用保存的配置启动测试成功');
+          print('✅ 使用保存的配置启动拾光成功');
         }
       } catch (e) {
-        print('❌ 使用保存的配置启动测试失败: $e');
+        print('❌ 使用保存的配置启动拾光失败: $e');
         
         // 关闭加载对话框
         if (mounted && Navigator.of(context).canPop()) {
@@ -1218,7 +1218,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('启动测试失败：$e，请重新配置'),
+              content: Text('启动拾光失败：$e，请重新配置'),
               backgroundColor: Colors.red,
               duration: const Duration(seconds: 3),
             ),
@@ -1238,19 +1238,19 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
     }
   }
 
-  /// 开始随机测试
+  /// 开始随机拾光
   Future<void> _startRandomQuiz(BuildContext context) async {
-    print('🎲 开始随机测试：清除旧状态并启动随机模式');
+    print('🎲 开始随机拾光：清除旧状态并启动随机模式');
     
     final appState = Provider.of<AppStateProvider>(context, listen: false);
     final localStorageService = LocalStorageService();
     
     try {
-      // 清除旧的测试状态
+      // 清除旧的拾光状态
       appState.resetTest();
       await localStorageService.clearTestState();
       
-      print('✅ 测试状态已清除');
+      print('✅ 拾光状态已清除');
       
       // 显示加载提示
       showDialog(
@@ -1261,13 +1261,13 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
         ),
       );
       
-      // 使用随机模式启动测试（不受定制设置影响，使用所有题目）
+      // 使用随机模式启动拾光（不受定制设置影响，使用所有题目）
       await appState.startTest(
         questionCount: 10, // 默认10道题
         mode: QuestionSelectionMode.random, // 强制使用随机模式
       );
       
-      print('✅ 随机测试已启动，共 ${appState.currentTestQuestions.length} 道题目');
+      print('✅ 随机拾光已启动，共 ${appState.currentTestQuestions.length} 道题目');
       
       // 关闭加载对话框
       if (mounted && Navigator.of(context).canPop()) {
@@ -1281,7 +1281,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
         );
       }
     } catch (e) {
-      print('❌ 启动随机测试失败: $e');
+      print('❌ 启动随机拾光失败: $e');
       
       // 关闭加载对话框
       if (mounted && Navigator.of(context).canPop()) {
@@ -1290,7 +1290,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
       
       // 显示错误提示
       if (mounted) {
-        InteractiveFeedback.showError(context, '启动随机测试失败：$e');
+        InteractiveFeedback.showError(context, '启动随机拾光失败：$e');
       }
     }
   }
@@ -1353,7 +1353,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
             children: [
               // 应用简介
               const Text(
-                '拾光机是一款专为怀旧爱好者打造的离线问答应用。无需网络连接，随时随地畅享80-90年代的经典回忆。通过答题测试，系统会智能计算你的"拾光年龄"，让你了解自己对那个年代的记忆深度。提供详细解析、学习报告、记忆胶囊等功能，让每一份时光记忆都值得珍藏。',
+                '拾光机是一款专为怀旧爱好者打造的离线问答应用。无需网络连接，随时随地畅享80-90年代的经典回忆。通过答题拾光，系统会智能计算你的"拾光年龄"，让你了解自己对那个年代的记忆深度。提供详细解析、学习报告、记忆胶囊等功能，让每一份时光记忆都值得珍藏。',
                 style: TextStyle(fontSize: 14, height: 1.5),
               ),
               const SizedBox(height: 16),
@@ -1515,7 +1515,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
     );
   }
 
-  /// 格式化测试时间
+  /// 格式化拾光时间
   String _formatTestTime(DateTime testTime) {
     final now = DateTime.now();
     final difference = now.difference(testTime);

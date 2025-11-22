@@ -1,4 +1,4 @@
-/// 测试记录数据模型
+/// 拾光记录数据模型
 class TestRecord {
   final int id;
   final int totalQuestions;
@@ -23,7 +23,7 @@ class TestRecord {
   });
 
   factory TestRecord.fromMap(Map<String, dynamic> map) {
-    // 安全地解析测试时间
+    // 安全地解析拾光时间
     DateTime testTime;
     final testTimeStr = map['test_time'];
     if (testTimeStr != null && testTimeStr.toString().isNotEmpty) {

@@ -16,6 +16,7 @@ class ThemeService {
   factory ThemeService() => _instance;
   ThemeService._internal();
 
+  // 统一使用拾光复古主题
   ThemeType _currentTheme = ThemeType.vintage;
   final LocalStorageService _localStorage = LocalStorageService();
   
@@ -28,10 +29,11 @@ class ThemeService {
   
   ThemeType get currentTheme => _currentTheme;
   
-  /// 设置主题
+  /// 设置主题（暂时禁用，统一使用拾光复古主题）
   Future<void> setTheme(ThemeType theme) async {
-    _currentTheme = theme;
-    await _saveTheme(theme);
+    // 暂时统一使用拾光复古主题，不保存用户设置
+    _currentTheme = ThemeType.vintage;
+    // await _saveTheme(theme);
   }
   
   /// 保存主题到本地存储
@@ -41,16 +43,20 @@ class ThemeService {
   
   /// 从本地存储加载主题
   Future<void> _loadTheme() async {
-    final themeName = await _localStorage.getString('selected_theme');
-    if (themeName != null) {
-      try {
-        _currentTheme = ThemeType.values.firstWhere(
-          (theme) => theme.name == themeName,
-        );
-      } catch (e) {
-        _currentTheme = ThemeType.vintage; // 默认主题
-      }
-    }
+    // 暂时统一使用拾光复古主题，不加载用户设置
+    _currentTheme = ThemeType.vintage;
+    
+    // 注释掉主题加载，统一使用默认主题
+    // final themeName = await _localStorage.getString('selected_theme');
+    // if (themeName != null) {
+    //   try {
+    //     _currentTheme = ThemeType.values.firstWhere(
+    //       (theme) => theme.name == themeName,
+    //     );
+    //   } catch (e) {
+    //     _currentTheme = ThemeType.vintage; // 默认主题
+    //   }
+    // }
   }
   
   /// 获取主题名称
@@ -123,11 +129,15 @@ class ThemeService {
     }
   }
   
-  /// 拾光复古主题
+  /// 拾光复古主题（统一主题）
   ThemeData _getVintageTheme() {
-    const vintagePrimary = Color(AppConstants.primaryColor);
-    const vintageSecondary = Color(AppConstants.secondaryColor);
-    const vintageAccent = Color(AppConstants.accentColor);
+    const vintagePrimary = Color(AppConstants.primaryColor); // 拾光棕
+    const vintageSecondary = Color(AppConstants.secondaryColor); // 浅相纸白
+    const vintageAccent = Color(AppConstants.accentColor); // 橄榄绿
+    const vintageSurface = Color(AppConstants.surfaceColor); // 卡片背景
+    const vintageBackground = Color(AppConstants.backgroundColor); // 页面背景
+    const vintageTextPrimary = Color(AppConstants.textPrimaryColor); // 主要文字
+    const vintageTextSecondary = Color(AppConstants.textSecondaryColor); // 次要文字
     
     return ThemeData(
       useMaterial3: true,
@@ -147,8 +157,8 @@ class ThemeService {
         },
       ),
       primaryColor: vintagePrimary,
-      scaffoldBackgroundColor: vintageSecondary,
-      cardColor: Colors.white,
+      scaffoldBackgroundColor: vintageBackground,
+      cardColor: vintageSurface,
       dividerColor: Colors.grey.withOpacity(0.3),
       appBarTheme: const AppBarTheme(
         backgroundColor: vintagePrimary,
@@ -201,15 +211,15 @@ class ThemeService {
         ),
         bodyLarge: TextStyle(
           fontSize: 16,
-          color: Colors.black87,
+          color: vintageTextPrimary,
         ),
         bodyMedium: TextStyle(
           fontSize: 14,
-          color: Colors.black87,
+          color: vintageTextPrimary,
         ),
         bodySmall: TextStyle(
           fontSize: 12,
-          color: Colors.black54,
+          color: vintageTextSecondary,
         ),
         labelLarge: TextStyle(
           fontSize: 16,
@@ -219,12 +229,12 @@ class ThemeService {
         labelMedium: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w500,
-          color: Colors.black87,
+          color: vintageTextPrimary,
         ),
         labelSmall: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          color: Colors.black54,
+          color: vintageTextSecondary,
         ),
       ),
       iconTheme: const IconThemeData(
@@ -233,7 +243,7 @@ class ThemeService {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white,
+        fillColor: vintageSurface,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: vintagePrimary),
@@ -254,9 +264,9 @@ class ThemeService {
       // 注意：CardThemeData 在某些Flutter版本（如HarmonyOS）中可能不支持
       // 我们将通过Card组件的默认样式来实现
       chipTheme: ChipThemeData(
-        backgroundColor: Colors.white,
+        backgroundColor: vintageSurface,
         selectedColor: vintagePrimary,
-        labelStyle: const TextStyle(color: Colors.black87),
+        labelStyle: const TextStyle(color: vintageTextPrimary),
         secondaryLabelStyle: const TextStyle(color: Colors.white),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         shape: RoundedRectangleBorder(

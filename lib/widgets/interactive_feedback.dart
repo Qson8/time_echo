@@ -493,7 +493,7 @@ class _InteractiveOptionCardState extends State<InteractiveOptionCard>
     } else if (widget.isCorrect) {
       backgroundColor = Colors.green.withOpacity(0.1);
       borderColor = Colors.green;
-      textColor = Colors.green;
+      textColor = Colors.green.shade700; // 使用深绿色，在浅绿色背景上更显眼
     } else if (widget.isSelected) {
       backgroundColor = const Color(AppConstants.primaryColor).withOpacity(0.1);
       borderColor = const Color(AppConstants.primaryColor);
@@ -551,7 +551,9 @@ class _InteractiveOptionCardState extends State<InteractiveOptionCard>
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: borderColor.withOpacity(0.2),
+                      color: widget.isCorrect 
+                          ? Colors.green.shade700 // 正确选项使用深绿色背景
+                          : borderColor.withOpacity(0.2),
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: borderColor,
@@ -562,7 +564,9 @@ class _InteractiveOptionCardState extends State<InteractiveOptionCard>
                       child: Text(
                         widget.optionLabel,
                         style: TextStyle(
-                          color: textColor,
+                          color: widget.isCorrect 
+                              ? Colors.white // 正确选项标签使用白色文字，在深绿色背景上更显眼
+                              : textColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
@@ -581,7 +585,7 @@ class _InteractiveOptionCardState extends State<InteractiveOptionCard>
                     ),
                   ),
                   if (widget.isCorrect)
-                    const Icon(Icons.check_circle, color: Colors.green, size: 24),
+                    Icon(Icons.check_circle, color: Colors.green.shade700, size: 24), // 使用深绿色，更显眼
                   if (widget.isWrong)
                     const Icon(Icons.cancel, color: Colors.red, size: 24),
                 ],

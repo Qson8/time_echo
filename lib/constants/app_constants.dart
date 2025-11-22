@@ -5,11 +5,17 @@ class AppConstants {
   static const String appNameEn = 'Time Echo';
   static const String appVersion = '1.0.0';
   
-  // 颜色主题
-  static const int primaryColor = 0xFF8B4513; // 拾光棕（焦糖棕）
-  static const int secondaryColor = 0xFFF8F5F0; // 浅相纸白
-  static const int accentColor = 0xFF2E7D32; // 深灰绿
-  static const int errorColor = 0xFFC74B50; // 深灰红
+  // 颜色主题 - 拾光复古主题色系
+  static const int primaryColor = 0xFF8B6F47; // 拾光棕（优化后的温暖棕色，更柔和）
+  static const int secondaryColor = 0xFFF8F5F0; // 浅相纸白（保持）
+  static const int accentColor = 0xFF6B8E23; // 橄榄绿（与棕色更协调）
+  static const int errorColor = 0xFFC74B50; // 深灰红（保持）
+  
+  // 辅助颜色
+  static const int surfaceColor = 0xFFFFFFFF; // 卡片背景色
+  static const int backgroundColor = 0xFFF8F5F0; // 页面背景色
+  static const int textPrimaryColor = 0xFF2C2C2C; // 主要文字色
+  static const int textSecondaryColor = 0xFF666666; // 次要文字色
   
   // 题目分类
   static const List<String> categories = ['影视', '音乐', '事件'];

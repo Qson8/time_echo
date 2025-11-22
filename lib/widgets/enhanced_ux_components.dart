@@ -212,29 +212,36 @@ class EnhancedUXComponents {
               onPressed: buttonData.onPressed,
               child: Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
+                  horizontal: 8,
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
                   color: buttonData.backgroundColor ?? const Color(AppConstants.primaryColor),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Row(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (buttonData.icon != null) ...[
                       Icon(
                         buttonData.icon,
                         color: buttonData.textColor ?? Colors.white,
-                        size: 18,
+                        size: 20,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(height: 4),
                     ],
-                    Text(
-                      buttonData.text,
-                      style: TextStyle(
-                        color: buttonData.textColor ?? Colors.white,
-                        fontWeight: FontWeight.w500,
+                    Flexible(
+                      child: Text(
+                        buttonData.text,
+                        style: TextStyle(
+                          color: buttonData.textColor ?? Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],

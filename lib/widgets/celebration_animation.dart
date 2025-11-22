@@ -21,8 +21,9 @@ class CelebrationAnimation extends StatefulWidget {
 class _CelebrationAnimationState extends State<CelebrationAnimation>
     with TickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _rotationAnimation;
+  // 移除缩放和旋转动画
+  // late Animation<double> _scaleAnimation;
+  // late Animation<double> _rotationAnimation;
   final List<Particle> _particles = [];
   final Random _random = Random();
 
@@ -34,21 +35,23 @@ class _CelebrationAnimationState extends State<CelebrationAnimation>
       vsync: this,
     );
 
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.15,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0.0, 0.3, curve: Curves.elasticOut),
-    ));
+    // 移除缩放动画
+    // _scaleAnimation = Tween<double>(
+    //   begin: 1.0,
+    //   end: 1.15,
+    // ).animate(CurvedAnimation(
+    //   parent: _controller,
+    //   curve: const Interval(0.0, 0.3, curve: Curves.elasticOut),
+    // ));
 
-    _rotationAnimation = Tween<double>(
-      begin: 0.0,
-      end: 0.1,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
+    // 移除旋转动画
+    // _rotationAnimation = Tween<double>(
+    //   begin: 0.0,
+    //   end: 0.1,
+    // ).animate(CurvedAnimation(
+    //   parent: _controller,
+    //   curve: Curves.easeInOut,
+    // ));
 
     if (widget.isActive) {
       _startAnimation();
@@ -101,13 +104,8 @@ class _CelebrationAnimationState extends State<CelebrationAnimation>
       builder: (context, child) {
         return Stack(
           children: [
-            Transform.scale(
-              scale: _scaleAnimation.value,
-              child: Transform.rotate(
-                angle: _rotationAnimation.value,
-                child: widget.child,
-              ),
-            ),
+            // 移除缩放和旋转动画，直接显示子组件
+            widget.child,
             // 粒子效果
             if (widget.isActive && _controller.value > 0)
               ..._particles.map((particle) {
