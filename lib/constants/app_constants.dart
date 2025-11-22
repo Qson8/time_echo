@@ -98,21 +98,10 @@ class AppConstants {
   
   // 本地存储键
   static const String keyFirstLaunch = 'first_launch';
-  static const String keyVoiceEnabled = 'voice_enabled';
-  static const String keyVoiceSpeed = 'voice_speed';
   static const String keyCommentStyle = 'comment_style';
   static const String keyFontSize = 'font_size';
   static const String keyElderlyMode = 'elderly_mode';
   static const String keyLastTestDate = 'last_test_date';
-  
-  // 语音设置
-  static const Map<String, double> voiceSpeeds = {
-    '极慢': 0.2,
-    '慢': 0.4,
-    '中': 0.5,
-    '快': 0.7,
-    '极快': 0.9,
-  };
   
   // 字体大小
   static const Map<String, double> fontSizes = {

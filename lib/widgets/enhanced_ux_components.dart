@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../constants/app_constants.dart';
-import '../services/voice_service.dart';
 import '../widgets/animated_widgets.dart';
 
 /// 增强的用户体验组件
@@ -11,8 +10,6 @@ class EnhancedUXComponents {
     required String title,
     required String content,
     required List<Widget> actions,
-    String? voiceContent,
-    bool enableVoice = true,
   }) {
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -41,11 +38,6 @@ class EnhancedUXComponents {
                     ),
                   ),
                 ),
-                if (enableVoice && voiceContent != null)
-                  IconButton(
-                    icon: const Icon(Icons.volume_up),
-                    onPressed: () => VoiceService().speak(voiceContent),
-                  ),
               ],
             ),
             
@@ -122,7 +114,6 @@ class EnhancedUXComponents {
     required ValueChanged<String> onChanged,
     VoidCallback? onClear,
     String? initialValue,
-    bool enableVoice = true,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -138,21 +129,12 @@ class EnhancedUXComponents {
         decoration: InputDecoration(
           hintText: hintText,
           prefixIcon: const Icon(Icons.search),
-          suffixIcon: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (enableVoice)
-                IconButton(
-                  icon: const Icon(Icons.mic),
-                  onPressed: () => _startVoiceSearch(),
-                ),
-              if (onClear != null)
-                IconButton(
+          suffixIcon: onClear != null
+              ? IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: onClear,
-                ),
-            ],
-          ),
+                )
+              : null,
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,

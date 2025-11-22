@@ -7,7 +7,6 @@ import '../services/question_service.dart';
 import '../services/test_record_service.dart';
 import '../services/echo_achievement_service.dart';
 import '../services/echo_collection_service.dart';
-import '../services/voice_service.dart';
 import '../services/local_storage_service.dart';
 import '../services/question_update_service.dart';
 import '../services/font_size_service.dart';
@@ -31,7 +30,6 @@ class AppStateProvider extends ChangeNotifier {
   final TestRecordService _testRecordService = TestRecordService();
   final EchoAchievementService _achievementService = EchoAchievementService();
   final EchoCollectionService _collectionService = EchoCollectionService();
-  final VoiceService _voiceService = VoiceService();
   final LocalStorageService _localStorageService = LocalStorageService();
   final QuestionUpdateService _updateService = QuestionUpdateService();
   final FontSizeService _fontSizeService = FontSizeService();
@@ -56,8 +54,6 @@ class AppStateProvider extends ChangeNotifier {
   QuestionSelectionMode _questionSelectionMode = QuestionSelectionMode.random; // 组题模式
 
   // 用户设置
-  bool _voiceEnabled = false;
-  String _voiceSpeed = '中';
   String _commentStyle = '通用版';
   String _fontSize = '中';
   bool _elderlyMode = false;
@@ -74,8 +70,6 @@ class AppStateProvider extends ChangeNotifier {
   List<Question> get collectedQuestions => _collectedQuestions;
   List<TestRecord> get testRecords => _testRecords;
   int get newQuestionCount => _newQuestionCount;
-  bool get voiceEnabled => _voiceEnabled;
-  String get voiceSpeed => _voiceSpeed;
   String get commentStyle => _commentStyle;
   String get fontSize => _fontSizeService.currentFontSize;
   bool get elderlyMode => _elderlyMode;
@@ -136,17 +130,9 @@ class AppStateProvider extends ChangeNotifier {
       print('9. 加载用户设置...');
       await _loadUserSettings();
       print('   用户设置加载完成');
-      print('    - 语音开关: $_voiceEnabled');
-      print('    - 语音速度: $_voiceSpeed');
       print('    - 评语风格: $_commentStyle');
       print('    - 字体大小: $_fontSize');
       print('    - 老年模式: $_elderlyMode');
-      
-      print('10. 初始化语音服务...');
-      // 延迟一点时间，确保鸿蒙插件已注册
-      await Future.delayed(const Duration(milliseconds: 500));
-      await _voiceService.initialize(initialSpeed: _voiceSpeed);
-      print('   语音服务初始化完成，速度: $_voiceSpeed');
       
       print('========== 应用初始化完成 ==========');
     } catch (e) {
@@ -250,8 +236,6 @@ class AppStateProvider extends ChangeNotifier {
       final settings = await _localStorageService.getUserSettings();
       
       print('1. 从存储加载设置值');
-      _voiceEnabled = settings['voiceEnabled'] as bool;
-      _voiceSpeed = settings['voiceSpeed'] as String;
       _commentStyle = settings['commentStyle'] as String;
       _fontSize = settings['fontSize'] as String;
       _elderlyMode = settings['elderlyMode'] as bool? ?? false;
@@ -261,8 +245,6 @@ class AppStateProvider extends ChangeNotifier {
       _questionSelectionMode = _parseQuestionSelectionMode(modeStr);
       
       print('   加载结果:');
-      print('     voiceEnabled: $_voiceEnabled (类型: ${_voiceEnabled.runtimeType})');
-      print('     voiceSpeed: $_voiceSpeed');
       print('     commentStyle: $_commentStyle');
       print('     fontSize: $_fontSize');
       print('     elderlyMode: $_elderlyMode');
@@ -272,23 +254,11 @@ class AppStateProvider extends ChangeNotifier {
       FontSizeService().setFontSize(_fontSize);
       print('   字体大小服务已更新');
       
-      print('3. 设置语音速度');
-      await _voiceService.setSpeechRate(_voiceSpeed);
-      print('   语音速度已设置为: $_voiceSpeed');
-      
-      print('4. 同步语音服务的启用状态');
-      print('   当前 _voiceEnabled: $_voiceEnabled');
-      _voiceService.setEnabled(_voiceEnabled);
-      print('   语音服务启用状态: ${_voiceService.isEnabled}');
-      
-      print('5. 触发UI更新');
+      print('3. 触发UI更新');
       notifyListeners();
       
       print('========== 用户设置加载完成 ==========');
       print('最终状态:');
-      print('  voiceEnabled=$_voiceEnabled');
-      print('  voiceSpeed=$_voiceSpeed');
-      print('  voiceService.isEnabled=${_voiceService.isEnabled}');
       print('  questionSelectionMode=$_questionSelectionMode');
     } catch (e, stackTrace) {
       print('加载用户设置失败: $e');
@@ -296,8 +266,6 @@ class AppStateProvider extends ChangeNotifier {
       
       print('使用默认值...');
       // 设置默认值
-      _voiceEnabled = false;
-      _voiceSpeed = '中';
       _commentStyle = '通用版';
       _fontSize = '中';
       _elderlyMode = false;
@@ -864,40 +832,6 @@ class AppStateProvider extends ChangeNotifier {
     return await _collectionService.diagnoseCollectionData();
   }
 
-  /// 更新语音设置
-  Future<void> updateVoiceSettings(bool enabled, String speed) async {
-    print('========== 更新语音设置 ==========');
-    print('📝 当前状态: voiceEnabled=$_voiceEnabled, voiceSpeed=$_voiceSpeed');
-    print('📝 新状态: voiceEnabled=$enabled, voiceSpeed=$speed');
-    
-    _voiceEnabled = enabled;
-    _voiceSpeed = speed;
-    print('📝 内部状态已更新: _voiceEnabled=$_voiceEnabled');
-    
-    print('1. 保存到本地存储...');
-    try {
-      await _localStorageService.saveUserSettings(
-        voiceEnabled: enabled,
-        voiceSpeed: speed,
-      );
-      print('   ✅ 保存到本地存储完成');
-    } catch (e) {
-      print('   ❌ 保存到本地存储失败: $e');
-      rethrow;
-    }
-    
-    print('2. 更新语音服务...');
-    await _voiceService.setSpeechRate(speed);
-    _voiceService.setEnabled(enabled);
-    print('   ✅ 语音服务已更新');
-    
-    print('3. 通知UI更新...');
-    print('   📢 调用 notifyListeners() 前: _voiceEnabled=$_voiceEnabled');
-    notifyListeners();
-    print('   ✅ notifyListeners() 已完成');
-    print('========== 语音设置更新完成 ==========');
-  }
-
   /// 更新评语风格
   Future<void> updateCommentStyle(String style) async {
     print('========== 更新评语风格 ==========');
@@ -979,9 +913,6 @@ class AppStateProvider extends ChangeNotifier {
   int get totalAchievementCount {
     return _achievements.length;
   }
-
-  /// 获取语音服务
-  VoiceService get voiceService => _voiceService;
 
   /// 更新字体大小
   Future<void> updateFontSize(String fontSize) async {

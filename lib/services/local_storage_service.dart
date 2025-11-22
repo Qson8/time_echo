@@ -216,24 +216,12 @@ class LocalStorageService {
 
   /// 保存用户设置
   Future<void> saveUserSettings({
-    bool? voiceEnabled,
-    String? voiceSpeed,
     String? commentStyle,
     String? fontSize,
     bool? elderlyMode,
     String? questionSelectionMode,
   }) async {
     print('保存用户设置到本地存储:');
-    if (voiceEnabled != null) {
-      print('  保存 voiceEnabled: $voiceEnabled');
-      final success = await setBool(AppConstants.keyVoiceEnabled, voiceEnabled);
-      print('  保存结果: $success');
-    }
-    if (voiceSpeed != null) {
-      print('  保存 voiceSpeed: $voiceSpeed');
-      final success = await setString(AppConstants.keyVoiceSpeed, voiceSpeed);
-      print('  保存结果: $success');
-    }
     if (commentStyle != null) {
       print('  保存 commentStyle: $commentStyle');
       final success = await setString(AppConstants.keyCommentStyle, commentStyle);
@@ -258,24 +246,18 @@ class LocalStorageService {
 
   /// 获取用户设置
   Future<Map<String, dynamic>> getUserSettings() async {
-    final voiceEnabled = await getBool(AppConstants.keyVoiceEnabled) ?? false;
-    final voiceSpeed = await getString(AppConstants.keyVoiceSpeed) ?? '中';
     final commentStyle = await getString(AppConstants.keyCommentStyle) ?? '通用版';
     final fontSize = await getString(AppConstants.keyFontSize) ?? '中';
     final elderlyMode = await getBool(AppConstants.keyElderlyMode) ?? false;
     final questionSelectionMode = await getString('question_selection_mode') ?? 'random';
     
     print('从本地存储读取用户设置:');
-    print('  voiceEnabled: $voiceEnabled');
-    print('  voiceSpeed: $voiceSpeed');
     print('  commentStyle: $commentStyle');
     print('  fontSize: $fontSize');
     print('  elderlyMode: $elderlyMode');
     print('  questionSelectionMode: $questionSelectionMode');
     
     return {
-      'voiceEnabled': voiceEnabled,
-      'voiceSpeed': voiceSpeed,
       'commentStyle': commentStyle,
       'fontSize': fontSize,
       'elderlyMode': elderlyMode,

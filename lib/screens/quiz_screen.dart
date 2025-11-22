@@ -4,14 +4,11 @@ import 'package:provider/provider.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_theme.dart';
 import '../services/app_state_provider.dart';
-import '../services/voice_service.dart';
-import '../widgets/voice_control_widget.dart';
 import '../widgets/interactive_feedback.dart';
 import '../services/quiz_theme_service.dart';
 import '../services/quiz_sound_service.dart';
 import '../widgets/celebration_animation.dart';
 import 'quiz_result_screen.dart';
-import 'package:flutter/services.dart';
 
 /// 答题页面
 class QuizScreen extends StatefulWidget {
@@ -97,23 +94,10 @@ class _QuizScreenState extends State<QuizScreen>
     try {
       final appState = Provider.of<AppStateProvider>(context, listen: false);
       
-      // 确保语音服务已初始化（如果启用了语音）
-      if (appState.voiceEnabled) {
-        print('🗣️ 检查语音服务状态...');
-        try {
-          await appState.voiceService.initialize(initialSpeed: appState.voiceSpeed);
-          appState.voiceService.setEnabled(appState.voiceEnabled);
-          print('🗣️ ✅ 语音服务已就绪: isEnabled=${appState.voiceService.isEnabled}');
-        } catch (e) {
-          print('🗣️ ⚠️ 语音服务初始化失败: $e');
-        }
-      }
-      
       // 调试信息
       print('🔍 QuizScreen._startQuiz 检查状态：');
       print('   isTestInProgress: ${appState.isTestInProgress}');
       print('   currentTestQuestions.length: ${appState.currentTestQuestions.length}');
-      print('   voiceEnabled: ${appState.voiceEnabled}');
       if (appState.currentTestQuestions.isNotEmpty) {
         print('   第一题分类: ${appState.currentTestQuestions.first.category}');
         print('   第一题年代: ${appState.currentTestQuestions.first.echoTheme}');
@@ -136,18 +120,6 @@ class _QuizScreenState extends State<QuizScreen>
         
         _progressController.forward();
         _questionController.forward();
-        
-        // 如果启用了语音，自动播放第一题
-        if (appState.voiceEnabled) {
-          print('🗣️ 语音已启用，准备自动播放第一题');
-          Future.delayed(const Duration(milliseconds: 800), () {
-            if (mounted && appState.currentQuestion != null) {
-              _speakCurrentQuestion(appState);
-            }
-          });
-        } else {
-          print('🗣️ ⚠️ 语音未启用，跳过自动播放');
-        }
         return;
       }
       
@@ -163,19 +135,6 @@ class _QuizScreenState extends State<QuizScreen>
       
       _progressController.forward();
       _questionController.forward();
-      
-      // 如果启用了语音，自动播放第一题
-      // 添加短暂延迟，确保动画开始后再播放语音
-      if (appState.voiceEnabled) {
-        print('🗣️ 语音已启用，准备自动播放第一题');
-        Future.delayed(const Duration(milliseconds: 800), () {
-          if (mounted && appState.currentQuestion != null) {
-            _speakCurrentQuestion(appState);
-          }
-        });
-      } else {
-        print('🗣️ ⚠️ 语音未启用，跳过自动播放');
-      }
     } catch (e) {
       print('启动拾光失败: $e');
       // 即使失败也显示题目（如果有示例题目）
@@ -184,14 +143,6 @@ class _QuizScreenState extends State<QuizScreen>
 
   @override
   void dispose() {
-    // 停止语音播放
-    try {
-      // 使用VoiceService单例直接停止
-      VoiceService().stop();
-    } catch (e) {
-      print('停止语音失败: $e');
-    }
-    
     _progressController.dispose();
     _questionController.dispose();
     _correctAnimationController.dispose();
@@ -241,30 +192,6 @@ class _QuizScreenState extends State<QuizScreen>
                 icon: const Icon(Icons.close),
                 onPressed: () => _showExitDialog(context, appState),
               ),
-              actions: [
-                Consumer<AppStateProvider>(
-                  builder: (context, appState, child) {
-                    return VoiceControlWidget(
-                      voiceService: appState.voiceService,
-                      isEnabled: appState.voiceEnabled,
-                      currentSpeed: appState.voiceSpeed,
-                      isCompact: true, // 在AppBar中使用紧凑模式
-                      onToggle: () {
-                        appState.updateVoiceSettings(
-                          !appState.voiceEnabled,
-                          appState.voiceSpeed,
-                        );
-                      },
-                      onSpeedChanged: (speed) {
-                        appState.updateVoiceSettings(
-                          appState.voiceEnabled,
-                          speed,
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
             ),
             body: Consumer<AppStateProvider>(
         builder: (context, appState, child) {
@@ -424,29 +351,6 @@ class _QuizScreenState extends State<QuizScreen>
                     fontWeight: FontWeight.w500,
                     height: 1.5,
                   ),
-                ),
-                
-                // 语音播放按钮
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    VoicePlayButton(
-                      voiceService: appState.voiceService,
-                      text: question.content,
-                      question: question.content,
-                      options: question.options,
-                      isEnabled: appState.voiceEnabled,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      appState.voiceEnabled ? '点击播放题目' : '请在设置中开启语音读题',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: appState.voiceEnabled ? Colors.black54 : Colors.grey,
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
@@ -656,13 +560,6 @@ class _QuizScreenState extends State<QuizScreen>
       _questionController.reset();
       appState.nextQuestion();
       _questionController.forward();
-      
-      // 如果启用了语音，朗读下一题
-      if (appState.voiceEnabled && appState.currentQuestion != null) {
-        print('🗣️ 切换到下一题，准备朗读...');
-        await Future.delayed(const Duration(milliseconds: 300));
-        await _speakCurrentQuestion(appState);
-      }
     }
   }
 
@@ -671,13 +568,6 @@ class _QuizScreenState extends State<QuizScreen>
     _questionController.reset();
     appState.previousQuestion();
     _questionController.forward();
-    
-    // 如果启用了语音，朗读上一题
-    if (appState.voiceEnabled && appState.currentQuestion != null) {
-      print('🗣️ 切换到上一题，准备朗读...');
-      await Future.delayed(const Duration(milliseconds: 300));
-      await _speakCurrentQuestion(appState);
-    }
   }
 
   /// 完成拾光
@@ -710,46 +600,6 @@ class _QuizScreenState extends State<QuizScreen>
         InteractiveFeedback.showInfo(context, '已取消收藏');
       } else {
         InteractiveFeedback.showSuccess(context, '已收藏至拾光收藏夹');
-      }
-    }
-  }
-
-  /// 朗读当前题目
-  Future<void> _speakCurrentQuestion(AppStateProvider appState) async {
-    if (appState.currentQuestion != null) {
-      // 不在这里检查平台支持，让speak方法内部去检查和初始化
-      // 这样可以确保第一次调用时能够正确检测平台支持
-      
-      // 检查语音功能是否启用
-      if (!appState.voiceEnabled || !appState.voiceService.isEnabled) {
-        print('🗣️ ⚠️ 语音功能未启用，跳过自动播放');
-        return;
-      }
-      
-      try {
-        // 确保语音服务已初始化（这会自动检查平台支持）
-        if (!appState.voiceService.isEnabled) {
-          print('🗣️ ⚠️ 语音服务未启用，尝试重新初始化...');
-          await appState.voiceService.initialize();
-          // 重新设置启用状态
-          appState.voiceService.setEnabled(appState.voiceEnabled);
-        }
-        
-        print('🗣️ 开始朗读当前题目...');
-        // 自动播放时使用静默模式，不抛出异常
-        // speakQuestion内部会检查和初始化平台支持
-        await appState.voiceService.speakQuestion(
-          appState.currentQuestion!.content,
-          appState.currentQuestion!.options,
-          throwOnUnsupported: false, // 自动播放静默处理
-        );
-        print('🗣️ ✅ 题目朗读已启动');
-      } catch (e, stackTrace) {
-        // 这里不应该再捕获到 PlatformUnsupportedException，因为已经设置了 throwOnUnsupported: false
-        // 但为了安全起见，仍然捕获其他可能的异常
-        print('🗣️ ❌ 朗读题目失败: $e');
-        print('🗣️ ❌ 错误堆栈: $stackTrace');
-        // 静默处理，不显示错误，避免干扰用户体验
       }
     }
   }

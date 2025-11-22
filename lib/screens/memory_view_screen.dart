@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../constants/app_constants.dart';
 import '../models/memory_record.dart';
-import '../services/memory_service.dart';
 import '../services/question_service.dart';
 import '../models/question.dart';
 import 'memory_detail_screen.dart';
@@ -180,17 +178,19 @@ class _MemoryViewScreenState extends State<MemoryViewScreen> {
               IconButton(
                 icon: const Icon(Icons.edit_outlined),
                 onPressed: () async {
-                  final result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MemoryDetailScreen(
-                        memory: widget.memory,
-                      ),
-                    ),
-                  );
-                  if (result == true && mounted) {
-                    Navigator.pop(context, true);
-                  }
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MemoryDetailScreen(
+          memory: widget.memory,
+        ),
+      ),
+    );
+    if (result == true) {
+      if (mounted) {
+        Navigator.pop(context, true);
+      }
+    }
                 },
                 tooltip: '编辑回忆',
               ),

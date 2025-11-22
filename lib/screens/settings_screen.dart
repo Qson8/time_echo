@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../constants/app_constants.dart';
-import '../constants/app_theme.dart';
 import '../services/app_state_provider.dart';
 import '../services/theme_service.dart';
-import '../services/local_storage_service.dart';
 import '../providers/theme_provider.dart';
 import 'quiz_config_screen.dart';
 
@@ -19,6 +17,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  
   @override
   Widget build(BuildContext context) {
     print('🔍 SettingsScreen build() 被调用');
@@ -29,7 +28,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: Consumer2<AppStateProvider, ThemeProvider>(
         builder: (context, appState, themeProvider, child) {
-          print('🔍 Consumer2 builder 被调用: voiceEnabled=${appState.voiceEnabled}');
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -42,11 +40,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 
                 // 显示设置
                 _buildDisplaySection(appState, themeProvider),
-                
-                const SizedBox(height: 24),
-                
-                // 语音设置
-                _buildVoiceSection(appState),
                 
                 const SizedBox(height: 24),
                 
@@ -198,63 +191,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         //   icon: Icons.palette,
         //   onTap: () => _showThemeDialog(themeProvider),
         // ),
-      ],
-    );
-  }
-
-  /// 构建语音设置区域
-  Widget _buildVoiceSection(AppStateProvider appState) {
-    print('🔍 _buildVoiceSection: voiceEnabled=${appState.voiceEnabled}');
-    final isPlatformSupported = appState.voiceService.isPlatformSupported;
-    
-    return _buildSection(
-      title: '语音设置',
-      icon: Icons.volume_up,
-      children: [
-        if (!isPlatformSupported) ...[
-          Container(
-            padding: const EdgeInsets.all(12),
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.orange.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.orange.withOpacity(0.3)),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.info_outline, color: Colors.orange[700], size: 20),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    '当前平台不支持语音读题功能',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.orange[700],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-        _buildSwitchTile(
-          title: '拾光语音读题',
-          subtitle: isPlatformSupported 
-              ? '答题时自动读取题目内容'
-              : '当前平台不支持此功能',
-          icon: Icons.record_voice_over,
-          value: appState.voiceEnabled && isPlatformSupported,
-          onChanged: isPlatformSupported 
-              ? (value) => _toggleVoice(appState, value)
-              : (_) {}, // 平台不支持时提供空函数
-        ),
-        if (appState.voiceEnabled)
-          _buildListTile(
-            title: '语音速度',
-            subtitle: appState.voiceSpeed,
-            icon: Icons.speed,
-            onTap: () => _showVoiceSpeedDialog(appState),
-          ),
       ],
     );
   }
@@ -495,54 +431,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  /// 显示语音速度对话框
-  void _showVoiceSpeedDialog(AppStateProvider appState) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('选择语音速度'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: AppConstants.voiceSpeeds.keys.map((speed) {
-            return RadioListTile<String>(
-              title: Text(speed),
-              value: speed,
-              groupValue: appState.voiceSpeed,
-              onChanged: (value) {
-                if (value != null) {
-                  appState.updateVoiceSettings(appState.voiceEnabled, value).then((_) {
-                    if (context.mounted) {
-                      Navigator.of(context).pop();
-                    }
-                  });
-                }
-              },
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
-
-  /// 切换语音
-  void _toggleVoice(AppStateProvider appState, bool value) async {
-    print('🚀 _toggleVoice 被调用，新值: $value');
-    print('🚀 当前状态: voiceEnabled=${appState.voiceEnabled}, voiceSpeed=${appState.voiceSpeed}');
-    try {
-      print('🚀 开始调用 updateVoiceSettings...');
-      await appState.updateVoiceSettings(value, appState.voiceSpeed);
-      print('🚀 updateVoiceSettings 完成');
-      print('🚀 更新后状态: voiceEnabled=${appState.voiceEnabled}');
-    } catch (e, stackTrace) {
-      print('❌ 语音设置更新失败: $e');
-      print('❌ 错误堆栈: $stackTrace');
-      // 如果保存失败，回滚状态
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('语音设置更新失败：$e')),
-      );
-    }
-  }
-
   /// 切换老年友好模式
   void _toggleElderlyMode(AppStateProvider appState, bool value) async {
     try {
@@ -671,7 +559,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _buildFeatureItem('每日挑战：每天3个挑战任务，完成获得奖励'),
               _buildFeatureItem('成就系统：8种成就徽章，见证成长足迹'),
               _buildFeatureItem('答题统计：可视化图表展示学习趋势和进步轨迹'),
-              _buildFeatureItem('个性化设置：支持字体大小、语音读题等个性化体验'),
+              _buildFeatureItem('个性化设置：支持字体大小等个性化体验'),
               _buildFeatureItem('一键分享：将有趣题目和学习报告分享给好友'),
               const SizedBox(height: 16),
               
@@ -690,7 +578,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _buildFeatureItem('喜欢迎接知识新挑战、增长见识的你'),
               _buildFeatureItem('希望了解自己"拾光年龄"的好奇者'),
               _buildFeatureItem('需要离线学习工具的用户'),
-              _buildFeatureItem('老年用户（大字体、语音辅助）'),
+              _buildFeatureItem('老年用户（大字体辅助）'),
               const SizedBox(height: 16),
               
               // 核心特色
@@ -704,7 +592,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 8),
               _buildFeatureItem('✅ 完全离线：无需网络，保护隐私，随时随地使用'),
-              _buildFeatureItem('✅ 老年友好：大字体、大按钮、语音读题，专为老年用户优化'),
+              _buildFeatureItem('✅ 老年友好：大字体、大按钮，专为老年用户优化'),
               _buildFeatureItem('✅ 智能学习：学习报告、数据分析，科学提升学习效果'),
               _buildFeatureItem('✅ 怀旧主题：80-90年代复古设计，沉浸式体验'),
               _buildFeatureItem('✅ 数据安全：所有数据存储在本地，不上传云端'),

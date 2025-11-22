@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import '../constants/app_constants.dart';
 import '../services/offline_data_manager.dart';
 import '../widgets/offline_friendly_components.dart';
-import '../widgets/animated_widgets.dart';
 
 /// 离线设置页面
 class OfflineSettingsScreen extends StatefulWidget {
@@ -52,8 +51,6 @@ class _OfflineSettingsScreenState extends State<OfflineSettingsScreen>
   Future<void> _loadSettings() async {
     try {
       _settings = {
-        'voice_enabled': await _dataManager.getSetting<bool>('voice_enabled') ?? false,
-        'voice_speed': await _dataManager.getSetting<String>('voice_speed') ?? '中',
         'comment_style': await _dataManager.getSetting<String>('comment_style') ?? '通用版',
         'font_size': await _dataManager.getSetting<String>('font_size') ?? '中',
         'elderly_mode': await _dataManager.getSetting<bool>('elderly_mode') ?? false,
@@ -119,11 +116,6 @@ class _OfflineSettingsScreenState extends State<OfflineSettingsScreen>
               
               // 显示设置
               _buildDisplaySettings(),
-              
-              const SizedBox(height: 24),
-              
-              // 语音设置
-              _buildVoiceSettings(),
               
               const SizedBox(height: 24),
               
@@ -263,65 +255,6 @@ class _OfflineSettingsScreenState extends State<OfflineSettingsScreen>
               ['小', '中', '大', '特大'],
               (value) => _updateSetting('font_size', value),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// 构建语音设置
-  Widget _buildVoiceSettings() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.volume_up,
-                  color: const Color(AppConstants.primaryColor),
-                  size: 24,
-                ),
-                const SizedBox(width: 12),
-                const Text(
-                  '语音设置',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            
-            const SizedBox(height: 20),
-            
-            // 语音开关
-            _buildSettingSwitch(
-              '语音朗读',
-              '启用题目和选项的语音朗读',
-              Icons.volume_up,
-              _settings['voice_enabled'] ?? false,
-              (value) => _updateSetting('voice_enabled', value),
-            ),
-            
-            const SizedBox(height: 16),
-            
-            // 语音速度
-            if (_settings['voice_enabled'] == true)
-              _buildSettingDropdown(
-                '语音速度',
-                '选择语音朗读速度',
-                Icons.speed,
-                _settings['voice_speed'] ?? '中',
-                ['很慢', '慢', '中', '快', '很快'],
-                (value) => _updateSetting('voice_speed', value),
-              ),
           ],
         ),
       ),
@@ -778,7 +711,7 @@ class _OfflineSettingsScreenState extends State<OfflineSettingsScreen>
                 '• 成就系统：8种成就徽章\n'
                 '• 收藏笔记：收藏题目并添加个人笔记\n'
                 '• 答题统计：可视化图表展示学习趋势\n'
-                '• 老年友好：大字体、语音读题\n\n'
+                '• 老年友好：大字体\n\n'
                 '特色：\n'
                 '✅ 完全离线运行，保护隐私\n'
                 '✅ 无广告，纯净体验\n'
