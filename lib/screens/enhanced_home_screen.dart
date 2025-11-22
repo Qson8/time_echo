@@ -744,6 +744,11 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                 
                 const SizedBox(height: 24),
                 
+                // 拾光回忆（提升权重，放在更靠前的位置）
+                _buildRecentMemoriesSection(),
+                
+                const SizedBox(height: 24),
+                
                 // 每日挑战
                 _buildDailyChallengesSection(),
                 
@@ -761,11 +766,6 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                 
                 // 最近拾光
                 _buildRecentTestsSection(appState),
-                
-                const SizedBox(height: 24),
-                
-                // 最近回忆
-                _buildRecentMemoriesSection(),
                 
                 const SizedBox(height: 24),
                 
@@ -1532,7 +1532,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
     );
   }
 
-  /// 构建最近回忆区域
+  /// 构建拾光回忆区域
   Widget _buildRecentMemoriesSection() {
     return FutureBuilder<List<MemoryRecord>>(
       future: MemoryService().getMemoriesSortedByTime(ascending: false),
@@ -1552,12 +1552,23 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  '最近回忆',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.photo_library,
+                      color: const Color(AppConstants.primaryColor),
+                      size: 24,
+                    ),
+                    const SizedBox(width: 8),
+                    const Text(
+                      '拾光回忆',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Color(AppConstants.primaryColor),
+                      ),
+                    ),
+                  ],
                 ),
                 if (memories.isNotEmpty)
                   GestureDetector(
@@ -1610,8 +1621,8 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                 },
               )
             else ...[
-              ...memories.take(3).map((memory) => _buildMemoryCard(memory)),
-              if (memories.length > 3)
+              ...memories.take(4).map((memory) => _buildMemoryCard(memory)),
+              if (memories.length > 4)
                 GestureDetector(
                   onTap: () {
                     HapticFeedback.lightImpact();
