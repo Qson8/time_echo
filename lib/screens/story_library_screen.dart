@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_theme.dart';
 import '../models/nostalgic_story.dart';
-import '../models/memory_record.dart';
+import '../models/memory_capsule.dart';
 import '../services/story_service.dart';
-import '../services/memory_service.dart';
-import 'memory_detail_screen.dart';
+import '../services/memory_capsule_service.dart';
+import 'memory_capsule_creation_screen.dart';
 import 'question_detail_screen.dart';
 import '../services/question_service.dart';
 
@@ -649,19 +649,24 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
   }
 
   Future<void> _recordMemoryFromStory() async {
-    // 根据故事推断年代和分类
+    // 根据故事推断年代和分类，创建记忆胶囊（快速创建，标题为空）
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => MemoryDetailScreen(
-          memory: MemoryRecord(
+        builder: (context) => MemoryCapsuleCreationScreen(
+          capsule: MemoryCapsule(
             id: 0,
+            questionId: null,
+            title: null, // 快速创建时标题为空
             content: '阅读《${widget.story.title}》让我想起了...',
+            imagePath: null,
+            audioPath: null,
+            createdAt: DateTime.now(),
+            memoryDate: DateTime.now(),
+            tags: ['故事', ...widget.story.tags],
             era: widget.story.era,
             category: widget.story.category,
-            memoryDate: DateTime.now(),
-            createTime: DateTime.now(),
             mood: '怀念',
-            tags: ['故事', ...widget.story.tags],
+            location: null,
           ),
         ),
       ),
@@ -670,7 +675,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
     if (result == true && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('回忆已记录到时光回忆'),
+          content: Text('记忆已记录到记忆胶囊'),
           backgroundColor: Colors.green,
         ),
       );
@@ -848,7 +853,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
 
             const SizedBox(height: 32),
 
-            // 记录回忆按钮
+            // 记录记忆按钮
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(

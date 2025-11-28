@@ -60,14 +60,17 @@ class QuestionUpdateService {
     }
   }
 
-  /// 更新题库
+  /// 更新题库（自动同步assets中的题目到磁盘）
   Future<bool> updateQuestionDatabase() async {
     try {
+      print('📚 开始更新题库...');
       final newQuestions = await _loadNewQuestionsFromAssets();
       if (newQuestions.isEmpty) {
-        print('没有新题目需要更新');
+        print('📚 没有新题目需要更新');
         return false;
       }
+
+      print('📚 从assets加载了 ${newQuestions.length} 道题目');
 
       // 过滤出数据库中不存在的题目
       final List<Question> questionsToAdd = [];
@@ -79,20 +82,22 @@ class QuestionUpdateService {
       }
 
       if (questionsToAdd.isEmpty) {
-        print('所有题目已存在，无需更新');
+        print('📚 ✅ 所有题目已存在，题库已是最新版本');
         return false;
       }
 
-      // 添加新题目到数据库
+      print('📚 发现 ${questionsToAdd.length} 道新题目，开始写入磁盘...');
+
+      // 添加新题目到数据库（直接写入磁盘）
       await _questionService.addQuestions(questionsToAdd);
 
       // 记录更新日志
       await _recordUpdateLog(questionsToAdd.length);
 
-      print('成功更新 ${questionsToAdd.length} 道新题目');
+      print('📚 ✅ 成功更新 ${questionsToAdd.length} 道新题目，已写入磁盘');
       return true;
     } catch (e) {
-      print('更新题库失败: $e');
+      print('📚 ❌ 更新题库失败: $e');
       rethrow;
     }
   }

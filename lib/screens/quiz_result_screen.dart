@@ -9,10 +9,10 @@ import '../services/local_storage_service.dart';
 import 'enhanced_home_screen.dart';
 import 'quiz_screen.dart';
 import 'quiz_config_screen.dart';
-import 'memory_detail_screen.dart';
-import 'memory_view_screen.dart';
-import '../services/memory_service.dart';
-import '../models/memory_record.dart';
+import 'memory_capsule_creation_screen.dart';
+import 'memory_capsule_detail_screen.dart';
+import '../services/memory_capsule_service.dart';
+import '../models/memory_capsule.dart';
 import '../services/share_service.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -35,8 +35,8 @@ class _QuizResultScreenState extends State<QuizResultScreen>
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
   
-  MemoryRecord? _relatedMemory; // 关联的回忆记录
-  bool _isLoadingMemory = true; // 是否正在加载回忆
+  MemoryCapsule? _relatedMemory; // 关联的记忆胶囊
+  bool _isLoadingMemory = true; // 是否正在加载记忆
 
   @override
   void initState() {
@@ -63,31 +63,33 @@ class _QuizResultScreenState extends State<QuizResultScreen>
     ));
 
     _animationController.forward();
-    _checkRelatedMemory(); // 检查是否有对应的回忆
+    _checkRelatedMemory(); // 检查是否有对应的记忆
   }
   
-  /// 检查是否有对应的回忆记录
+  /// 检查是否有对应的记忆胶囊
   Future<void> _checkRelatedMemory() async {
     try {
-      final memoryService = MemoryService();
-      final allMemories = await memoryService.getAllMemories();
+      final memoryCapsuleService = MemoryCapsuleService();
+      await memoryCapsuleService.initialize();
+      final allCapsules = await memoryCapsuleService.getAllCapsules();
       
-      // 查找与当前拾光记录关联的回忆
+      // 查找与当前拾光记录关联的记忆胶囊
       // 匹配条件：memoryDate 与 testTime 相同（允许1秒误差），且包含"拾光"标签
       final testTime = widget.testRecord.testTime;
-      MemoryRecord? relatedMemory;
+      MemoryCapsule? relatedMemory;
       
       try {
-        relatedMemory = allMemories.firstWhere(
-          (memory) {
+        relatedMemory = allCapsules.firstWhere(
+          (capsule) {
             // 检查时间是否匹配（允许1秒误差）
-            final timeDiff = (memory.memoryDate.difference(testTime).inSeconds).abs();
-            final hasEchoTag = memory.hasTag('拾光');
+            if (capsule.memoryDate == null) return false;
+            final timeDiff = (capsule.memoryDate!.difference(testTime).inSeconds).abs();
+            final hasEchoTag = capsule.hasTag('拾光');
             return timeDiff <= 1 && hasEchoTag;
           },
         );
       } catch (e) {
-        // 没有找到匹配的回忆
+        // 没有找到匹配的记忆
         relatedMemory = null;
       }
       
@@ -98,7 +100,7 @@ class _QuizResultScreenState extends State<QuizResultScreen>
         });
       }
     } catch (e) {
-      print('检查关联回忆失败: $e');
+      print('检查关联记忆失败: $e');
       if (mounted) {
         setState(() {
           _relatedMemory = null;
@@ -439,7 +441,7 @@ class _QuizResultScreenState extends State<QuizResultScreen>
               ),
               const SizedBox(width: 8),
               Text(
-                hasMemory ? '回忆已记录' : '这题让你想起什么？',
+                hasMemory ? '记忆已记录' : '这题让你想起什么？',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -451,8 +453,8 @@ class _QuizResultScreenState extends State<QuizResultScreen>
           const SizedBox(height: 12),
           Text(
             hasMemory
-                ? '你已经为这次拾光之旅记录了回忆，可以在时光回忆中查看～'
-                : '记录下这段答题带来的回忆吧，让它成为你独特的怀旧档案～',
+                ? '你已经为这次拾光之旅记录了记忆，可以在记忆胶囊中查看～'
+                : '记录下这段答题带来的记忆吧，让它成为你独特的怀旧档案～',
             style: const TextStyle(
               fontSize: 14,
               color: Colors.black87,
@@ -462,13 +464,13 @@ class _QuizResultScreenState extends State<QuizResultScreen>
           ),
           const SizedBox(height: 16),
           if (hasMemory) ...[
-            // 已记录状态：显示查看回忆按钮
+            // 已记录状态：显示查看记忆按钮
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () => _viewMemory(context),
                 icon: const Icon(Icons.visibility),
-                label: const Text('查看回忆'),
+                label: const Text('查看记忆'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
@@ -480,13 +482,13 @@ class _QuizResultScreenState extends State<QuizResultScreen>
               ),
             ),
             const SizedBox(height: 8),
-            // 编辑回忆按钮
+            // 编辑记忆按钮
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: () => _editMemory(context),
                 icon: const Icon(Icons.edit),
-                label: const Text('编辑回忆'),
+                label: const Text('编辑记忆'),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.green.shade700,
                   side: BorderSide(color: Colors.green.shade700),
@@ -504,7 +506,7 @@ class _QuizResultScreenState extends State<QuizResultScreen>
               child: OutlinedButton.icon(
                 onPressed: () => _recordMemory(context),
                 icon: const Icon(Icons.edit),
-                label: const Text('记录回忆'),
+                label: const Text('记忆胶囊'),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.purple,
                   side: const BorderSide(color: Colors.purple),
@@ -521,42 +523,42 @@ class _QuizResultScreenState extends State<QuizResultScreen>
     );
   }
   
-  /// 查看回忆
+  /// 查看记忆胶囊
   Future<void> _viewMemory(BuildContext context) async {
     if (_relatedMemory == null) return;
     
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => MemoryViewScreen(
-          memory: _relatedMemory!,
+        builder: (context) => MemoryCapsuleDetailScreen(
+          capsule: _relatedMemory!,
         ),
       ),
     );
     
-    // 如果编辑了回忆，重新检查
+    // 如果编辑了记忆胶囊，重新检查
     if (result == true && mounted) {
       await _checkRelatedMemory();
     }
   }
   
-  /// 编辑回忆
+  /// 编辑记忆胶囊
   Future<void> _editMemory(BuildContext context) async {
     if (_relatedMemory == null) return;
     
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => MemoryDetailScreen(
-          memory: _relatedMemory!,
+        builder: (context) => MemoryCapsuleCreationScreen(
+          capsule: _relatedMemory!,
         ),
       ),
     );
     
-    // 如果编辑成功，重新检查回忆
+    // 如果编辑成功，重新检查记忆胶囊
     if (result == true && mounted) {
       await _checkRelatedMemory();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('回忆已更新'),
+          content: Text('记忆胶囊已更新'),
           backgroundColor: Colors.green,
           duration: Duration(seconds: 2),
         ),
@@ -564,9 +566,10 @@ class _QuizResultScreenState extends State<QuizResultScreen>
     }
   }
 
-  /// 记录回忆
+  /// 记录记忆（使用记忆胶囊）
   Future<void> _recordMemory(BuildContext context) async {
-    final memoryService = MemoryService();
+    final memoryCapsuleService = MemoryCapsuleService();
+    await memoryCapsuleService.initialize();
     
     // 根据拾光记录推断年代和分类
     // 从categoryScores中获取最高分的分类
@@ -592,30 +595,33 @@ class _QuizResultScreenState extends State<QuizResultScreen>
     // 生成默认回忆内容提示（用户自己写内容）
     final defaultContentHint = '这次拾光之旅让我想起了...';
     
+    // 导航到记忆胶囊创建页面（标题为空，快速创建）
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => MemoryDetailScreen(
-          memory: MemoryRecord(
+        builder: (context) => MemoryCapsuleCreationScreen(
+          capsule: MemoryCapsule(
             id: 0, // 0表示新建
+            questionId: null,
+            title: null, // 快速创建时标题为空
             content: defaultContentHint,
+            imagePath: null,
+            audioPath: null,
+            createdAt: DateTime.now(),
+            memoryDate: widget.testRecord.testTime,
+            tags: ['拾光'],
             era: era,
             category: dominantCategory,
-            memoryDate: widget.testRecord.testTime,
-            createTime: DateTime.now(),
             mood: '怀念',
-            tags: ['拾光'],
+            location: null,
           ),
         ),
       ),
     );
     
     if (result == true && mounted) {
-      // 重新检查关联的回忆
-      await _checkRelatedMemory();
-      
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('回忆已记录到时光回忆'),
+          content: Text('记忆已记录到记忆胶囊'),
           backgroundColor: Colors.green,
           duration: Duration(seconds: 2),
         ),

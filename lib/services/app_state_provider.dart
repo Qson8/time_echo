@@ -15,6 +15,7 @@ import '../services/performance_service.dart';
 import '../services/enhanced_achievement_service.dart';
 import '../services/intelligent_analytics_service.dart';
 import '../services/recommendation_service.dart';
+import '../services/memory_capsule_service.dart';
 import '../constants/app_constants.dart';
 
 /// 组题模式枚举
@@ -107,27 +108,61 @@ class AppStateProvider extends ChangeNotifier {
       await _fontSizeService.initialize();
       print('   字体大小服务初始化完成');
       
-      print('4. 加载题目数据...');
+      print('4. 自动更新题目数据（确保题库最新）...');
+      try {
+        final hasUpdate = await _updateService.hasQuestionUpdate();
+        if (hasUpdate) {
+          print('   检测到新题目，开始自动更新...');
+          final updateSuccess = await _updateService.updateQuestionDatabase();
+          if (updateSuccess) {
+            print('   ✅ 题目自动更新成功，已写入磁盘');
+          } else {
+            print('   ℹ️ 所有题目已是最新版本');
+          }
+        } else {
+          print('   ℹ️ 没有新题目需要更新');
+        }
+      } catch (e) {
+        print('   ⚠️ 自动更新题目失败: $e');
+        // 更新失败不影响应用启动，继续执行
+      }
+      
+      print('5. 加载题目数据（从磁盘加载最新题库）...');
       await _loadQuestions();
       print('   题目数据加载完成，共 ${_questions.length} 题');
       
-      print('5. 加载成就数据...');
+      print('6. 加载成就数据...');
       await _loadAchievements();
       print('   成就数据加载完成，共 ${_achievements.length} 个成就');
       
-      print('6. 加载收藏数据...');
+      print('7. 加载收藏数据...');
       await _loadCollectedQuestions();
       print('   收藏数据加载完成，共 ${_collectedQuestions.length} 题');
       
-      print('7. 加载拾光记录...');
+      print('8. 加载拾光记录...');
       await _loadTestRecords();
       print('   拾光记录加载完成，共 ${_testRecords.length} 条记录');
       
-      print('8. 加载新题目数量...');
+      print('9. 迁移拾光回忆数据到记忆胶囊...');
+      try {
+        final memoryCapsuleService = MemoryCapsuleService();
+        await memoryCapsuleService.initialize();
+        final migratedCount = await memoryCapsuleService.migrateFromMemoryRecords();
+        if (migratedCount > 0) {
+          print('   ✅ 成功迁移 $migratedCount 条拾光回忆到记忆胶囊');
+        } else {
+          print('   ℹ️ 没有需要迁移的拾光回忆数据');
+        }
+      } catch (e) {
+        print('   ⚠️ 迁移拾光回忆数据失败: $e');
+        // 迁移失败不影响应用启动，继续执行
+      }
+      
+      print('10. 加载新题目数量...');
       await _loadNewQuestionCount();
       print('   新题目数量: $_newQuestionCount');
       
-      print('9. 加载用户设置...');
+      print('11. 加载用户设置...');
       await _loadUserSettings();
       print('   用户设置加载完成');
       print('    - 评语风格: $_commentStyle');
@@ -298,6 +333,12 @@ class AppStateProvider extends ChangeNotifier {
     final selectionMode = mode ?? _questionSelectionMode;
     
     try {
+      // 先检查是否有足够的题目
+      final allQuestions = await _questionService.getAllQuestions();
+      if (allQuestions.isEmpty) {
+        throw Exception('题库中没有题目，请检查数据文件');
+      }
+      
       // 根据组题模式选择题目
       switch (selectionMode) {
         case QuestionSelectionMode.balanced:
@@ -309,7 +350,6 @@ class AppStateProvider extends ChangeNotifier {
         case QuestionSelectionMode.smart:
           // 智能推荐模式
           try {
-            final allQuestions = await _questionService.getAllQuestions();
             final testRecords = await _testRecordService.getAllTestRecords();
             _currentTestQuestions = _recommendationSystem.recommendQuestionsByPerformance(
               allQuestions,
@@ -330,15 +370,29 @@ class AppStateProvider extends ChangeNotifier {
           print('🎲 使用随机模式组题，已选择 ${_currentTestQuestions.length} 道题目');
           break;
       }
-    } catch (e) {
-      print('从数据库获取题目失败，使用示例题目: $e');
-      // 如果数据库失败，使用示例题目
-      _currentTestQuestions = _getSampleQuestions().take(questionCount).toList();
-    }
-    
-    // 如果仍然没有题目，使用默认示例
-    if (_currentTestQuestions.isEmpty) {
-      _currentTestQuestions = _getSampleQuestions().take(questionCount).toList();
+      
+      // 如果仍然没有题目，使用示例题目
+      if (_currentTestQuestions.isEmpty) {
+        print('⚠️ 警告：未获取到题目，使用示例题目');
+        _currentTestQuestions = _getSampleQuestions().take(questionCount).toList();
+        if (_currentTestQuestions.isEmpty) {
+          throw Exception('无法获取题目，请检查题库数据');
+        }
+      }
+    } catch (e, stackTrace) {
+      print('❌ 开始拾光失败: $e');
+      print('❌ 错误堆栈: $stackTrace');
+      // 尝试使用示例题目作为最后的后备方案
+      try {
+        _currentTestQuestions = _getSampleQuestions().take(questionCount).toList();
+        if (_currentTestQuestions.isEmpty) {
+          throw Exception('无法获取题目，请检查题库数据');
+        }
+        print('✅ 使用示例题目作为后备方案');
+      } catch (fallbackError) {
+        print('❌ 后备方案也失败: $fallbackError');
+        rethrow; // 重新抛出原始错误
+      }
     }
     
     _currentQuestionIndex = 0;
@@ -428,14 +482,24 @@ class AppStateProvider extends ChangeNotifier {
           print('🎲 使用随机模式（带过滤）组题，已选择 ${_currentTestQuestions.length} 道题目');
           break;
       }
-    } catch (e) {
-      print('从数据库获取题目失败: $e');
-      throw Exception('获取题目失败：$e');
+    } catch (e, stackTrace) {
+      print('❌ 从数据库获取题目失败: $e');
+      print('❌ 错误堆栈: $stackTrace');
+      // 提供更详细的错误信息
+      String errorMessage = '获取题目失败';
+      if (e.toString().contains('没有找到') || e.toString().contains('符合条件的题目')) {
+        errorMessage = '没有找到符合条件的题目，请调整筛选条件后重试';
+      } else if (e.toString().contains('数据库') || e.toString().contains('存储')) {
+        errorMessage = '数据加载失败，请检查应用数据文件';
+      } else {
+        errorMessage = '获取题目失败：${e.toString()}';
+      }
+      throw Exception(errorMessage);
     }
     
     // 如果仍然没有题目，抛出异常
     if (_currentTestQuestions.isEmpty) {
-      throw Exception('没有找到符合条件的题目，请调整筛选条件');
+      throw Exception('没有找到符合条件的题目，请调整筛选条件后重试');
     }
     
     // 验证定制项是否生效

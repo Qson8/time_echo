@@ -89,7 +89,7 @@ class _MemoryScreenState extends State<MemoryScreen>
           IconButton(
             icon: const Icon(Icons.add_circle_outline),
             onPressed: () => _navigateToAddMemory(context),
-            tooltip: '记录回忆',
+            tooltip: '记忆胶囊',
           ),
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -139,7 +139,7 @@ class _MemoryScreenState extends State<MemoryScreen>
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _navigateToAddMemory(context),
         icon: const Icon(Icons.add),
-        label: const Text('记录回忆'),
+        label: const Text('记忆胶囊'),
         backgroundColor: const Color(AppConstants.primaryColor),
       ),
     );

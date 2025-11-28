@@ -595,14 +595,36 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
 
   /// 切换收藏状态
   Future<void> _toggleCollection(BuildContext context, AppStateProvider appState) async {
-    await appState.toggleCollection(widget.question.id);
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('收藏状态已更新'),
-          duration: Duration(seconds: 1),
-        ),
-      );
+    try {
+      await appState.toggleCollection(widget.question.id);
+      
+      // 强制刷新收藏列表（通知收藏页面更新）
+      await appState.refreshCollections();
+      
+      if (context.mounted) {
+        // 重新构建当前页面以更新收藏图标状态
+        setState(() {});
+        
+        final isCollected = await appState.isQuestionCollected(widget.question.id);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(isCollected ? '已收藏' : '已取消收藏'),
+            duration: const Duration(seconds: 1),
+            backgroundColor: isCollected ? Colors.green : Colors.grey,
+          ),
+        );
+      }
+    } catch (e) {
+      print('切换收藏状态失败: $e');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('操作失败: $e'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
     }
   }
 }

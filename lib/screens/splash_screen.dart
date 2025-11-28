@@ -167,7 +167,7 @@ class _SplashScreenState extends State<SplashScreen>
                       
                       // 加载文字
                       const Text(
-                        '正在加载拾光记忆...',
+                        '正在加载记忆胶囊...',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.white70,

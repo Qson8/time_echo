@@ -236,15 +236,6 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // 题库更新提示
-                      if (appState.newQuestionCount > 0)
-                        AnimationUtils.fadeIn(
-                          child: _buildUpdateNotification(context, appState),
-                        ),
-                      
-                      if (appState.newQuestionCount > 0)
-                        const SizedBox(height: 20),
-                      
                       // 未完成拾光提示
                       if (_hasIncompleteTest)
                         AnimationUtils.slideIn(
@@ -287,45 +278,6 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
             ),
           );
         },
-      ),
-    );
-  }
-
-  /// 构建更新通知
-  Widget _buildUpdateNotification(BuildContext context, AppStateProvider appState) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(AppConstants.secondaryColor),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: const Color(AppConstants.primaryColor),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        children: [
-          Image.asset(
-            'assets/images/icon.png',
-            width: 24,
-            height: 24,
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              '待更新：${appState.newQuestionCount}道新拾光题目',
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () => _updateQuestionDatabase(context, appState),
-            child: const Text('立即更新'),
-          ),
-        ],
       ),
     );
   }
@@ -515,8 +467,8 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                 offset: const Offset(50, 0),
                 child: _buildQuickStartCard(
                   context,
-                  '时光回忆',
-                  '记录你的回忆',
+                  '记忆胶囊',
+                  '记录你的记忆',
                   Icons.photo_library,
                   () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => const MemoryScreen()),
@@ -1206,8 +1158,9 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
           
           print('✅ 使用保存的配置启动拾光成功');
         }
-      } catch (e) {
+      } catch (e, stackTrace) {
         print('❌ 使用保存的配置启动拾光失败: $e');
+        print('❌ 错误堆栈: $stackTrace');
         
         // 关闭加载对话框
         if (mounted && Navigator.of(context).canPop()) {
@@ -1216,11 +1169,22 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
         
         // 显示错误提示并导航到配置页面
         if (mounted) {
+          String errorMessage = '启动拾光失败';
+          if (e.toString().contains('没有找到') || e.toString().contains('符合条件的题目')) {
+            errorMessage = '没有找到符合条件的题目，请调整筛选条件后重试';
+          } else if (e.toString().contains('数据库') || e.toString().contains('存储')) {
+            errorMessage = '数据加载失败，请检查应用数据文件';
+          } else if (e.toString().contains('题库') || e.toString().contains('题目')) {
+            errorMessage = '题库中没有题目，请检查数据文件';
+          } else {
+            errorMessage = '启动拾光失败：${e.toString()}';
+          }
+          
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('启动拾光失败：$e，请重新配置'),
+              content: Text(errorMessage),
               backgroundColor: Colors.red,
-              duration: const Duration(seconds: 3),
+              duration: const Duration(seconds: 4),
             ),
           );
           
@@ -1295,41 +1259,6 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
     }
   }
 
-  /// 更新题库
-  Future<void> _updateQuestionDatabase(BuildContext context, AppStateProvider appState) async {
-    // 检查是否有新题目
-    final hasUpdate = await appState.hasQuestionUpdate();
-    if (!hasUpdate) {
-      InteractiveFeedback.showInfo(context, '暂无新题目需要更新');
-      return;
-    }
-
-    try {
-      // 显示加载对话框
-      InteractiveFeedback.showLoading(context, '正在更新题库...');
-
-      // 执行更新
-      final success = await appState.updateQuestionDatabase();
-      
-      // 关闭加载对话框
-      InteractiveFeedback.hideLoading(context);
-
-      if (success) {
-        InteractiveFeedback.showSuccess(
-          context,
-          '题库更新成功！',
-          duration: const Duration(seconds: 2),
-        );
-      } else {
-        InteractiveFeedback.showInfo(context, '所有题目已是最新版本');
-      }
-    } catch (e) {
-      // 关闭加载对话框
-      InteractiveFeedback.hideLoading(context);
-      InteractiveFeedback.showError(context, '更新出错：$e');
-    }
-  }
-
   /// 显示关于对话框
   void _showAboutDialog(BuildContext context) {
     showDialog(
@@ -1353,7 +1282,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
             children: [
               // 应用简介
               const Text(
-                '拾光机是一款专为怀旧爱好者打造的离线问答应用。无需网络连接，随时随地畅享80-90年代的经典回忆。通过答题拾光，系统会智能计算你的"拾光年龄"，让你了解自己对那个年代的记忆深度。提供详细解析、学习报告、记忆胶囊等功能，让每一份时光记忆都值得珍藏。',
+                '拾光机是一款专为怀旧爱好者打造的离线问答应用，带你重温80-90年代的美好时光。无需网络连接，随时随地畅享经典回忆，通过答题拾光，系统会智能计算你的"拾光年龄"，让你了解自己对那个年代的记忆深度。提供记忆胶囊、学习报告、成就系统等功能，让每一份时光记忆都值得珍藏。',
                 style: TextStyle(fontSize: 14, height: 1.5),
               ),
               const SizedBox(height: 16),
@@ -1393,7 +1322,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
               _buildFeatureItem('拾光年龄：智能计算你的专属"拾光年龄"'),
               _buildFeatureItem('学习报告：自动生成日报/周报/月报，了解学习情况'),
               _buildFeatureItem('收藏题目：喜欢的题目一键收藏，添加个人笔记'),
-              _buildFeatureItem('记忆胶囊：创建专属记忆，记录与题目相关的回忆'),
+              _buildFeatureItem('记忆胶囊：创建专属记忆，记录与题目相关的记忆'),
               _buildFeatureItem('每日挑战：每天3个挑战任务，完成获得奖励'),
               _buildFeatureItem('成就系统：8种成就徽章，见证成长足迹'),
               _buildFeatureItem('答题统计：可视化图表展示学习趋势和进步轨迹'),

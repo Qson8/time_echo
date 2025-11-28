@@ -22,6 +22,7 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
   String? _selectedEra;
   String? _selectedCategory;
   late TabController _tabController;
+  DateTime? _lastRefreshTime; // 记录最后刷新时间，避免过度刷新
 
   @override
   void initState() {
@@ -34,7 +35,7 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
           _selectedEra = null;
           _selectedCategory = null;
         });
-        _loadCapsules();
+        _loadCapsules(forceReload: true); // Tab切换时强制刷新
       }
     });
     _initializeService();
@@ -44,6 +45,24 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  /// 当页面重新可见时刷新数据（使用didChangeDependencies + 防抖）
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 每次页面可见时都刷新一次，但添加防抖机制（至少间隔1秒）
+    final now = DateTime.now();
+    if (_lastRefreshTime == null || 
+        now.difference(_lastRefreshTime!).inSeconds > 1) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          print('🔄 页面可见，刷新记忆胶囊列表...');
+          _loadCapsules(forceReload: true);
+          _lastRefreshTime = now;
+        }
+      });
+    }
   }
 
   /// 初始化服务并加载数据
@@ -61,7 +80,7 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
   }
 
   /// 加载记忆胶囊
-  Future<void> _loadCapsules() async {
+  Future<void> _loadCapsules({bool forceReload = false}) async {
     if (!mounted) return;
     setState(() => _isLoading = true);
 
@@ -70,39 +89,39 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
 
       switch (_selectedTabIndex) {
         case 0: // 全部
-          capsules = await _service.getAllCapsules();
+          capsules = await _service.getAllCapsules(forceReload: forceReload);
           break;
         case 1: // 按年代
           if (_selectedEra != null) {
-            capsules = await _service.getCapsulesByEra(_selectedEra!);
+            capsules = await _service.getCapsulesByEra(_selectedEra!, forceReload: forceReload);
           } else {
-            capsules = await _service.getAllCapsules();
+            capsules = await _service.getAllCapsules(forceReload: forceReload);
           }
           break;
         case 2: // 按分类
           if (_selectedCategory != null) {
-            capsules = await _service.getCapsulesByCategory(_selectedCategory!);
+            capsules = await _service.getCapsulesByCategory(_selectedCategory!, forceReload: forceReload);
           } else {
-            capsules = await _service.getAllCapsules();
+            capsules = await _service.getAllCapsules(forceReload: forceReload);
           }
           break;
         default:
-          capsules = await _service.getAllCapsules();
+          capsules = await _service.getAllCapsules(forceReload: forceReload);
       }
 
-      // 确保capsules不为null
-      if (capsules.isEmpty) {
-        capsules = [];
-      }
+      // 确保capsules不为null，并创建可修改的副本（因为服务返回的是不可修改列表）
+      List<MemoryCapsule> mutableCapsules = capsules.isEmpty 
+          ? [] 
+          : List<MemoryCapsule>.from(capsules);
 
       // 按创建时间倒序排列
-      if (capsules.isNotEmpty) {
-        capsules.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      if (mutableCapsules.isNotEmpty) {
+        mutableCapsules.sort((a, b) => b.createdAt.compareTo(a.createdAt));
       }
 
       if (mounted) {
         setState(() {
-          _capsules = capsules;
+          _capsules = mutableCapsules;
           _isLoading = false;
         });
       }
@@ -121,10 +140,22 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('时光记忆胶囊'),
+        title: const Text('记忆胶囊'),
         centerTitle: true,
         bottom: TabBar(
           controller: _tabController,
+          labelColor: Colors.white, // 选中标签使用白色，更显眼
+          unselectedLabelColor: Colors.white70, // 未选中标签使用半透明白色
+          indicatorColor: Colors.white, // 指示器颜色
+          indicatorWeight: 3, // 指示器粗细
+          labelStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold, // 选中标签加粗
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.normal, // 未选中标签正常粗细
+          ),
           tabs: const [
             Tab(text: '全部'),
             Tab(text: '按年代'),
@@ -134,9 +165,19 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : _capsules.isEmpty
-              ? _buildEmptyState()
-              : _buildCapsulesList(),
+          : Column(
+              children: [
+                // 筛选器（按年代或分类）- 始终显示，即使列表为空
+                if (_selectedTabIndex == 1 || _selectedTabIndex == 2)
+                  _buildFilterBar(),
+                // 列表或空状态
+                Expanded(
+                  child: _capsules.isEmpty
+                      ? _buildEmptyState()
+                      : _buildCapsulesList(),
+                ),
+              ],
+            ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _createNewCapsule(),
         icon: const Icon(Icons.add),
@@ -148,6 +189,18 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
 
   /// 构建空状态
   Widget _buildEmptyState() {
+    String emptyMessage = '还没有记忆胶囊';
+    String emptyHint = '点击右下角按钮创建你的第一个记忆胶囊';
+    
+    // 根据筛选条件显示不同的提示
+    if (_selectedTabIndex == 1 && _selectedEra != null) {
+      emptyMessage = '还没有$_selectedEra的记忆胶囊';
+      emptyHint = '尝试选择其他年代，或创建新的记忆胶囊';
+    } else if (_selectedTabIndex == 2 && _selectedCategory != null) {
+      emptyMessage = '还没有$_selectedCategory分类的记忆胶囊';
+      emptyHint = '尝试选择其他分类，或创建新的记忆胶囊';
+    }
+    
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -159,7 +212,7 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
           ),
           const SizedBox(height: 16),
           Text(
-            '还没有记忆胶囊',
+            emptyMessage,
             style: TextStyle(
               fontSize: 18,
               color: Colors.grey[600],
@@ -167,13 +220,16 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            '点击右下角按钮创建你的第一个记忆胶囊',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[500],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Text(
+              emptyHint,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[500],
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -182,26 +238,15 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
 
   /// 构建记忆胶囊列表
   Widget _buildCapsulesList() {
-    return Column(
-      children: [
-        // 筛选器（按年代或分类）
-        if (_selectedTabIndex == 1 || _selectedTabIndex == 2)
-          _buildFilterBar(),
-        
-        // 列表
-        Expanded(
-          child: RefreshIndicator(
-            onRefresh: _loadCapsules,
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: _capsules.length,
-              itemBuilder: (context, index) {
-                return _buildCapsuleCard(_capsules[index]);
-              },
-            ),
-          ),
-        ),
-      ],
+    return RefreshIndicator(
+      onRefresh: _loadCapsules,
+      child: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: _capsules.length,
+        itemBuilder: (context, index) {
+          return _buildCapsuleCard(_capsules[index]);
+        },
+      ),
     );
   }
 
@@ -274,121 +319,321 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
   /// 构建筛选芯片
   Widget _buildFilterChip(String label, bool isSelected, VoidCallback onTap) {
     return FilterChip(
-      label: Text(label),
+      label: Text(
+        label,
+        style: TextStyle(
+          color: isSelected 
+              ? const Color(AppConstants.primaryColor) // 选中时使用主题色，更显眼
+              : const Color(AppConstants.textPrimaryColor), // 未选中时使用深色文字
+          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+          fontSize: 14,
+        ),
+      ),
       selected: isSelected,
       onSelected: (_) => onTap(),
       selectedColor: const Color(AppConstants.primaryColor).withOpacity(0.2),
+      backgroundColor: Colors.white, // 未选中时使用白色背景，提高对比度
       checkmarkColor: const Color(AppConstants.primaryColor),
+      side: BorderSide(
+        color: isSelected 
+            ? const Color(AppConstants.primaryColor)
+            : Colors.grey.withOpacity(0.3),
+        width: 1.5,
+      ),
     );
   }
 
   /// 构建记忆胶囊卡片
   Widget _buildCapsuleCard(MemoryCapsule capsule) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(AppConstants.primaryColor).withOpacity(0.15),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(AppConstants.primaryColor).withOpacity(0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      child: InkWell(
-        onTap: () => _viewCapsuleDetail(capsule),
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 标题和标签
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      capsule.title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => _viewCapsuleDetail(capsule),
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 头部：年代标签和分类
+                Row(
+                  children: [
+                    // 年代标签
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
                       ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: const Color(AppConstants.primaryColor).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      capsule.era,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Color(AppConstants.primaryColor),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(AppConstants.primaryColor).withOpacity(0.15),
+                            const Color(AppConstants.primaryColor).withOpacity(0.08),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: const Color(AppConstants.primaryColor).withOpacity(0.3),
+                          width: 1,
+                        ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              
-              // 内容预览
-              Text(
-                capsule.getPreviewText(maxLength: 100),
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[700],
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 12),
-              
-              // 底部信息
-              Row(
-                children: [
-                  // 标签
-                  if (capsule.tags.isNotEmpty)
-                    Expanded(
-                      child: Wrap(
-                        spacing: 6,
-                        children: (capsule.tags.take(3).toList()).map((tag) {
-                          return Chip(
-                            label: Text(
-                              tag,
-                              style: const TextStyle(fontSize: 11),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.access_time,
+                            size: 14,
+                            color: const Color(AppConstants.primaryColor),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            capsule.era,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Color(AppConstants.primaryColor),
+                              fontWeight: FontWeight.w600,
                             ),
-                            padding: EdgeInsets.zero,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            visualDensity: VisualDensity.compact,
-                          );
-                        }).toList(),
+                          ),
+                        ],
                       ),
                     ),
-                  
-                  const Spacer(),
-                  
-                  // 媒体图标
-                  if (capsule.hasImage)
-                    const Icon(Icons.image, size: 16, color: Colors.blue),
-                  if (capsule.hasImage && capsule.hasAudio)
-                    const SizedBox(width: 4),
-                  if (capsule.hasAudio)
-                    const Icon(Icons.audiotrack, size: 16, color: Colors.orange),
-                  
-                  const SizedBox(width: 8),
-                  
-                  // 时间
-                  Text(
-                    _formatDate(capsule.createdAt),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[500],
+                    const SizedBox(width: 8),
+                    // 分类标签
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(AppConstants.accentColor).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: const Color(AppConstants.accentColor).withOpacity(0.3),
+                          width: 1,
+                        ),
+                      ),
+                      child: Text(
+                        capsule.category,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Color(AppConstants.accentColor),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    // 心情图标
+                    if (capsule.mood.isNotEmpty)
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: _getMoodColor(capsule.mood).withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          _getMoodIcon(capsule.mood),
+                          size: 16,
+                          color: _getMoodColor(capsule.mood),
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                
+                // 标题
+                Text(
+                  capsule.getDisplayTitle(),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(AppConstants.textPrimaryColor),
+                    height: 1.3,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 12),
+                
+                // 内容预览
+                Text(
+                  capsule.getPreviewText(maxLength: 120),
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey[700],
+                    height: 1.5,
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 16),
+                
+                // 底部信息栏
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: Colors.grey[200]!,
+                        width: 1,
+                      ),
                     ),
                   ),
-                ],
-              ),
-            ],
+                  child: Row(
+                    children: [
+                      // 标签
+                      if (capsule.tags.isNotEmpty)
+                        Expanded(
+                          child: Wrap(
+                            spacing: 6,
+                            runSpacing: 6,
+                            children: (capsule.tags.take(3).toList()).map((tag) {
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 5,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: Colors.grey[300]!,
+                                    width: 0.5,
+                                  ),
+                                ),
+                                child: Text(
+                                  tag,
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.grey[700],
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      
+                      const SizedBox(width: 12),
+                      
+                      // 媒体图标
+                      if (capsule.hasImage || capsule.hasAudio)
+                        Row(
+                          children: [
+                            if (capsule.hasImage)
+                              Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: const Icon(
+                                  Icons.image,
+                                  size: 14,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            if (capsule.hasImage && capsule.hasAudio)
+                              const SizedBox(width: 6),
+                            if (capsule.hasAudio)
+                              Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: Colors.orange.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: const Icon(
+                                  Icons.audiotrack,
+                                  size: 14,
+                                  color: Colors.orange,
+                                ),
+                              ),
+                          ],
+                        ),
+                      
+                      const SizedBox(width: 12),
+                      
+                      // 时间
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.schedule,
+                            size: 14,
+                            color: Colors.grey[500],
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            _formatDate(capsule.createdAt),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  /// 获取心情颜色
+  Color _getMoodColor(String mood) {
+    switch (mood) {
+      case '怀念':
+        return Colors.purple;
+      case '开心':
+        return Colors.orange;
+      case '感动':
+        return Colors.red;
+      case '平静':
+        return Colors.blue;
+      case '兴奋':
+        return Colors.green;
+      default:
+        return const Color(AppConstants.primaryColor);
+    }
+  }
+
+  /// 获取心情图标
+  IconData _getMoodIcon(String mood) {
+    switch (mood) {
+      case '怀念':
+        return Icons.favorite;
+      case '开心':
+        return Icons.mood;
+      case '感动':
+        return Icons.favorite_border;
+      case '平静':
+        return Icons.wb_sunny;
+      case '兴奋':
+        return Icons.celebration;
+      default:
+        return Icons.sentiment_satisfied;
+    }
   }
 
   /// 格式化日期
@@ -419,7 +664,9 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
 
     // 如果返回true，说明需要刷新列表
     if (result == true) {
-      _loadCapsules();
+      print('🔄 记忆胶囊编辑成功，强制刷新列表...');
+      await _loadCapsules(forceReload: true);
+      print('✅ 列表刷新完成，当前有 ${_capsules.length} 个记忆胶囊');
     }
   }
 
@@ -434,7 +681,10 @@ class _MemoryCapsuleScreenState extends State<MemoryCapsuleScreen>
 
     // 如果返回true，说明创建成功，需要刷新列表
     if (result == true) {
-      _loadCapsules();
+      print('🔄 记忆胶囊创建成功，强制刷新列表...');
+      // 强制重新加载数据（从文件读取最新数据）
+      await _loadCapsules(forceReload: true);
+      print('✅ 列表刷新完成，当前有 ${_capsules.length} 个记忆胶囊');
     }
   }
 }

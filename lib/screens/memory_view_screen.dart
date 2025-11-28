@@ -111,7 +111,7 @@ class _MemoryViewScreenState extends State<MemoryViewScreen> {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
-                '时光回忆',
+                '记忆胶囊',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

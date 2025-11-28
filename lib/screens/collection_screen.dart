@@ -21,6 +21,7 @@ class CollectionScreen extends StatefulWidget {
 class _CollectionScreenState extends State<CollectionScreen> {
   bool _isBatchMode = false;
   final Set<int> _selectedQuestions = <int>{};
+  DateTime? _lastRefreshTime;
 
   @override
   void initState() {
@@ -31,12 +32,28 @@ class _CollectionScreenState extends State<CollectionScreen> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 当页面重新获得焦点时刷新收藏数据（避免过度刷新，至少间隔1秒）
+    final now = DateTime.now();
+    if (_lastRefreshTime == null || 
+        now.difference(_lastRefreshTime!).inSeconds > 1) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _refreshCollections();
+      });
+      _lastRefreshTime = now;
+    }
+  }
+
   /// 刷新收藏数据
   Future<void> _refreshCollections() async {
+    if (!mounted) return;
+    
     print('📚 [CollectionScreen] 开始刷新收藏数据...');
     final appState = Provider.of<AppStateProvider>(context, listen: false);
     
-    // 运行诊断以检查数据完整性
+    // 运行诊断以检查数据完整性（仅在调试时）
     try {
       final diagnoseResult = await appState.diagnoseCollectionData();
       
@@ -56,6 +73,9 @@ class _CollectionScreenState extends State<CollectionScreen> {
     // 强制重新加载收藏数据
     await appState.refreshCollections();
     print('📚 [CollectionScreen] 刷新完成，当前收藏数: ${appState.collectedQuestions.length}');
+    
+    // 更新最后刷新时间
+    _lastRefreshTime = DateTime.now();
   }
 
   @override

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import '../constants/app_constants.dart';
 import '../models/memory_capsule.dart';
 import '../services/memory_capsule_service.dart';
 import '../services/question_service.dart';
 import '../models/question.dart';
-import '../services/audio_recorder_service.dart' show AudioRecorderService, createAudioRecorderService;
 
 /// 记忆胶囊创建/编辑页面
 class MemoryCapsuleCreationScreen extends StatefulWidget {
@@ -30,9 +28,6 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
   final _locationController = TextEditingController();
   final _tagController = TextEditingController();
 
-  final ImagePicker _imagePicker = ImagePicker();
-  late final AudioRecorderService _audioRecorder;
-
   String _selectedEra = '80年代';
   String _selectedCategory = '影视';
   String _selectedMood = '怀念';
@@ -41,9 +36,6 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
   int? _relatedQuestionId;
   Question? _relatedQuestion;
 
-  String? _imagePath;
-  String? _audioPath;
-  bool _isRecording = false;
   bool _isSaving = false;
 
   final List<String> _eras = ['80年代', '90年代', '00年代'];
@@ -53,14 +45,13 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
   @override
   void initState() {
     super.initState();
-    _audioRecorder = createAudioRecorderService();
     if (widget.capsule != null) {
       _initializeFromCapsule(widget.capsule!);
     }
   }
 
   void _initializeFromCapsule(MemoryCapsule capsule) {
-    _titleController.text = capsule.title;
+    _titleController.text = capsule.title ?? ''; // 标题可能为null
     _contentController.text = capsule.content;
     _selectedEra = capsule.era;
     _selectedCategory = capsule.category;
@@ -69,8 +60,6 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
     _locationController.text = capsule.location ?? '';
     _tags = List.from(capsule.tags);
     _relatedQuestionId = capsule.questionId;
-    _imagePath = capsule.imagePath;
-    _audioPath = capsule.audioPath;
 
     if (_relatedQuestionId != null) {
       _loadRelatedQuestion();
@@ -92,126 +81,9 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
     _contentController.dispose();
     _locationController.dispose();
     _tagController.dispose();
-    _audioRecorder.dispose();
     super.dispose();
   }
 
-  /// 选择图片
-  Future<void> _pickImage() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 85, // 压缩质量
-      );
-
-      if (image != null) {
-        setState(() {
-          _imagePath = image.path;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('选择图片失败: $e')),
-        );
-      }
-    }
-  }
-
-  /// 拍照
-  Future<void> _takePhoto() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.camera,
-        imageQuality: 85,
-      );
-
-      if (image != null) {
-        setState(() {
-          _imagePath = image.path;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('拍照失败: $e')),
-        );
-      }
-    }
-  }
-
-  /// 开始录音
-  Future<void> _startRecording() async {
-    try {
-      final hasPermission = await _audioRecorder.hasPermission();
-      if (hasPermission) {
-        final path = await _getTemporaryAudioPath();
-        await _audioRecorder.start(path);
-        setState(() {
-          _isRecording = true;
-        });
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('需要录音权限，或当前平台不支持录音功能')),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('开始录音失败: $e')),
-        );
-      }
-    }
-  }
-
-  /// 停止录音
-  Future<void> _stopRecording() async {
-    try {
-      final path = await _audioRecorder.stop();
-      if (path != null) {
-        setState(() {
-          _audioPath = path;
-          _isRecording = false;
-        });
-      } else {
-        setState(() {
-          _isRecording = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('停止录音失败: $e')),
-        );
-      }
-      setState(() {
-        _isRecording = false;
-      });
-    }
-  }
-
-  /// 获取临时音频路径
-  Future<String> _getTemporaryAudioPath() async {
-    final tempDir = Directory.systemTemp;
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    return '${tempDir.path}/audio_$timestamp.m4a';
-  }
-
-  /// 删除图片
-  void _removeImage() {
-    setState(() {
-      _imagePath = null;
-    });
-  }
-
-  /// 删除音频
-  void _removeAudio() {
-    setState(() {
-      _audioPath = null;
-    });
-  }
 
   /// 添加标签
   void _addTag() {
@@ -236,14 +108,48 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
     final date = await showDatePicker(
       context: context,
       initialDate: _selectedMemoryDate ?? DateTime.now(),
-      firstDate: DateTime(1970),
+      firstDate: DateTime(1950),
       lastDate: DateTime.now(),
+      helpText: '选择这段记忆的时间',
     );
 
     if (date != null) {
       setState(() {
         _selectedMemoryDate = date;
       });
+    }
+  }
+
+  /// 选择关联题目
+  Future<void> _selectRelatedQuestion() async {
+    // 加载所有题目
+    final allQuestions = await _questionService.getAllQuestions();
+    
+    if (allQuestions.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('暂无题目')),
+        );
+      }
+      return;
+    }
+
+    final selected = await showModalBottomSheet<int>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _QuestionSelectionDialog(
+        questions: allQuestions,
+        selectedCategory: _selectedCategory,
+        selectedEra: _selectedEra,
+      ),
+    );
+
+    if (selected != null) {
+      setState(() {
+        _relatedQuestionId = selected;
+      });
+      await _loadRelatedQuestion();
     }
   }
 
@@ -260,26 +166,16 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
     try {
       await _service.initialize();
 
-      String? savedImagePath = _imagePath;
-      String? savedAudioPath = _audioPath;
-
-      // 如果是新图片，需要保存到永久存储
-      if (_imagePath != null && !_imagePath!.contains('memory_capsules')) {
-        savedImagePath = await _service.saveImageFile(_imagePath!);
-      }
-
-      // 如果是新音频，需要保存到永久存储
-      if (_audioPath != null && !_audioPath!.contains('memory_capsules')) {
-        savedAudioPath = await _service.saveAudioFile(_audioPath!);
-      }
-
+      // 判断是新建还是编辑：id为0或null表示新建，否则为编辑
+      final isNew = widget.capsule == null || widget.capsule!.id == 0;
+      
       final capsule = MemoryCapsule(
         id: widget.capsule?.id ?? 0,
         questionId: _relatedQuestionId,
-        title: _titleController.text.trim(),
+        title: _titleController.text.trim().isEmpty ? null : _titleController.text.trim(), // 标题可选
         content: _contentController.text.trim(),
-        imagePath: savedImagePath,
-        audioPath: savedAudioPath,
+        imagePath: isNew ? null : widget.capsule?.imagePath, // 新建时无图片，编辑时保留已有图片
+        audioPath: isNew ? null : widget.capsule?.audioPath, // 新建时无音频，编辑时保留已有音频
         createdAt: widget.capsule?.createdAt ?? DateTime.now(),
         memoryDate: _selectedMemoryDate,
         tags: _tags,
@@ -291,19 +187,40 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
             : _locationController.text.trim(),
       );
 
-      if (widget.capsule == null) {
+      if (isNew) {
         await _service.addCapsule(capsule);
       } else {
         await _service.updateCapsule(capsule);
       }
 
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('保存成功'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 1),
+          ),
+        );
         Navigator.pop(context, true); // 返回true表示保存成功
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('保存记忆胶囊失败: $e');
+      print('错误堆栈: $stackTrace');
       if (mounted) {
+        String errorMessage = '保存失败';
+        if (e.toString().contains('存储') || e.toString().contains('存储空间')) {
+          errorMessage = '存储空间不足，请清理空间后重试';
+        } else if (e.toString().contains('权限')) {
+          errorMessage = '需要存储权限，请在设置中开启';
+        } else {
+          errorMessage = '保存失败：${e.toString()}';
+        }
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('保存失败: $e')),
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
+          ),
         );
       }
     } finally {
@@ -319,255 +236,743 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.capsule == null ? '新建记忆胶囊' : '编辑记忆胶囊'),
-        actions: [
-          if (_isSaving)
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              ),
-            )
-          else
-            TextButton(
-              onPressed: _saveCapsule,
-              child: const Text('保存'),
-            ),
-        ],
+        title: Text(widget.capsule == null ? '记忆胶囊' : '编辑胶囊'),
+        centerTitle: true,
       ),
       body: Form(
         key: _formKey,
-        child: ListView(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
-          children: [
-            // 标题
-            TextFormField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: '记忆标题 *',
-                hintText: '给这段记忆起个标题',
-                border: OutlineInputBorder(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 记忆内容
+              TextFormField(
+                controller: _contentController,
+                decoration: const InputDecoration(
+                  labelText: '记忆内容',
+                  hintText: '写下这段让你怀念的时光...',
+                  border: OutlineInputBorder(),
+                  helperText: '记录下那些珍贵的记忆吧～',
+                ),
+                maxLines: 8,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return '请输入记忆内容';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return '请输入标题';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
+              const SizedBox(height: 24),
 
-            // 内容
-            TextFormField(
-              controller: _contentController,
-              decoration: const InputDecoration(
-                labelText: '记忆内容 *',
-                hintText: '记录你的回忆...',
-                border: OutlineInputBorder(),
+              // 标题（可选）
+              TextFormField(
+                controller: _titleController,
+                decoration: const InputDecoration(
+                  labelText: '记忆标题（可选）',
+                  hintText: '给这段记忆起个标题，留空则使用内容预览',
+                  border: OutlineInputBorder(),
+                ),
+                // 标题可选，不需要验证
               ),
-              maxLines: 6,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return '请输入内容';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
+              const SizedBox(height: 24),
 
-            // 年代选择
-            DropdownButtonFormField<String>(
-              value: _selectedEra,
-              decoration: const InputDecoration(
-                labelText: '年代',
-                border: OutlineInputBorder(),
-              ),
-              items: _eras.map((era) {
-                return DropdownMenuItem(value: era, child: Text(era));
-              }).toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() => _selectedEra = value);
-                }
-              },
-            ),
-            const SizedBox(height: 16),
-
-            // 分类选择
-            DropdownButtonFormField<String>(
-              value: _selectedCategory,
-              decoration: const InputDecoration(
-                labelText: '分类',
-                border: OutlineInputBorder(),
-              ),
-              items: _categories.map((category) {
-                return DropdownMenuItem(value: category, child: Text(category));
-              }).toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() => _selectedCategory = value);
-                }
-              },
-            ),
-            const SizedBox(height: 16),
-
-            // 心情选择
-            DropdownButtonFormField<String>(
-              value: _selectedMood,
-              decoration: const InputDecoration(
-                labelText: '心情',
-                border: OutlineInputBorder(),
-              ),
-              items: _moods.map((mood) {
-                return DropdownMenuItem(value: mood, child: Text(mood));
-              }).toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() => _selectedMood = value);
-                }
-              },
-            ),
-            const SizedBox(height: 16),
-
-            // 记忆日期
-            ListTile(
-              title: const Text('记忆时间'),
-              subtitle: Text(
-                _selectedMemoryDate == null
-                    ? '未设置'
-                    : '${_selectedMemoryDate!.year}年${_selectedMemoryDate!.month}月${_selectedMemoryDate!.day}日',
-              ),
-              trailing: const Icon(Icons.calendar_today),
-              onTap: _selectMemoryDate,
-            ),
-            const SizedBox(height: 16),
-
-            // 位置
-            TextFormField(
-              controller: _locationController,
-              decoration: const InputDecoration(
-                labelText: '地点（可选）',
-                hintText: '如：家乡、大学',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // 标签
-            TextFormField(
-              controller: _tagController,
-              decoration: InputDecoration(
-                labelText: '标签',
-                hintText: '输入标签后按回车添加',
-                border: const OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: _addTag,
+              // 年代选择
+              const Text(
+                '年代',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              onFieldSubmitted: (_) => _addTag(),
-            ),
-            if (_tags.isNotEmpty) ...[
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
-                children: _tags.map((tag) {
-                  return Chip(
-                    label: Text(tag),
-                    onDeleted: () => _removeTag(tag),
+                children: _eras.map((era) {
+                  final isSelected = _selectedEra == era;
+                  return FilterChip(
+                    label: Text(
+                      era,
+                      style: TextStyle(
+                        color: isSelected 
+                            ? const Color(AppConstants.primaryColor)
+                            : const Color(AppConstants.textPrimaryColor),
+                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                        fontSize: 14,
+                      ),
+                    ),
+                    selected: isSelected,
+                    onSelected: (selected) {
+                      if (selected) {
+                        setState(() {
+                          _selectedEra = era;
+                        });
+                      }
+                    },
+                    selectedColor: const Color(AppConstants.primaryColor).withOpacity(0.2),
+                    backgroundColor: Colors.white,
+                    checkmarkColor: const Color(AppConstants.primaryColor),
+                    side: BorderSide(
+                      color: isSelected 
+                          ? const Color(AppConstants.primaryColor)
+                          : Colors.grey.withOpacity(0.3),
+                      width: 1.5,
+                    ),
                   );
                 }).toList(),
               ),
-            ],
-            const SizedBox(height: 16),
+              const SizedBox(height: 24),
 
-            // 图片
-            if (_imagePath != null) ...[
-              Stack(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: DecorationImage(
-                        image: FileImage(File(_imagePath!)),
-                        fit: BoxFit.cover,
+              // 分类选择
+              const Text(
+                '分类',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                children: _categories.map((category) {
+                  final isSelected = _selectedCategory == category;
+                  return FilterChip(
+                    label: Text(
+                      category,
+                      style: TextStyle(
+                        color: isSelected ? Colors.green : const Color(AppConstants.textPrimaryColor),
+                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                        fontSize: 14,
                       ),
+                    ),
+                    selected: isSelected,
+                    onSelected: (selected) {
+                      if (selected) {
+                        setState(() {
+                          _selectedCategory = category;
+                        });
+                      }
+                    },
+                    selectedColor: Colors.green.withOpacity(0.2),
+                    backgroundColor: Colors.white,
+                    checkmarkColor: Colors.green,
+                    side: BorderSide(
+                      color: isSelected ? Colors.green : Colors.grey.withOpacity(0.3),
+                      width: 1.5,
+                    ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 24),
+
+              // 心情选择
+              const Text(
+                '心情',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                children: _moods.map((mood) {
+                  final isSelected = _selectedMood == mood;
+                  return FilterChip(
+                    label: Text(
+                      mood,
+                      style: TextStyle(
+                        color: isSelected ? Colors.orange : const Color(AppConstants.textPrimaryColor),
+                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                        fontSize: 14,
+                      ),
+                    ),
+                    selected: isSelected,
+                    onSelected: (selected) {
+                      if (selected) {
+                        setState(() {
+                          _selectedMood = mood;
+                        });
+                      }
+                    },
+                    selectedColor: Colors.orange.withOpacity(0.2),
+                    backgroundColor: Colors.white,
+                    checkmarkColor: Colors.orange,
+                    side: BorderSide(
+                      color: isSelected ? Colors.orange : Colors.grey.withOpacity(0.3),
+                      width: 1.5,
+                    ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 24),
+
+              // 记忆时间
+              ListTile(
+                leading: const Icon(Icons.calendar_today),
+                title: const Text('记忆时间'),
+                subtitle: Text(
+                  _selectedMemoryDate == null
+                      ? '未设置'
+                      : DateFormat('yyyy年MM月dd日').format(_selectedMemoryDate!),
+                ),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: _selectMemoryDate,
+                contentPadding: EdgeInsets.zero,
+              ),
+              const SizedBox(height: 16),
+
+              // 地点（可选）
+              TextFormField(
+                controller: _locationController,
+                decoration: const InputDecoration(
+                  labelText: '地点（可选）',
+                  hintText: '如：家乡、大学、工作地...',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.location_on),
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // 标签
+              const Text(
+                '标签',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _tagController,
+                      decoration: const InputDecoration(
+                        hintText: '输入标签，如：初恋、大学、青春...',
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                      ),
+                      onSubmitted: (_) => _addTag(),
                     ),
                   ),
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: IconButton(
-                      icon: const Icon(Icons.close, color: Colors.white),
-                      onPressed: _removeImage,
-                      style: IconButton.styleFrom(
-                        backgroundColor: Colors.black54,
-                      ),
-                    ),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: _addTag,
+                    tooltip: '添加标签',
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-            ],
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton.icon(
-                    icon: const Icon(Icons.photo_library),
-                    label: const Text('选择图片'),
-                    onPressed: _pickImage,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: OutlinedButton.icon(
-                    icon: const Icon(Icons.camera_alt),
-                    label: const Text('拍照'),
-                    onPressed: _takePhoto,
-                  ),
+              if (_tags.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: _tags.map((tag) {
+                    return Chip(
+                      label: Text(
+                        tag,
+                        style: const TextStyle(
+                          color: Color(AppConstants.textPrimaryColor),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      onDeleted: () => _removeTag(tag),
+                      backgroundColor: Colors.blue.withOpacity(0.1),
+                      deleteIconColor: Colors.blue,
+                    );
+                  }).toList(),
                 ),
               ],
-            ),
-            const SizedBox(height: 16),
+              const SizedBox(height: 24),
 
-            // 音频
-            if (_audioPath != null) ...[
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(12),
+              // 关联题目
+              if (_relatedQuestion != null)
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.blue.withOpacity(0.3)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Text(
+                            '关联题目',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Spacer(),
+                          IconButton(
+                            icon: const Icon(Icons.close, size: 20),
+                            onPressed: () {
+                              setState(() {
+                                _relatedQuestionId = null;
+                                _relatedQuestion = null;
+                              });
+                            },
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        _relatedQuestion!.content,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                )
+              else
+                OutlinedButton.icon(
+                  onPressed: _selectRelatedQuestion,
+                  icon: const Icon(Icons.link),
+                  label: const Text('关联题目（可选）'),
                 ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.audiotrack),
-                    const SizedBox(width: 8),
-                    const Expanded(child: Text('已录制音频')),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: _removeAudio,
-                    ),
-                  ],
+              const SizedBox(height: 32),
+
+              // 保存按钮
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _isSaving ? null : _saveCapsule,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(AppConstants.primaryColor),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  child: _isSaving
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : const Text(
+                          '保存记忆胶囊',
+                          style: TextStyle(fontSize: 16),
+                        ),
                 ),
               ),
-              const SizedBox(height: 16),
             ],
-            OutlinedButton.icon(
-              icon: Icon(_isRecording ? Icons.stop : Icons.mic),
-              label: Text(_isRecording ? '停止录音' : '开始录音'),
-              onPressed: _isRecording ? _stopRecording : _startRecording,
-              style: OutlinedButton.styleFrom(
-                foregroundColor: _isRecording ? Colors.red : null,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
 
+/// 题目选择弹窗组件
+class _QuestionSelectionDialog extends StatefulWidget {
+  final List<Question> questions;
+  final String selectedCategory;
+  final String selectedEra;
+
+  const _QuestionSelectionDialog({
+    required this.questions,
+    required this.selectedCategory,
+    required this.selectedEra,
+  });
+
+  @override
+  State<_QuestionSelectionDialog> createState() => _QuestionSelectionDialogState();
+}
+
+class _QuestionSelectionDialogState extends State<_QuestionSelectionDialog> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  String? _selectedCategoryFilter;
+  String? _selectedEraFilter;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedCategoryFilter = widget.selectedCategory;
+    _selectedEraFilter = widget.selectedEra;
+    _searchController.addListener(() {
+      setState(() {
+        _searchQuery = _searchController.text;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  List<Question> get _filteredQuestions {
+    return widget.questions.where((question) {
+      // 搜索过滤
+      if (_searchQuery.isNotEmpty) {
+        final query = _searchQuery.toLowerCase();
+        final matchesContent = question.content.toLowerCase().contains(query);
+        final matchesTheme = question.echoTheme.toLowerCase().contains(query);
+        final matchesCategory = question.category.toLowerCase().contains(query);
+        if (!matchesContent && !matchesTheme && !matchesCategory) {
+          return false;
+        }
+      }
+      
+      // 分类过滤
+      if (_selectedCategoryFilter != null && _selectedCategoryFilter!.isNotEmpty) {
+        if (question.category != _selectedCategoryFilter) {
+          return false;
+        }
+      }
+      
+      // 年代过滤
+      if (_selectedEraFilter != null && _selectedEraFilter!.isNotEmpty) {
+        if (!question.echoTheme.contains(_selectedEraFilter!.substring(0, 2))) {
+          return false;
+        }
+      }
+      
+      return true;
+    }).toList();
+  }
+
+  Color _getCategoryColor(String category) {
+    switch (category) {
+      case '影视':
+        return Colors.purple;
+      case '音乐':
+        return Colors.blue;
+      case '事件':
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final filteredQuestions = _filteredQuestions;
+    
+    return DraggableScrollableSheet(
+      initialChildSize: 0.85,
+      minChildSize: 0.5,
+      maxChildSize: 0.95,
+      builder: (context, scrollController) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Column(
+            children: [
+              // 标题栏
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color(AppConstants.primaryColor),
+                      const Color(AppConstants.primaryColor).withOpacity(0.8),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.quiz, color: Colors.white, size: 28),
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: Text(
+                        '选择关联题目',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close, color: Colors.white),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+              ),
+              
+              // 搜索框
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: '搜索题目内容、分类或主题...',
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: _searchQuery.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              _searchController.clear();
+                            },
+                          )
+                        : null,
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                  ),
+                ),
+              ),
+              
+              // 筛选器
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    // 分类筛选
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: DropdownButton<String>(
+                          value: _selectedCategoryFilter,
+                          isExpanded: true,
+                          hint: const Text('所有分类'),
+                          underline: const SizedBox(),
+                          items: [
+                            const DropdownMenuItem<String>(
+                              value: null,
+                              child: Text('所有分类'),
+                            ),
+                            ...['影视', '音乐', '事件'].map((category) {
+                              return DropdownMenuItem<String>(
+                                value: category,
+                                child: Text(category),
+                              );
+                            }),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategoryFilter = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    // 年代筛选
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: DropdownButton<String>(
+                          value: _selectedEraFilter,
+                          isExpanded: true,
+                          hint: const Text('所有年代'),
+                          underline: const SizedBox(),
+                          items: [
+                            const DropdownMenuItem<String>(
+                              value: null,
+                              child: Text('所有年代'),
+                            ),
+                            ...['80年代', '90年代', '00年代'].map((era) {
+                              return DropdownMenuItem<String>(
+                                value: era,
+                                child: Text(era),
+                              );
+                            }),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedEraFilter = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 8),
+              
+              // 结果统计
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Text(
+                      '找到 ${filteredQuestions.length} 道题目',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 8),
+              
+              // 题目列表
+              Expanded(
+                child: filteredQuestions.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search_off,
+                              size: 64,
+                              color: Colors.grey[400],
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              '没有找到相关题目',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              '试试调整搜索条件',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[500],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : ListView.builder(
+                        controller: scrollController,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: filteredQuestions.length,
+                        itemBuilder: (context, index) {
+                          final question = filteredQuestions[index];
+                          final categoryColor = _getCategoryColor(question.category);
+                          
+                          return Card(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: InkWell(
+                              onTap: () => Navigator.pop(context, question.id),
+                              borderRadius: BorderRadius.circular(12),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // 分类和主题标签
+                                    Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: categoryColor.withOpacity(0.1),
+                                            borderRadius: BorderRadius.circular(6),
+                                          ),
+                                          child: Text(
+                                            question.category,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: categoryColor,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius: BorderRadius.circular(6),
+                                          ),
+                                          child: Text(
+                                            question.echoTheme,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey[700],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+                                    // 题目内容
+                                    Text(
+                                      question.content,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.4,
+                                      ),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    // 难度标签
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.star,
+                                          size: 14,
+                                          color: question.difficulty == '困难'
+                                              ? Colors.orange
+                                              : question.difficulty == '中等'
+                                                  ? Colors.amber
+                                                  : Colors.green,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          question.difficulty,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[600],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}

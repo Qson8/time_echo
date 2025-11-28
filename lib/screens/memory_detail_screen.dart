@@ -244,7 +244,7 @@ class _MemoryDetailScreenState extends State<MemoryDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.memory == null ? '记录回忆' : '编辑回忆'),
+        title: Text(widget.memory == null ? '记忆胶囊' : '编辑胶囊'),
         centerTitle: true,
         actions: [
           if (widget.memory != null)

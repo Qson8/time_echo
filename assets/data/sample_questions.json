@@ -52,7 +52,7 @@
   },
   {
     "id": 4,
-    "content": "以下哪部电视剧是1990年代的热门剧集？",
+    "content": "以下哪部电视剧是90年代的热门剧集？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -69,7 +69,7 @@
   },
   {
     "id": 5,
-    "content": "以下哪首歌是1990年代的经典流行歌曲？",
+    "content": "以下哪首歌是90年代的经典流行歌曲？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -86,7 +86,7 @@
   },
   {
     "id": 6,
-    "content": "以下哪个品牌在1980年代非常流行？",
+    "content": "以下哪个品牌在90年代非常流行？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -97,7 +97,7 @@
       "英特尔"
     ],
     "correct_answer": 0,
-    "explanation": "苹果公司在1980年代推出了Macintosh电脑，成为个人电脑革命的先驱。",
+    "explanation": "苹果公司在90年代推出了Macintosh电脑，成为个人电脑革命的先驱。",
     "is_new": false,
     "created_at": "2024-01-01T00:00:00.000Z"
   },
@@ -120,7 +120,7 @@
   },
   {
     "id": 8,
-    "content": "以下哪位歌手在1990年代被称为\"四大天王\"之一？",
+    "content": "以下哪位歌手在90年代被称为\"四大天王\"之一？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -171,7 +171,7 @@
   },
   {
     "id": 57,
-    "content": "以下哪位歌手在1980年代被称为\"流行音乐之王\"？",
+    "content": "以下哪位歌手在90年代被称为\"流行音乐之王\"？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -182,7 +182,7 @@
       "弗兰克·西纳特拉"
     ],
     "correct_answer": 0,
-    "explanation": "迈克尔·杰克逊在1980年代被称为\"流行音乐之王\"，其专辑《Thriller》创造了历史。",
+    "explanation": "迈克尔·杰克逊在90年代被称为\"流行音乐之王\"，其专辑《Thriller》创造了历史。",
     "is_new": false,
     "created_at": "2024-01-01T00:00:00.000Z"
   },
@@ -2959,7 +2959,7 @@
   },
   {
     "id": 221,
-    "content": "800年代上映的经典电影《经典电影1》的导演是？",
+    "content": "80年代上映的经典电影《经典电影1》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -2970,13 +2970,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是800年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104355Z"
   },
   {
     "id": 222,
-    "content": "810年代上映的经典电影《经典电影2》的导演是？",
+    "content": "80年代上映的经典电影《经典电影2》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -2987,13 +2987,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是810年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104357Z"
   },
   {
     "id": 223,
-    "content": "820年代上映的经典电影《经典电影3》的导演是？",
+    "content": "80年代上映的经典电影《经典电影3》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3004,13 +3004,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是820年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104358Z"
   },
   {
     "id": 224,
-    "content": "830年代上映的经典电影《经典电影4》的导演是？",
+    "content": "80年代上映的经典电影《经典电影4》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3021,13 +3021,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是830年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104360Z"
   },
   {
     "id": 225,
-    "content": "840年代上映的经典电影《经典电影5》的导演是？",
+    "content": "80年代上映的经典电影《经典电影5》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3038,13 +3038,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是840年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104361Z"
   },
   {
     "id": 226,
-    "content": "850年代上映的经典电影《经典电影6》的导演是？",
+    "content": "80年代上映的经典电影《经典电影6》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3055,13 +3055,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是850年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104362Z"
   },
   {
     "id": 227,
-    "content": "860年代上映的经典电影《经典电影7》的导演是？",
+    "content": "80年代上映的经典电影《经典电影7》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3072,13 +3072,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是860年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104363Z"
   },
   {
     "id": 228,
-    "content": "870年代上映的经典电影《经典电影8》的导演是？",
+    "content": "80年代上映的经典电影《经典电影8》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3089,13 +3089,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是870年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104364Z"
   },
   {
     "id": 229,
-    "content": "880年代上映的经典电影《经典电影9》的导演是？",
+    "content": "80年代上映的经典电影《经典电影9》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3106,13 +3106,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是880年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104365Z"
   },
   {
     "id": 230,
-    "content": "890年代上映的经典电影《经典电影10》的导演是？",
+    "content": "80年代上映的经典电影《经典电影10》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3123,13 +3123,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是890年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104368Z"
   },
   {
     "id": 231,
-    "content": "800年代上映的经典电影《经典电影11》的导演是？",
+    "content": "80年代上映的经典电影《经典电影11》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3140,13 +3140,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是800年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104369Z"
   },
   {
     "id": 232,
-    "content": "810年代上映的经典电影《经典电影12》的导演是？",
+    "content": "80年代上映的经典电影《经典电影12》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3157,13 +3157,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是810年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104370Z"
   },
   {
     "id": 233,
-    "content": "820年代上映的经典电影《经典电影13》的导演是？",
+    "content": "80年代上映的经典电影《经典电影13》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3174,13 +3174,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是820年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104371Z"
   },
   {
     "id": 234,
-    "content": "830年代上映的经典电影《经典电影14》的导演是？",
+    "content": "80年代上映的经典电影《经典电影14》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3191,13 +3191,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是830年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104373Z"
   },
   {
     "id": 235,
-    "content": "840年代上映的经典电影《经典电影15》的导演是？",
+    "content": "80年代上映的经典电影《经典电影15》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3208,13 +3208,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是840年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104374Z"
   },
   {
     "id": 236,
-    "content": "850年代上映的经典电影《经典电影16》的导演是？",
+    "content": "80年代上映的经典电影《经典电影16》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3225,13 +3225,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是850年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104375Z"
   },
   {
     "id": 237,
-    "content": "860年代上映的经典电影《经典电影17》的导演是？",
+    "content": "80年代上映的经典电影《经典电影17》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3242,13 +3242,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是860年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104376Z"
   },
   {
     "id": 238,
-    "content": "870年代上映的经典电影《经典电影18》的导演是？",
+    "content": "80年代上映的经典电影《经典电影18》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3259,13 +3259,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是870年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104377Z"
   },
   {
     "id": 239,
-    "content": "880年代上映的经典电影《经典电影19》的导演是？",
+    "content": "80年代上映的经典电影《经典电影19》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3276,13 +3276,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是880年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104378Z"
   },
   {
     "id": 240,
-    "content": "890年代上映的经典电影《经典电影20》的导演是？",
+    "content": "80年代上映的经典电影《经典电影20》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3293,13 +3293,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是890年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104379Z"
   },
   {
     "id": 241,
-    "content": "800年代上映的经典电影《经典电影21》的导演是？",
+    "content": "80年代上映的经典电影《经典电影21》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3310,13 +3310,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是800年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104381Z"
   },
   {
     "id": 242,
-    "content": "810年代上映的经典电影《经典电影22》的导演是？",
+    "content": "80年代上映的经典电影《经典电影22》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "80年代影视",
@@ -3327,13 +3327,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是810年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104382Z"
   },
   {
     "id": 243,
-    "content": "800年代上映的经典电影《经典电影1》的导演是？",
+    "content": "80年代上映的经典电影《经典电影1》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3344,13 +3344,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是800年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104384Z"
   },
   {
     "id": 244,
-    "content": "810年代上映的经典电影《经典电影2》的导演是？",
+    "content": "80年代上映的经典电影《经典电影2》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3361,13 +3361,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是810年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104385Z"
   },
   {
     "id": 245,
-    "content": "820年代上映的经典电影《经典电影3》的导演是？",
+    "content": "80年代上映的经典电影《经典电影3》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3378,13 +3378,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是820年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104386Z"
   },
   {
     "id": 246,
-    "content": "830年代上映的经典电影《经典电影4》的导演是？",
+    "content": "80年代上映的经典电影《经典电影4》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3395,13 +3395,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是830年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104390Z"
   },
   {
     "id": 247,
-    "content": "840年代上映的经典电影《经典电影5》的导演是？",
+    "content": "80年代上映的经典电影《经典电影5》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3412,13 +3412,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是840年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104391Z"
   },
   {
     "id": 248,
-    "content": "850年代上映的经典电影《经典电影6》的导演是？",
+    "content": "80年代上映的经典电影《经典电影6》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3429,13 +3429,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是850年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104392Z"
   },
   {
     "id": 249,
-    "content": "860年代上映的经典电影《经典电影7》的导演是？",
+    "content": "80年代上映的经典电影《经典电影7》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3446,13 +3446,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是860年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104394Z"
   },
   {
     "id": 250,
-    "content": "870年代上映的经典电影《经典电影8》的导演是？",
+    "content": "80年代上映的经典电影《经典电影8》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3463,13 +3463,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是870年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104395Z"
   },
   {
     "id": 251,
-    "content": "880年代上映的经典电影《经典电影9》的导演是？",
+    "content": "80年代上映的经典电影《经典电影9》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3480,13 +3480,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是880年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104396Z"
   },
   {
     "id": 252,
-    "content": "890年代上映的经典电影《经典电影10》的导演是？",
+    "content": "80年代上映的经典电影《经典电影10》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3497,13 +3497,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是890年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104397Z"
   },
   {
     "id": 253,
-    "content": "800年代上映的经典电影《经典电影11》的导演是？",
+    "content": "80年代上映的经典电影《经典电影11》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3514,13 +3514,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是800年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104398Z"
   },
   {
     "id": 254,
-    "content": "810年代上映的经典电影《经典电影12》的导演是？",
+    "content": "80年代上映的经典电影《经典电影12》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3531,13 +3531,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是810年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104399Z"
   },
   {
     "id": 255,
-    "content": "820年代上映的经典电影《经典电影13》的导演是？",
+    "content": "80年代上映的经典电影《经典电影13》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3548,13 +3548,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是820年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104400Z"
   },
   {
     "id": 256,
-    "content": "830年代上映的经典电影《经典电影14》的导演是？",
+    "content": "80年代上映的经典电影《经典电影14》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3565,13 +3565,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是830年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104401Z"
   },
   {
     "id": 257,
-    "content": "840年代上映的经典电影《经典电影15》的导演是？",
+    "content": "80年代上映的经典电影《经典电影15》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3582,13 +3582,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是840年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104403Z"
   },
   {
     "id": 258,
-    "content": "850年代上映的经典电影《经典电影16》的导演是？",
+    "content": "80年代上映的经典电影《经典电影16》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3599,13 +3599,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是850年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104404Z"
   },
   {
     "id": 259,
-    "content": "860年代上映的经典电影《经典电影17》的导演是？",
+    "content": "80年代上映的经典电影《经典电影17》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3616,13 +3616,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是860年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104405Z"
   },
   {
     "id": 260,
-    "content": "870年代上映的经典电影《经典电影18》的导演是？",
+    "content": "80年代上映的经典电影《经典电影18》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3633,13 +3633,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是870年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104406Z"
   },
   {
     "id": 261,
-    "content": "880年代上映的经典电影《经典电影19》的导演是？",
+    "content": "80年代上映的经典电影《经典电影19》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3650,13 +3650,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是880年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104407Z"
   },
   {
     "id": 262,
-    "content": "890年代上映的经典电影《经典电影20》的导演是？",
+    "content": "80年代上映的经典电影《经典电影20》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3667,13 +3667,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是890年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104409Z"
   },
   {
     "id": 263,
-    "content": "800年代上映的经典电影《经典电影21》的导演是？",
+    "content": "80年代上映的经典电影《经典电影21》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3684,13 +3684,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是800年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104411Z"
   },
   {
     "id": 264,
-    "content": "810年代上映的经典电影《经典电影22》的导演是？",
+    "content": "80年代上映的经典电影《经典电影22》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3701,13 +3701,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是810年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104412Z"
   },
   {
     "id": 265,
-    "content": "820年代上映的经典电影《经典电影23》的导演是？",
+    "content": "80年代上映的经典电影《经典电影23》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3718,13 +3718,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是820年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104413Z"
   },
   {
     "id": 266,
-    "content": "830年代上映的经典电影《经典电影24》的导演是？",
+    "content": "80年代上映的经典电影《经典电影24》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3735,13 +3735,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是830年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104414Z"
   },
   {
     "id": 267,
-    "content": "840年代上映的经典电影《经典电影25》的导演是？",
+    "content": "80年代上映的经典电影《经典电影25》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3752,13 +3752,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是840年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104415Z"
   },
   {
     "id": 268,
-    "content": "850年代上映的经典电影《经典电影26》的导演是？",
+    "content": "80年代上映的经典电影《经典电影26》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3769,13 +3769,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是850年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104416Z"
   },
   {
     "id": 269,
-    "content": "860年代上映的经典电影《经典电影27》的导演是？",
+    "content": "80年代上映的经典电影《经典电影27》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "80年代影视",
@@ -3786,13 +3786,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是860年代上映的经典电影。",
+    "explanation": "这是80年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104417Z"
   },
   {
     "id": 270,
-    "content": "900年代上映的经典电影《经典电影1》的导演是？",
+    "content": "90年代上映的经典电影《经典电影1》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -3803,13 +3803,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是900年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104420Z"
   },
   {
     "id": 271,
-    "content": "910年代上映的经典电影《经典电影2》的导演是？",
+    "content": "90年代上映的经典电影《经典电影2》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -3820,13 +3820,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是910年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104421Z"
   },
   {
     "id": 272,
-    "content": "920年代上映的经典电影《经典电影3》的导演是？",
+    "content": "90年代上映的经典电影《经典电影3》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -3837,13 +3837,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是920年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104422Z"
   },
   {
     "id": 273,
-    "content": "930年代上映的经典电影《经典电影4》的导演是？",
+    "content": "90年代上映的经典电影《经典电影4》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -3854,13 +3854,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是930年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104423Z"
   },
   {
     "id": 274,
-    "content": "940年代上映的经典电影《经典电影5》的导演是？",
+    "content": "90年代上映的经典电影《经典电影5》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -3871,13 +3871,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是940年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104425Z"
   },
   {
     "id": 275,
-    "content": "950年代上映的经典电影《经典电影6》的导演是？",
+    "content": "90年代上映的经典电影《经典电影6》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -3888,13 +3888,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是950年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104426Z"
   },
   {
     "id": 276,
-    "content": "960年代上映的经典电影《经典电影7》的导演是？",
+    "content": "90年代上映的经典电影《经典电影7》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -3905,13 +3905,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是960年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104427Z"
   },
   {
     "id": 277,
-    "content": "970年代上映的经典电影《经典电影8》的导演是？",
+    "content": "90年代上映的经典电影《经典电影8》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -3922,13 +3922,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是970年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104428Z"
   },
   {
     "id": 278,
-    "content": "980年代上映的经典电影《经典电影9》的导演是？",
+    "content": "90年代上映的经典电影《经典电影9》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -3939,13 +3939,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是980年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104429Z"
   },
   {
     "id": 279,
-    "content": "990年代上映的经典电影《经典电影10》的导演是？",
+    "content": "90年代上映的经典电影《经典电影10》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -3956,13 +3956,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是990年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104430Z"
   },
   {
     "id": 280,
-    "content": "900年代上映的经典电影《经典电影11》的导演是？",
+    "content": "90年代上映的经典电影《经典电影11》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -3973,13 +3973,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是900年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104432Z"
   },
   {
     "id": 281,
-    "content": "910年代上映的经典电影《经典电影12》的导演是？",
+    "content": "90年代上映的经典电影《经典电影12》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -3990,13 +3990,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是910年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104434Z"
   },
   {
     "id": 282,
-    "content": "920年代上映的经典电影《经典电影13》的导演是？",
+    "content": "90年代上映的经典电影《经典电影13》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4007,13 +4007,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是920年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104435Z"
   },
   {
     "id": 283,
-    "content": "930年代上映的经典电影《经典电影14》的导演是？",
+    "content": "90年代上映的经典电影《经典电影14》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4024,13 +4024,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是930年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104436Z"
   },
   {
     "id": 284,
-    "content": "940年代上映的经典电影《经典电影15》的导演是？",
+    "content": "90年代上映的经典电影《经典电影15》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4041,13 +4041,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是940年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104438Z"
   },
   {
     "id": 285,
-    "content": "950年代上映的经典电影《经典电影16》的导演是？",
+    "content": "90年代上映的经典电影《经典电影16》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4058,13 +4058,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是950年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104439Z"
   },
   {
     "id": 286,
-    "content": "960年代上映的经典电影《经典电影17》的导演是？",
+    "content": "90年代上映的经典电影《经典电影17》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4075,13 +4075,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是960年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104440Z"
   },
   {
     "id": 287,
-    "content": "970年代上映的经典电影《经典电影18》的导演是？",
+    "content": "90年代上映的经典电影《经典电影18》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4092,13 +4092,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是970年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104441Z"
   },
   {
     "id": 288,
-    "content": "980年代上映的经典电影《经典电影19》的导演是？",
+    "content": "90年代上映的经典电影《经典电影19》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4109,13 +4109,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是980年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104442Z"
   },
   {
     "id": 289,
-    "content": "990年代上映的经典电影《经典电影20》的导演是？",
+    "content": "90年代上映的经典电影《经典电影20》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4126,13 +4126,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是990年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104443Z"
   },
   {
     "id": 290,
-    "content": "900年代上映的经典电影《经典电影21》的导演是？",
+    "content": "90年代上映的经典电影《经典电影21》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4143,13 +4143,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是900年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104445Z"
   },
   {
     "id": 291,
-    "content": "910年代上映的经典电影《经典电影22》的导演是？",
+    "content": "90年代上映的经典电影《经典电影22》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4160,13 +4160,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是910年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104446Z"
   },
   {
     "id": 292,
-    "content": "920年代上映的经典电影《经典电影23》的导演是？",
+    "content": "90年代上映的经典电影《经典电影23》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4177,13 +4177,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是920年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104447Z"
   },
   {
     "id": 293,
-    "content": "930年代上映的经典电影《经典电影24》的导演是？",
+    "content": "90年代上映的经典电影《经典电影24》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4194,13 +4194,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是930年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104448Z"
   },
   {
     "id": 294,
-    "content": "940年代上映的经典电影《经典电影25》的导演是？",
+    "content": "90年代上映的经典电影《经典电影25》的导演是？",
     "category": "影视",
     "difficulty": "简单",
     "echo_theme": "90年代影视",
@@ -4211,13 +4211,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是940年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104449Z"
   },
   {
     "id": 295,
-    "content": "900年代上映的经典电影《经典电影1》的导演是？",
+    "content": "90年代上映的经典电影《经典电影1》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4228,13 +4228,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是900年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104451Z"
   },
   {
     "id": 296,
-    "content": "910年代上映的经典电影《经典电影2》的导演是？",
+    "content": "90年代上映的经典电影《经典电影2》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4245,13 +4245,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是910年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104452Z"
   },
   {
     "id": 297,
-    "content": "920年代上映的经典电影《经典电影3》的导演是？",
+    "content": "90年代上映的经典电影《经典电影3》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4262,13 +4262,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是920年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104454Z"
   },
   {
     "id": 298,
-    "content": "930年代上映的经典电影《经典电影4》的导演是？",
+    "content": "90年代上映的经典电影《经典电影4》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4279,13 +4279,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是930年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104456Z"
   },
   {
     "id": 299,
-    "content": "940年代上映的经典电影《经典电影5》的导演是？",
+    "content": "90年代上映的经典电影《经典电影5》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4296,13 +4296,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是940年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104457Z"
   },
   {
     "id": 300,
-    "content": "950年代上映的经典电影《经典电影6》的导演是？",
+    "content": "90年代上映的经典电影《经典电影6》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4313,13 +4313,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是950年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104458Z"
   },
   {
     "id": 301,
-    "content": "960年代上映的经典电影《经典电影7》的导演是？",
+    "content": "90年代上映的经典电影《经典电影7》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4330,13 +4330,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是960年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104459Z"
   },
   {
     "id": 302,
-    "content": "970年代上映的经典电影《经典电影8》的导演是？",
+    "content": "90年代上映的经典电影《经典电影8》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4347,13 +4347,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是970年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104460Z"
   },
   {
     "id": 303,
-    "content": "980年代上映的经典电影《经典电影9》的导演是？",
+    "content": "90年代上映的经典电影《经典电影9》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4364,13 +4364,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是980年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104461Z"
   },
   {
     "id": 304,
-    "content": "990年代上映的经典电影《经典电影10》的导演是？",
+    "content": "90年代上映的经典电影《经典电影10》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4381,13 +4381,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是990年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104462Z"
   },
   {
     "id": 305,
-    "content": "900年代上映的经典电影《经典电影11》的导演是？",
+    "content": "90年代上映的经典电影《经典电影11》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4398,13 +4398,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是900年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104464Z"
   },
   {
     "id": 306,
-    "content": "910年代上映的经典电影《经典电影12》的导演是？",
+    "content": "90年代上映的经典电影《经典电影12》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4415,13 +4415,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是910年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104465Z"
   },
   {
     "id": 307,
-    "content": "920年代上映的经典电影《经典电影13》的导演是？",
+    "content": "90年代上映的经典电影《经典电影13》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4432,13 +4432,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是920年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104466Z"
   },
   {
     "id": 308,
-    "content": "930年代上映的经典电影《经典电影14》的导演是？",
+    "content": "90年代上映的经典电影《经典电影14》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4449,13 +4449,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是930年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104467Z"
   },
   {
     "id": 309,
-    "content": "940年代上映的经典电影《经典电影15》的导演是？",
+    "content": "90年代上映的经典电影《经典电影15》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4466,13 +4466,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是940年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104469Z"
   },
   {
     "id": 310,
-    "content": "950年代上映的经典电影《经典电影16》的导演是？",
+    "content": "90年代上映的经典电影《经典电影16》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4483,13 +4483,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是950年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104470Z"
   },
   {
     "id": 311,
-    "content": "960年代上映的经典电影《经典电影17》的导演是？",
+    "content": "90年代上映的经典电影《经典电影17》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4500,13 +4500,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是960年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104472Z"
   },
   {
     "id": 312,
-    "content": "970年代上映的经典电影《经典电影18》的导演是？",
+    "content": "90年代上映的经典电影《经典电影18》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4517,13 +4517,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是970年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104473Z"
   },
   {
     "id": 313,
-    "content": "980年代上映的经典电影《经典电影19》的导演是？",
+    "content": "90年代上映的经典电影《经典电影19》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4534,13 +4534,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是980年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104474Z"
   },
   {
     "id": 314,
-    "content": "990年代上映的经典电影《经典电影20》的导演是？",
+    "content": "90年代上映的经典电影《经典电影20》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4551,13 +4551,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是990年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104475Z"
   },
   {
     "id": 315,
-    "content": "900年代上映的经典电影《经典电影21》的导演是？",
+    "content": "90年代上映的经典电影《经典电影21》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4568,13 +4568,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是900年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104476Z"
   },
   {
     "id": 316,
-    "content": "910年代上映的经典电影《经典电影22》的导演是？",
+    "content": "90年代上映的经典电影《经典电影22》的导演是？",
     "category": "影视",
     "difficulty": "中等",
     "echo_theme": "90年代影视",
@@ -4585,13 +4585,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是910年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104477Z"
   },
   {
     "id": 317,
-    "content": "900年代上映的经典电影《经典电影1》的导演是？",
+    "content": "90年代上映的经典电影《经典电影1》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4602,13 +4602,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是900年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104479Z"
   },
   {
     "id": 318,
-    "content": "910年代上映的经典电影《经典电影2》的导演是？",
+    "content": "90年代上映的经典电影《经典电影2》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4619,13 +4619,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是910年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104480Z"
   },
   {
     "id": 319,
-    "content": "920年代上映的经典电影《经典电影3》的导演是？",
+    "content": "90年代上映的经典电影《经典电影3》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4636,13 +4636,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是920年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104482Z"
   },
   {
     "id": 320,
-    "content": "930年代上映的经典电影《经典电影4》的导演是？",
+    "content": "90年代上映的经典电影《经典电影4》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4653,13 +4653,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是930年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104483Z"
   },
   {
     "id": 321,
-    "content": "940年代上映的经典电影《经典电影5》的导演是？",
+    "content": "90年代上映的经典电影《经典电影5》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4670,13 +4670,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是940年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104484Z"
   },
   {
     "id": 322,
-    "content": "950年代上映的经典电影《经典电影6》的导演是？",
+    "content": "90年代上映的经典电影《经典电影6》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4687,13 +4687,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是950年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104485Z"
   },
   {
     "id": 323,
-    "content": "960年代上映的经典电影《经典电影7》的导演是？",
+    "content": "90年代上映的经典电影《经典电影7》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4704,13 +4704,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是960年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104486Z"
   },
   {
     "id": 324,
-    "content": "970年代上映的经典电影《经典电影8》的导演是？",
+    "content": "90年代上映的经典电影《经典电影8》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4721,13 +4721,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是970年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104487Z"
   },
   {
     "id": 325,
-    "content": "980年代上映的经典电影《经典电影9》的导演是？",
+    "content": "90年代上映的经典电影《经典电影9》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4738,13 +4738,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是980年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104488Z"
   },
   {
     "id": 326,
-    "content": "990年代上映的经典电影《经典电影10》的导演是？",
+    "content": "90年代上映的经典电影《经典电影10》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4755,13 +4755,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是990年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104490Z"
   },
   {
     "id": 327,
-    "content": "900年代上映的经典电影《经典电影11》的导演是？",
+    "content": "90年代上映的经典电影《经典电影11》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4772,13 +4772,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是900年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104492Z"
   },
   {
     "id": 328,
-    "content": "910年代上映的经典电影《经典电影12》的导演是？",
+    "content": "90年代上映的经典电影《经典电影12》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4789,13 +4789,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是910年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104493Z"
   },
   {
     "id": 329,
-    "content": "920年代上映的经典电影《经典电影13》的导演是？",
+    "content": "90年代上映的经典电影《经典电影13》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4806,13 +4806,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是920年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104494Z"
   },
   {
     "id": 330,
-    "content": "930年代上映的经典电影《经典电影14》的导演是？",
+    "content": "90年代上映的经典电影《经典电影14》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4823,13 +4823,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是930年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104524Z"
   },
   {
     "id": 331,
-    "content": "940年代上映的经典电影《经典电影15》的导演是？",
+    "content": "90年代上映的经典电影《经典电影15》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4840,13 +4840,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是940年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104525Z"
   },
   {
     "id": 332,
-    "content": "950年代上映的经典电影《经典电影16》的导演是？",
+    "content": "90年代上映的经典电影《经典电影16》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4857,13 +4857,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是950年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104526Z"
   },
   {
     "id": 333,
-    "content": "960年代上映的经典电影《经典电影17》的导演是？",
+    "content": "90年代上映的经典电影《经典电影17》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4874,13 +4874,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是960年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104527Z"
   },
   {
     "id": 334,
-    "content": "970年代上映的经典电影《经典电影18》的导演是？",
+    "content": "90年代上映的经典电影《经典电影18》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4891,13 +4891,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是970年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104529Z"
   },
   {
     "id": 335,
-    "content": "980年代上映的经典电影《经典电影19》的导演是？",
+    "content": "90年代上映的经典电影《经典电影19》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4908,13 +4908,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是980年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104530Z"
   },
   {
     "id": 336,
-    "content": "990年代上映的经典电影《经典电影20》的导演是？",
+    "content": "90年代上映的经典电影《经典电影20》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4925,13 +4925,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是990年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104531Z"
   },
   {
     "id": 337,
-    "content": "900年代上映的经典电影《经典电影21》的导演是？",
+    "content": "90年代上映的经典电影《经典电影21》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4942,13 +4942,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是900年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104532Z"
   },
   {
     "id": 338,
-    "content": "910年代上映的经典电影《经典电影22》的导演是？",
+    "content": "90年代上映的经典电影《经典电影22》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4959,13 +4959,13 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是910年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104533Z"
   },
   {
     "id": 339,
-    "content": "920年代上映的经典电影《经典电影23》的导演是？",
+    "content": "90年代上映的经典电影《经典电影23》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4976,13 +4976,13 @@
       "田壮壮"
     ],
     "correct_answer": 2,
-    "explanation": "这是920年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104534Z"
   },
   {
     "id": 340,
-    "content": "930年代上映的经典电影《经典电影24》的导演是？",
+    "content": "90年代上映的经典电影《经典电影24》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -4993,13 +4993,13 @@
       "田壮壮"
     ],
     "correct_answer": 3,
-    "explanation": "这是930年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104536Z"
   },
   {
     "id": 341,
-    "content": "940年代上映的经典电影《经典电影25》的导演是？",
+    "content": "90年代上映的经典电影《经典电影25》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -5010,13 +5010,13 @@
       "田壮壮"
     ],
     "correct_answer": 0,
-    "explanation": "这是940年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104537Z"
   },
   {
     "id": 342,
-    "content": "950年代上映的经典电影《经典电影26》的导演是？",
+    "content": "90年代上映的经典电影《经典电影26》的导演是？",
     "category": "影视",
     "difficulty": "困难",
     "echo_theme": "90年代影视",
@@ -5027,7 +5027,7 @@
       "田壮壮"
     ],
     "correct_answer": 1,
-    "explanation": "这是950年代上映的经典电影。",
+    "explanation": "这是90年代上映的经典电影。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104538Z"
   },
@@ -6291,7 +6291,7 @@
   },
   {
     "id": 417,
-    "content": "800年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6302,13 +6302,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104633Z"
   },
   {
     "id": 418,
-    "content": "810年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6319,13 +6319,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104634Z"
   },
   {
     "id": 419,
-    "content": "820年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6336,13 +6336,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104635Z"
   },
   {
     "id": 420,
-    "content": "830年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6353,13 +6353,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104636Z"
   },
   {
     "id": 421,
-    "content": "840年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6370,13 +6370,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104638Z"
   },
   {
     "id": 422,
-    "content": "850年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6387,13 +6387,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104639Z"
   },
   {
     "id": 423,
-    "content": "860年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6404,13 +6404,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104640Z"
   },
   {
     "id": 424,
-    "content": "870年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6421,13 +6421,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "870年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104641Z"
   },
   {
     "id": 425,
-    "content": "880年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6438,13 +6438,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "880年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104642Z"
   },
   {
     "id": 426,
-    "content": "890年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6455,13 +6455,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "890年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104643Z"
   },
   {
     "id": 427,
-    "content": "800年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6472,13 +6472,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104644Z"
   },
   {
     "id": 428,
-    "content": "810年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6489,13 +6489,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104646Z"
   },
   {
     "id": 429,
-    "content": "820年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6506,13 +6506,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104647Z"
   },
   {
     "id": 430,
-    "content": "830年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6523,13 +6523,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104650Z"
   },
   {
     "id": 431,
-    "content": "840年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6540,13 +6540,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104651Z"
   },
   {
     "id": 432,
-    "content": "850年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6557,13 +6557,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104652Z"
   },
   {
     "id": 433,
-    "content": "860年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6574,13 +6574,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104653Z"
   },
   {
     "id": 434,
-    "content": "870年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6591,13 +6591,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "870年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104655Z"
   },
   {
     "id": 435,
-    "content": "880年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6608,13 +6608,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "880年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104656Z"
   },
   {
     "id": 436,
-    "content": "890年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6625,13 +6625,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "890年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104657Z"
   },
   {
     "id": 437,
-    "content": "800年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6642,13 +6642,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104658Z"
   },
   {
     "id": 438,
-    "content": "810年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6659,13 +6659,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104659Z"
   },
   {
     "id": 439,
-    "content": "820年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6676,13 +6676,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104660Z"
   },
   {
     "id": 440,
-    "content": "830年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "80年代音乐",
@@ -6693,13 +6693,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104661Z"
   },
   {
     "id": 441,
-    "content": "800年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6710,13 +6710,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104663Z"
   },
   {
     "id": 442,
-    "content": "810年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6727,13 +6727,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104664Z"
   },
   {
     "id": 443,
-    "content": "820年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6744,13 +6744,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104665Z"
   },
   {
     "id": 444,
-    "content": "830年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6761,13 +6761,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104666Z"
   },
   {
     "id": 445,
-    "content": "840年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6778,13 +6778,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104667Z"
   },
   {
     "id": 446,
-    "content": "850年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6795,13 +6795,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104669Z"
   },
   {
     "id": 447,
-    "content": "860年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6812,13 +6812,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104670Z"
   },
   {
     "id": 448,
-    "content": "870年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6829,13 +6829,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "870年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104671Z"
   },
   {
     "id": 449,
-    "content": "880年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6846,13 +6846,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "880年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104673Z"
   },
   {
     "id": 450,
-    "content": "890年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6863,13 +6863,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "890年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104674Z"
   },
   {
     "id": 451,
-    "content": "800年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6880,13 +6880,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104675Z"
   },
   {
     "id": 452,
-    "content": "810年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6897,13 +6897,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104676Z"
   },
   {
     "id": 453,
-    "content": "820年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6914,13 +6914,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104677Z"
   },
   {
     "id": 454,
-    "content": "830年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6931,13 +6931,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104678Z"
   },
   {
     "id": 455,
-    "content": "840年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6948,13 +6948,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104679Z"
   },
   {
     "id": 456,
-    "content": "850年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6965,13 +6965,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104680Z"
   },
   {
     "id": 457,
-    "content": "860年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6982,13 +6982,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104681Z"
   },
   {
     "id": 458,
-    "content": "870年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -6999,13 +6999,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "870年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104683Z"
   },
   {
     "id": 459,
-    "content": "880年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -7016,13 +7016,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "880年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104684Z"
   },
   {
     "id": 460,
-    "content": "890年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -7033,13 +7033,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "890年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104686Z"
   },
   {
     "id": 461,
-    "content": "800年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -7050,13 +7050,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104687Z"
   },
   {
     "id": 462,
-    "content": "810年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -7067,13 +7067,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104688Z"
   },
   {
     "id": 463,
-    "content": "820年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "80年代音乐",
@@ -7084,13 +7084,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104689Z"
   },
   {
     "id": 464,
-    "content": "800年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7101,13 +7101,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104691Z"
   },
   {
     "id": 465,
-    "content": "810年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7118,13 +7118,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104692Z"
   },
   {
     "id": 466,
-    "content": "820年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7135,13 +7135,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104693Z"
   },
   {
     "id": 467,
-    "content": "830年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7152,13 +7152,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104694Z"
   },
   {
     "id": 468,
-    "content": "840年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7169,13 +7169,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104695Z"
   },
   {
     "id": 469,
-    "content": "850年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7186,13 +7186,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104696Z"
   },
   {
     "id": 470,
-    "content": "860年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7203,13 +7203,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104697Z"
   },
   {
     "id": 471,
-    "content": "870年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7220,13 +7220,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "870年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104699Z"
   },
   {
     "id": 472,
-    "content": "880年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7237,13 +7237,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "880年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104700Z"
   },
   {
     "id": 473,
-    "content": "890年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7254,13 +7254,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "890年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104701Z"
   },
   {
     "id": 474,
-    "content": "800年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7271,13 +7271,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104702Z"
   },
   {
     "id": 475,
-    "content": "810年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7288,13 +7288,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104703Z"
   },
   {
     "id": 476,
-    "content": "820年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7305,13 +7305,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104704Z"
   },
   {
     "id": 477,
-    "content": "830年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7322,13 +7322,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104705Z"
   },
   {
     "id": 478,
-    "content": "840年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7339,13 +7339,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104706Z"
   },
   {
     "id": 479,
-    "content": "850年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7356,13 +7356,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104707Z"
   },
   {
     "id": 480,
-    "content": "860年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7373,13 +7373,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104709Z"
   },
   {
     "id": 481,
-    "content": "870年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7390,13 +7390,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "870年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104710Z"
   },
   {
     "id": 482,
-    "content": "880年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7407,13 +7407,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "880年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104711Z"
   },
   {
     "id": 483,
-    "content": "890年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7424,13 +7424,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "890年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104712Z"
   },
   {
     "id": 484,
-    "content": "800年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7441,13 +7441,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104713Z"
   },
   {
     "id": 485,
-    "content": "810年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7458,13 +7458,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104714Z"
   },
   {
     "id": 486,
-    "content": "820年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7475,13 +7475,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104715Z"
   },
   {
     "id": 487,
-    "content": "830年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7492,13 +7492,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104716Z"
   },
   {
     "id": 488,
-    "content": "840年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7509,13 +7509,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104718Z"
   },
   {
     "id": 489,
-    "content": "850年代流行的音乐类型是？",
+    "content": "80年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "80年代音乐",
@@ -7526,13 +7526,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年代流行多种音乐类型。",
+    "explanation": "80年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104719Z"
   },
   {
     "id": 490,
-    "content": "900年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7543,13 +7543,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104721Z"
   },
   {
     "id": 491,
-    "content": "910年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7560,13 +7560,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104722Z"
   },
   {
     "id": 492,
-    "content": "920年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7577,13 +7577,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104723Z"
   },
   {
     "id": 493,
-    "content": "930年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7594,13 +7594,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104724Z"
   },
   {
     "id": 494,
-    "content": "940年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7611,13 +7611,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104725Z"
   },
   {
     "id": 495,
-    "content": "950年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7628,13 +7628,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104726Z"
   },
   {
     "id": 496,
-    "content": "960年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7645,13 +7645,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104727Z"
   },
   {
     "id": 497,
-    "content": "970年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7662,13 +7662,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104728Z"
   },
   {
     "id": 498,
-    "content": "980年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7679,13 +7679,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104730Z"
   },
   {
     "id": 499,
-    "content": "990年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7696,13 +7696,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "990年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104731Z"
   },
   {
     "id": 500,
-    "content": "900年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7713,13 +7713,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104732Z"
   },
   {
     "id": 501,
-    "content": "910年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7730,13 +7730,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104733Z"
   },
   {
     "id": 502,
-    "content": "920年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7747,13 +7747,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104735Z"
   },
   {
     "id": 503,
-    "content": "930年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7764,13 +7764,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104736Z"
   },
   {
     "id": 504,
-    "content": "940年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7781,13 +7781,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104737Z"
   },
   {
     "id": 505,
-    "content": "950年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7798,13 +7798,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104738Z"
   },
   {
     "id": 506,
-    "content": "960年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7815,13 +7815,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104740Z"
   },
   {
     "id": 507,
-    "content": "970年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7832,13 +7832,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104741Z"
   },
   {
     "id": 508,
-    "content": "980年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7849,13 +7849,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104742Z"
   },
   {
     "id": 509,
-    "content": "990年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7866,13 +7866,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "990年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104743Z"
   },
   {
     "id": 510,
-    "content": "900年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "简单",
     "echo_theme": "90年代音乐",
@@ -7883,13 +7883,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104745Z"
   },
   {
     "id": 511,
-    "content": "900年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -7900,13 +7900,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104747Z"
   },
   {
     "id": 512,
-    "content": "910年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -7917,13 +7917,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104748Z"
   },
   {
     "id": 513,
-    "content": "920年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -7934,13 +7934,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104749Z"
   },
   {
     "id": 514,
-    "content": "930年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -7951,13 +7951,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104750Z"
   },
   {
     "id": 515,
-    "content": "940年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -7968,13 +7968,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104753Z"
   },
   {
     "id": 516,
-    "content": "950年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -7985,13 +7985,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104754Z"
   },
   {
     "id": 517,
-    "content": "960年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8002,13 +8002,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104755Z"
   },
   {
     "id": 518,
-    "content": "970年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8019,13 +8019,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104756Z"
   },
   {
     "id": 519,
-    "content": "980年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8036,13 +8036,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104757Z"
   },
   {
     "id": 520,
-    "content": "990年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8053,13 +8053,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "990年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104758Z"
   },
   {
     "id": 521,
-    "content": "900年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8070,13 +8070,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104759Z"
   },
   {
     "id": 522,
-    "content": "910年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8087,13 +8087,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104760Z"
   },
   {
     "id": 523,
-    "content": "920年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8104,13 +8104,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104761Z"
   },
   {
     "id": 524,
-    "content": "930年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8121,13 +8121,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104763Z"
   },
   {
     "id": 525,
-    "content": "940年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8138,13 +8138,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104764Z"
   },
   {
     "id": 526,
-    "content": "950年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8155,13 +8155,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104765Z"
   },
   {
     "id": 527,
-    "content": "960年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8172,13 +8172,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104766Z"
   },
   {
     "id": 528,
-    "content": "970年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8189,13 +8189,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104767Z"
   },
   {
     "id": 529,
-    "content": "980年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8206,13 +8206,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104768Z"
   },
   {
     "id": 530,
-    "content": "990年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8223,13 +8223,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "990年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104769Z"
   },
   {
     "id": 531,
-    "content": "900年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8240,13 +8240,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104770Z"
   },
   {
     "id": 532,
-    "content": "910年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8257,13 +8257,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104771Z"
   },
   {
     "id": 533,
-    "content": "920年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "中等",
     "echo_theme": "90年代音乐",
@@ -8274,13 +8274,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104773Z"
   },
   {
     "id": 534,
-    "content": "900年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8291,13 +8291,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104775Z"
   },
   {
     "id": 535,
-    "content": "910年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8308,13 +8308,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104776Z"
   },
   {
     "id": 536,
-    "content": "920年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8325,13 +8325,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104778Z"
   },
   {
     "id": 537,
-    "content": "930年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8342,13 +8342,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104779Z"
   },
   {
     "id": 538,
-    "content": "940年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8359,13 +8359,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104780Z"
   },
   {
     "id": 539,
-    "content": "950年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8376,13 +8376,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104781Z"
   },
   {
     "id": 540,
-    "content": "960年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8393,13 +8393,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104782Z"
   },
   {
     "id": 541,
-    "content": "970年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8410,13 +8410,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104783Z"
   },
   {
     "id": 542,
-    "content": "980年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8427,13 +8427,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104784Z"
   },
   {
     "id": 543,
-    "content": "990年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8444,13 +8444,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "990年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104785Z"
   },
   {
     "id": 544,
-    "content": "900年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8461,13 +8461,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104786Z"
   },
   {
     "id": 545,
-    "content": "910年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8478,13 +8478,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104787Z"
   },
   {
     "id": 546,
-    "content": "920年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8495,13 +8495,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104788Z"
   },
   {
     "id": 547,
-    "content": "930年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8512,13 +8512,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104789Z"
   },
   {
     "id": 548,
-    "content": "940年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8529,13 +8529,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104791Z"
   },
   {
     "id": 549,
-    "content": "950年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8546,13 +8546,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104792Z"
   },
   {
     "id": 550,
-    "content": "960年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8563,13 +8563,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104793Z"
   },
   {
     "id": 551,
-    "content": "970年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8580,13 +8580,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104795Z"
   },
   {
     "id": 552,
-    "content": "980年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8597,13 +8597,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104796Z"
   },
   {
     "id": 553,
-    "content": "990年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8614,13 +8614,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "990年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104797Z"
   },
   {
     "id": 554,
-    "content": "900年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8631,13 +8631,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104798Z"
   },
   {
     "id": 555,
-    "content": "910年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8648,13 +8648,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104799Z"
   },
   {
     "id": 556,
-    "content": "920年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8665,13 +8665,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104800Z"
   },
   {
     "id": 557,
-    "content": "930年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8682,13 +8682,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104801Z"
   },
   {
     "id": 558,
-    "content": "940年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8699,13 +8699,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104802Z"
   },
   {
     "id": 559,
-    "content": "950年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8716,13 +8716,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104803Z"
   },
   {
     "id": 560,
-    "content": "960年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8733,13 +8733,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104805Z"
   },
   {
     "id": 561,
-    "content": "970年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8750,13 +8750,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104806Z"
   },
   {
     "id": 562,
-    "content": "980年代流行的音乐类型是？",
+    "content": "90年代流行的音乐类型是？",
     "category": "音乐",
     "difficulty": "困难",
     "echo_theme": "90年代音乐",
@@ -8767,7 +8767,7 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年代流行多种音乐类型。",
+    "explanation": "90年代流行多种音乐类型。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104807Z"
   },
@@ -10031,7 +10031,7 @@
   },
   {
     "id": 637,
-    "content": "800年发生的重要事件是？",
+    "content": "1980年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10042,13 +10042,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年发生了多项重要事件。",
+    "explanation": "1980年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104896Z"
   },
   {
     "id": 638,
-    "content": "810年发生的重要事件是？",
+    "content": "1981年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10059,13 +10059,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年发生了多项重要事件。",
+    "explanation": "1981年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104897Z"
   },
   {
     "id": 639,
-    "content": "820年发生的重要事件是？",
+    "content": "1982年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10076,13 +10076,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年发生了多项重要事件。",
+    "explanation": "1982年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104899Z"
   },
   {
     "id": 640,
-    "content": "830年发生的重要事件是？",
+    "content": "1983年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10093,13 +10093,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年发生了多项重要事件。",
+    "explanation": "1983年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104900Z"
   },
   {
     "id": 641,
-    "content": "840年发生的重要事件是？",
+    "content": "1984年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10110,13 +10110,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年发生了多项重要事件。",
+    "explanation": "1984年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104901Z"
   },
   {
     "id": 642,
-    "content": "850年发生的重要事件是？",
+    "content": "1985年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10127,13 +10127,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年发生了多项重要事件。",
+    "explanation": "1985年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104902Z"
   },
   {
     "id": 643,
-    "content": "860年发生的重要事件是？",
+    "content": "1986年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10144,13 +10144,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年发生了多项重要事件。",
+    "explanation": "1986年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104904Z"
   },
   {
     "id": 644,
-    "content": "870年发生的重要事件是？",
+    "content": "1987年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10161,13 +10161,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "870年发生了多项重要事件。",
+    "explanation": "1987年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104905Z"
   },
   {
     "id": 645,
-    "content": "880年发生的重要事件是？",
+    "content": "1988年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10178,13 +10178,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "880年发生了多项重要事件。",
+    "explanation": "1988年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104906Z"
   },
   {
     "id": 646,
-    "content": "890年发生的重要事件是？",
+    "content": "1989年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10195,13 +10195,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "890年发生了多项重要事件。",
+    "explanation": "1989年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104907Z"
   },
   {
     "id": 647,
-    "content": "800年发生的重要事件是？",
+    "content": "1980年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10212,13 +10212,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年发生了多项重要事件。",
+    "explanation": "1980年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104908Z"
   },
   {
     "id": 648,
-    "content": "810年发生的重要事件是？",
+    "content": "1981年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10229,13 +10229,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年发生了多项重要事件。",
+    "explanation": "1981年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104909Z"
   },
   {
     "id": 649,
-    "content": "820年发生的重要事件是？",
+    "content": "1982年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10246,13 +10246,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年发生了多项重要事件。",
+    "explanation": "1982年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104910Z"
   },
   {
     "id": 650,
-    "content": "830年发生的重要事件是？",
+    "content": "1983年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10263,13 +10263,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年发生了多项重要事件。",
+    "explanation": "1983年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104911Z"
   },
   {
     "id": 651,
-    "content": "840年发生的重要事件是？",
+    "content": "1984年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10280,13 +10280,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年发生了多项重要事件。",
+    "explanation": "1984年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104912Z"
   },
   {
     "id": 652,
-    "content": "850年发生的重要事件是？",
+    "content": "1985年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10297,13 +10297,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年发生了多项重要事件。",
+    "explanation": "1985年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104913Z"
   },
   {
     "id": 653,
-    "content": "860年发生的重要事件是？",
+    "content": "1986年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10314,13 +10314,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年发生了多项重要事件。",
+    "explanation": "1986年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104914Z"
   },
   {
     "id": 654,
-    "content": "870年发生的重要事件是？",
+    "content": "1987年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10331,13 +10331,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "870年发生了多项重要事件。",
+    "explanation": "1987年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104916Z"
   },
   {
     "id": 655,
-    "content": "880年发生的重要事件是？",
+    "content": "1988年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10348,13 +10348,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "880年发生了多项重要事件。",
+    "explanation": "1988年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104917Z"
   },
   {
     "id": 656,
-    "content": "890年发生的重要事件是？",
+    "content": "1989年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10365,13 +10365,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "890年发生了多项重要事件。",
+    "explanation": "1989年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104918Z"
   },
   {
     "id": 657,
-    "content": "800年发生的重要事件是？",
+    "content": "1980年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10382,13 +10382,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年发生了多项重要事件。",
+    "explanation": "1980年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104919Z"
   },
   {
     "id": 658,
-    "content": "810年发生的重要事件是？",
+    "content": "1981年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10399,13 +10399,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年发生了多项重要事件。",
+    "explanation": "1981年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104971Z"
   },
   {
     "id": 659,
-    "content": "820年发生的重要事件是？",
+    "content": "1982年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10416,13 +10416,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年发生了多项重要事件。",
+    "explanation": "1982年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104973Z"
   },
   {
     "id": 660,
-    "content": "830年发生的重要事件是？",
+    "content": "1983年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10433,13 +10433,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年发生了多项重要事件。",
+    "explanation": "1983年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104974Z"
   },
   {
     "id": 661,
-    "content": "840年发生的重要事件是？",
+    "content": "1984年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "80年代事件",
@@ -10450,13 +10450,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年发生了多项重要事件。",
+    "explanation": "1984年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104975Z"
   },
   {
     "id": 662,
-    "content": "800年发生的重要事件是？",
+    "content": "1980年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10467,13 +10467,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年发生了多项重要事件。",
+    "explanation": "1980年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104978Z"
   },
   {
     "id": 663,
-    "content": "810年发生的重要事件是？",
+    "content": "1981年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10484,13 +10484,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年发生了多项重要事件。",
+    "explanation": "1981年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104979Z"
   },
   {
     "id": 664,
-    "content": "820年发生的重要事件是？",
+    "content": "1982年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10501,13 +10501,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年发生了多项重要事件。",
+    "explanation": "1982年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104980Z"
   },
   {
     "id": 665,
-    "content": "830年发生的重要事件是？",
+    "content": "1983年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10518,13 +10518,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年发生了多项重要事件。",
+    "explanation": "1983年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104981Z"
   },
   {
     "id": 666,
-    "content": "840年发生的重要事件是？",
+    "content": "1984年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10535,13 +10535,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年发生了多项重要事件。",
+    "explanation": "1984年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104982Z"
   },
   {
     "id": 667,
-    "content": "850年发生的重要事件是？",
+    "content": "1985年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10552,13 +10552,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年发生了多项重要事件。",
+    "explanation": "1985年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104983Z"
   },
   {
     "id": 668,
-    "content": "860年发生的重要事件是？",
+    "content": "1986年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10569,13 +10569,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年发生了多项重要事件。",
+    "explanation": "1986年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104984Z"
   },
   {
     "id": 669,
-    "content": "870年发生的重要事件是？",
+    "content": "1987年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10586,13 +10586,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "870年发生了多项重要事件。",
+    "explanation": "1987年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104985Z"
   },
   {
     "id": 670,
-    "content": "880年发生的重要事件是？",
+    "content": "1988年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10603,13 +10603,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "880年发生了多项重要事件。",
+    "explanation": "1988年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104986Z"
   },
   {
     "id": 671,
-    "content": "890年发生的重要事件是？",
+    "content": "1989年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10620,13 +10620,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "890年发生了多项重要事件。",
+    "explanation": "1989年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104987Z"
   },
   {
     "id": 672,
-    "content": "800年发生的重要事件是？",
+    "content": "1980年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10637,13 +10637,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年发生了多项重要事件。",
+    "explanation": "1980年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104988Z"
   },
   {
     "id": 673,
-    "content": "810年发生的重要事件是？",
+    "content": "1981年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10654,13 +10654,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年发生了多项重要事件。",
+    "explanation": "1981年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104989Z"
   },
   {
     "id": 674,
-    "content": "820年发生的重要事件是？",
+    "content": "1982年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10671,13 +10671,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年发生了多项重要事件。",
+    "explanation": "1982年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104990Z"
   },
   {
     "id": 675,
-    "content": "830年发生的重要事件是？",
+    "content": "1983年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10688,13 +10688,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年发生了多项重要事件。",
+    "explanation": "1983年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104992Z"
   },
   {
     "id": 676,
-    "content": "840年发生的重要事件是？",
+    "content": "1984年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10705,13 +10705,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年发生了多项重要事件。",
+    "explanation": "1984年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104993Z"
   },
   {
     "id": 677,
-    "content": "850年发生的重要事件是？",
+    "content": "1985年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10722,13 +10722,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年发生了多项重要事件。",
+    "explanation": "1985年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104994Z"
   },
   {
     "id": 678,
-    "content": "860年发生的重要事件是？",
+    "content": "1986年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10739,13 +10739,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年发生了多项重要事件。",
+    "explanation": "1986年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104995Z"
   },
   {
     "id": 679,
-    "content": "870年发生的重要事件是？",
+    "content": "1987年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10756,13 +10756,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "870年发生了多项重要事件。",
+    "explanation": "1987年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.104996Z"
   },
   {
     "id": 680,
-    "content": "880年发生的重要事件是？",
+    "content": "1988年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10773,13 +10773,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "880年发生了多项重要事件。",
+    "explanation": "1988年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105013Z"
   },
   {
     "id": 681,
-    "content": "890年发生的重要事件是？",
+    "content": "1989年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10790,13 +10790,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "890年发生了多项重要事件。",
+    "explanation": "1989年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105014Z"
   },
   {
     "id": 682,
-    "content": "800年发生的重要事件是？",
+    "content": "1980年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "80年代事件",
@@ -10807,13 +10807,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年发生了多项重要事件。",
+    "explanation": "1980年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105015Z"
   },
   {
     "id": 683,
-    "content": "800年发生的重要事件是？",
+    "content": "1980年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -10824,13 +10824,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年发生了多项重要事件。",
+    "explanation": "1980年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105017Z"
   },
   {
     "id": 684,
-    "content": "810年发生的重要事件是？",
+    "content": "1981年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -10841,13 +10841,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年发生了多项重要事件。",
+    "explanation": "1981年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105018Z"
   },
   {
     "id": 685,
-    "content": "820年发生的重要事件是？",
+    "content": "1982年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -10858,13 +10858,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年发生了多项重要事件。",
+    "explanation": "1982年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105019Z"
   },
   {
     "id": 686,
-    "content": "830年发生的重要事件是？",
+    "content": "1983年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -10875,13 +10875,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年发生了多项重要事件。",
+    "explanation": "1983年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105021Z"
   },
   {
     "id": 687,
-    "content": "840年发生的重要事件是？",
+    "content": "1984年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -10892,13 +10892,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年发生了多项重要事件。",
+    "explanation": "1984年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105022Z"
   },
   {
     "id": 688,
-    "content": "850年发生的重要事件是？",
+    "content": "1985年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -10909,13 +10909,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年发生了多项重要事件。",
+    "explanation": "1985年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105024Z"
   },
   {
     "id": 689,
-    "content": "860年发生的重要事件是？",
+    "content": "1986年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -10926,13 +10926,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年发生了多项重要事件。",
+    "explanation": "1986年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105025Z"
   },
   {
     "id": 690,
-    "content": "870年发生的重要事件是？",
+    "content": "1987年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -10943,13 +10943,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "870年发生了多项重要事件。",
+    "explanation": "1987年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105026Z"
   },
   {
     "id": 691,
-    "content": "880年发生的重要事件是？",
+    "content": "1988年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -10960,13 +10960,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "880年发生了多项重要事件。",
+    "explanation": "1988年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105027Z"
   },
   {
     "id": 692,
-    "content": "890年发生的重要事件是？",
+    "content": "1989年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -10977,13 +10977,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "890年发生了多项重要事件。",
+    "explanation": "1989年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105028Z"
   },
   {
     "id": 693,
-    "content": "800年发生的重要事件是？",
+    "content": "1980年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -10994,13 +10994,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年发生了多项重要事件。",
+    "explanation": "1980年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105029Z"
   },
   {
     "id": 694,
-    "content": "810年发生的重要事件是？",
+    "content": "1981年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11011,13 +11011,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年发生了多项重要事件。",
+    "explanation": "1981年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105030Z"
   },
   {
     "id": 695,
-    "content": "820年发生的重要事件是？",
+    "content": "1982年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11028,13 +11028,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年发生了多项重要事件。",
+    "explanation": "1982年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105031Z"
   },
   {
     "id": 696,
-    "content": "830年发生的重要事件是？",
+    "content": "1983年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11045,13 +11045,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年发生了多项重要事件。",
+    "explanation": "1983年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105032Z"
   },
   {
     "id": 697,
-    "content": "840年发生的重要事件是？",
+    "content": "1984年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11062,13 +11062,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年发生了多项重要事件。",
+    "explanation": "1984年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105033Z"
   },
   {
     "id": 698,
-    "content": "850年发生的重要事件是？",
+    "content": "1985年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11079,13 +11079,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年发生了多项重要事件。",
+    "explanation": "1985年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105034Z"
   },
   {
     "id": 699,
-    "content": "860年发生的重要事件是？",
+    "content": "1986年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11096,13 +11096,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年发生了多项重要事件。",
+    "explanation": "1986年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105035Z"
   },
   {
     "id": 700,
-    "content": "870年发生的重要事件是？",
+    "content": "1987年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11113,13 +11113,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "870年发生了多项重要事件。",
+    "explanation": "1987年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105036Z"
   },
   {
     "id": 701,
-    "content": "880年发生的重要事件是？",
+    "content": "1988年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11130,13 +11130,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "880年发生了多项重要事件。",
+    "explanation": "1988年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105037Z"
   },
   {
     "id": 702,
-    "content": "890年发生的重要事件是？",
+    "content": "1989年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11147,13 +11147,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "890年发生了多项重要事件。",
+    "explanation": "1989年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105038Z"
   },
   {
     "id": 703,
-    "content": "800年发生的重要事件是？",
+    "content": "1980年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11164,13 +11164,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "800年发生了多项重要事件。",
+    "explanation": "1980年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105039Z"
   },
   {
     "id": 704,
-    "content": "810年发生的重要事件是？",
+    "content": "1981年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11181,13 +11181,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "810年发生了多项重要事件。",
+    "explanation": "1981年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105041Z"
   },
   {
     "id": 705,
-    "content": "820年发生的重要事件是？",
+    "content": "1982年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11198,13 +11198,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "820年发生了多项重要事件。",
+    "explanation": "1982年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105043Z"
   },
   {
     "id": 706,
-    "content": "830年发生的重要事件是？",
+    "content": "1983年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11215,13 +11215,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "830年发生了多项重要事件。",
+    "explanation": "1983年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105044Z"
   },
   {
     "id": 707,
-    "content": "840年发生的重要事件是？",
+    "content": "1984年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11232,13 +11232,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "840年发生了多项重要事件。",
+    "explanation": "1984年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105045Z"
   },
   {
     "id": 708,
-    "content": "850年发生的重要事件是？",
+    "content": "1985年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11249,13 +11249,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "850年发生了多项重要事件。",
+    "explanation": "1985年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105046Z"
   },
   {
     "id": 709,
-    "content": "860年发生的重要事件是？",
+    "content": "1986年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "80年代事件",
@@ -11266,13 +11266,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "860年发生了多项重要事件。",
+    "explanation": "1986年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105047Z"
   },
   {
     "id": 710,
-    "content": "900年发生的重要事件是？",
+    "content": "1990年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11283,13 +11283,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年发生了多项重要事件。",
+    "explanation": "1990年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105049Z"
   },
   {
     "id": 711,
-    "content": "910年发生的重要事件是？",
+    "content": "1991年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11300,13 +11300,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年发生了多项重要事件。",
+    "explanation": "1991年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105050Z"
   },
   {
     "id": 712,
-    "content": "920年发生的重要事件是？",
+    "content": "1992年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11317,13 +11317,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年发生了多项重要事件。",
+    "explanation": "1992年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105051Z"
   },
   {
     "id": 713,
-    "content": "930年发生的重要事件是？",
+    "content": "1993年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11334,13 +11334,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年发生了多项重要事件。",
+    "explanation": "1993年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105052Z"
   },
   {
     "id": 714,
-    "content": "940年发生的重要事件是？",
+    "content": "1994年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11351,13 +11351,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年发生了多项重要事件。",
+    "explanation": "1994年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105053Z"
   },
   {
     "id": 715,
-    "content": "950年发生的重要事件是？",
+    "content": "1995年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11368,13 +11368,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年发生了多项重要事件。",
+    "explanation": "1995年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105054Z"
   },
   {
     "id": 716,
-    "content": "960年发生的重要事件是？",
+    "content": "1996年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11385,13 +11385,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年发生了多项重要事件。",
+    "explanation": "1996年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105055Z"
   },
   {
     "id": 717,
-    "content": "970年发生的重要事件是？",
+    "content": "1997年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11402,13 +11402,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年发生了多项重要事件。",
+    "explanation": "1997年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105056Z"
   },
   {
     "id": 718,
-    "content": "980年发生的重要事件是？",
+    "content": "1998年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11419,13 +11419,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年发生了多项重要事件。",
+    "explanation": "1998年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105057Z"
   },
   {
     "id": 719,
-    "content": "990年发生的重要事件是？",
+    "content": "1999年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11436,13 +11436,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "990年发生了多项重要事件。",
+    "explanation": "1999年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105058Z"
   },
   {
     "id": 720,
-    "content": "900年发生的重要事件是？",
+    "content": "1990年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11453,13 +11453,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年发生了多项重要事件。",
+    "explanation": "1990年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105059Z"
   },
   {
     "id": 721,
-    "content": "910年发生的重要事件是？",
+    "content": "1991年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11470,13 +11470,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年发生了多项重要事件。",
+    "explanation": "1991年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105061Z"
   },
   {
     "id": 722,
-    "content": "920年发生的重要事件是？",
+    "content": "1992年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11487,13 +11487,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年发生了多项重要事件。",
+    "explanation": "1992年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105062Z"
   },
   {
     "id": 723,
-    "content": "930年发生的重要事件是？",
+    "content": "1993年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11504,13 +11504,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年发生了多项重要事件。",
+    "explanation": "1993年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105063Z"
   },
   {
     "id": 724,
-    "content": "940年发生的重要事件是？",
+    "content": "1994年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11521,13 +11521,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年发生了多项重要事件。",
+    "explanation": "1994年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105064Z"
   },
   {
     "id": 725,
-    "content": "950年发生的重要事件是？",
+    "content": "1995年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11538,13 +11538,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年发生了多项重要事件。",
+    "explanation": "1995年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105066Z"
   },
   {
     "id": 726,
-    "content": "960年发生的重要事件是？",
+    "content": "1996年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11555,13 +11555,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年发生了多项重要事件。",
+    "explanation": "1996年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105067Z"
   },
   {
     "id": 727,
-    "content": "970年发生的重要事件是？",
+    "content": "1997年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11572,13 +11572,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年发生了多项重要事件。",
+    "explanation": "1997年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105068Z"
   },
   {
     "id": 728,
-    "content": "980年发生的重要事件是？",
+    "content": "1998年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11589,13 +11589,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年发生了多项重要事件。",
+    "explanation": "1998年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105069Z"
   },
   {
     "id": 729,
-    "content": "990年发生的重要事件是？",
+    "content": "1999年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11606,13 +11606,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "990年发生了多项重要事件。",
+    "explanation": "1999年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105071Z"
   },
   {
     "id": 730,
-    "content": "900年发生的重要事件是？",
+    "content": "1990年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11623,13 +11623,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年发生了多项重要事件。",
+    "explanation": "1990年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105072Z"
   },
   {
     "id": 731,
-    "content": "910年发生的重要事件是？",
+    "content": "1991年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11640,13 +11640,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年发生了多项重要事件。",
+    "explanation": "1991年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105073Z"
   },
   {
     "id": 732,
-    "content": "920年发生的重要事件是？",
+    "content": "1992年发生的重要事件是？",
     "category": "事件",
     "difficulty": "简单",
     "echo_theme": "90年代事件",
@@ -11657,13 +11657,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年发生了多项重要事件。",
+    "explanation": "1992年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105074Z"
   },
   {
     "id": 733,
-    "content": "900年发生的重要事件是？",
+    "content": "1990年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11674,13 +11674,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年发生了多项重要事件。",
+    "explanation": "1990年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105076Z"
   },
   {
     "id": 734,
-    "content": "910年发生的重要事件是？",
+    "content": "1991年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11691,13 +11691,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年发生了多项重要事件。",
+    "explanation": "1991年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105077Z"
   },
   {
     "id": 735,
-    "content": "920年发生的重要事件是？",
+    "content": "1992年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11708,13 +11708,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年发生了多项重要事件。",
+    "explanation": "1992年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105078Z"
   },
   {
     "id": 736,
-    "content": "930年发生的重要事件是？",
+    "content": "1993年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11725,13 +11725,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年发生了多项重要事件。",
+    "explanation": "1993年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105079Z"
   },
   {
     "id": 737,
-    "content": "940年发生的重要事件是？",
+    "content": "1994年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11742,13 +11742,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年发生了多项重要事件。",
+    "explanation": "1994年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105080Z"
   },
   {
     "id": 738,
-    "content": "950年发生的重要事件是？",
+    "content": "1995年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11759,13 +11759,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年发生了多项重要事件。",
+    "explanation": "1995年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105081Z"
   },
   {
     "id": 739,
-    "content": "960年发生的重要事件是？",
+    "content": "1996年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11776,13 +11776,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年发生了多项重要事件。",
+    "explanation": "1996年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105082Z"
   },
   {
     "id": 740,
-    "content": "970年发生的重要事件是？",
+    "content": "1997年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11793,13 +11793,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年发生了多项重要事件。",
+    "explanation": "1997年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105083Z"
   },
   {
     "id": 741,
-    "content": "980年发生的重要事件是？",
+    "content": "1998年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11810,13 +11810,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年发生了多项重要事件。",
+    "explanation": "1998年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105085Z"
   },
   {
     "id": 742,
-    "content": "990年发生的重要事件是？",
+    "content": "1999年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11827,13 +11827,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "990年发生了多项重要事件。",
+    "explanation": "1999年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105086Z"
   },
   {
     "id": 743,
-    "content": "900年发生的重要事件是？",
+    "content": "1990年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11844,13 +11844,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年发生了多项重要事件。",
+    "explanation": "1990年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105088Z"
   },
   {
     "id": 744,
-    "content": "910年发生的重要事件是？",
+    "content": "1991年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11861,13 +11861,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年发生了多项重要事件。",
+    "explanation": "1991年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105089Z"
   },
   {
     "id": 745,
-    "content": "920年发生的重要事件是？",
+    "content": "1992年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11878,13 +11878,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年发生了多项重要事件。",
+    "explanation": "1992年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105090Z"
   },
   {
     "id": 746,
-    "content": "930年发生的重要事件是？",
+    "content": "1993年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11895,13 +11895,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年发生了多项重要事件。",
+    "explanation": "1993年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105091Z"
   },
   {
     "id": 747,
-    "content": "940年发生的重要事件是？",
+    "content": "1994年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11912,13 +11912,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年发生了多项重要事件。",
+    "explanation": "1994年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105092Z"
   },
   {
     "id": 748,
-    "content": "950年发生的重要事件是？",
+    "content": "1995年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11929,13 +11929,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年发生了多项重要事件。",
+    "explanation": "1995年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105093Z"
   },
   {
     "id": 749,
-    "content": "960年发生的重要事件是？",
+    "content": "1996年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11946,13 +11946,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年发生了多项重要事件。",
+    "explanation": "1996年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105094Z"
   },
   {
     "id": 750,
-    "content": "970年发生的重要事件是？",
+    "content": "1997年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11963,13 +11963,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年发生了多项重要事件。",
+    "explanation": "1997年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105095Z"
   },
   {
     "id": 751,
-    "content": "980年发生的重要事件是？",
+    "content": "1998年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11980,13 +11980,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年发生了多项重要事件。",
+    "explanation": "1998年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105097Z"
   },
   {
     "id": 752,
-    "content": "990年发生的重要事件是？",
+    "content": "1999年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -11997,13 +11997,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "990年发生了多项重要事件。",
+    "explanation": "1999年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105098Z"
   },
   {
     "id": 753,
-    "content": "900年发生的重要事件是？",
+    "content": "1990年发生的重要事件是？",
     "category": "事件",
     "difficulty": "中等",
     "echo_theme": "90年代事件",
@@ -12014,13 +12014,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年发生了多项重要事件。",
+    "explanation": "1990年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105099Z"
   },
   {
     "id": 754,
-    "content": "900年发生的重要事件是？",
+    "content": "1990年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12031,13 +12031,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年发生了多项重要事件。",
+    "explanation": "1990年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105101Z"
   },
   {
     "id": 755,
-    "content": "910年发生的重要事件是？",
+    "content": "1991年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12048,13 +12048,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年发生了多项重要事件。",
+    "explanation": "1991年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105102Z"
   },
   {
     "id": 756,
-    "content": "920年发生的重要事件是？",
+    "content": "1992年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12065,13 +12065,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年发生了多项重要事件。",
+    "explanation": "1992年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105103Z"
   },
   {
     "id": 757,
-    "content": "930年发生的重要事件是？",
+    "content": "1993年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12082,13 +12082,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年发生了多项重要事件。",
+    "explanation": "1993年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105104Z"
   },
   {
     "id": 758,
-    "content": "940年发生的重要事件是？",
+    "content": "1994年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12099,13 +12099,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年发生了多项重要事件。",
+    "explanation": "1994年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105105Z"
   },
   {
     "id": 759,
-    "content": "950年发生的重要事件是？",
+    "content": "1995年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12116,13 +12116,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年发生了多项重要事件。",
+    "explanation": "1995年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105107Z"
   },
   {
     "id": 760,
-    "content": "960年发生的重要事件是？",
+    "content": "1996年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12133,13 +12133,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年发生了多项重要事件。",
+    "explanation": "1996年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105108Z"
   },
   {
     "id": 761,
-    "content": "970年发生的重要事件是？",
+    "content": "1997年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12150,13 +12150,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年发生了多项重要事件。",
+    "explanation": "1997年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105109Z"
   },
   {
     "id": 762,
-    "content": "980年发生的重要事件是？",
+    "content": "1998年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12167,13 +12167,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年发生了多项重要事件。",
+    "explanation": "1998年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105110Z"
   },
   {
     "id": 763,
-    "content": "990年发生的重要事件是？",
+    "content": "1999年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12184,13 +12184,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "990年发生了多项重要事件。",
+    "explanation": "1999年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105111Z"
   },
   {
     "id": 764,
-    "content": "900年发生的重要事件是？",
+    "content": "1990年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12201,13 +12201,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年发生了多项重要事件。",
+    "explanation": "1990年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105113Z"
   },
   {
     "id": 765,
-    "content": "910年发生的重要事件是？",
+    "content": "1991年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12218,13 +12218,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年发生了多项重要事件。",
+    "explanation": "1991年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105114Z"
   },
   {
     "id": 766,
-    "content": "920年发生的重要事件是？",
+    "content": "1992年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12235,13 +12235,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年发生了多项重要事件。",
+    "explanation": "1992年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105115Z"
   },
   {
     "id": 767,
-    "content": "930年发生的重要事件是？",
+    "content": "1993年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12252,13 +12252,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年发生了多项重要事件。",
+    "explanation": "1993年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105116Z"
   },
   {
     "id": 768,
-    "content": "940年发生的重要事件是？",
+    "content": "1994年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12269,13 +12269,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年发生了多项重要事件。",
+    "explanation": "1994年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105117Z"
   },
   {
     "id": 769,
-    "content": "950年发生的重要事件是？",
+    "content": "1995年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12286,13 +12286,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年发生了多项重要事件。",
+    "explanation": "1995年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105118Z"
   },
   {
     "id": 770,
-    "content": "960年发生的重要事件是？",
+    "content": "1996年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12303,13 +12303,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年发生了多项重要事件。",
+    "explanation": "1996年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105119Z"
   },
   {
     "id": 771,
-    "content": "970年发生的重要事件是？",
+    "content": "1997年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12320,13 +12320,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年发生了多项重要事件。",
+    "explanation": "1997年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105120Z"
   },
   {
     "id": 772,
-    "content": "980年发生的重要事件是？",
+    "content": "1998年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12337,13 +12337,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年发生了多项重要事件。",
+    "explanation": "1998年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105121Z"
   },
   {
     "id": 773,
-    "content": "990年发生的重要事件是？",
+    "content": "1999年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12354,13 +12354,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "990年发生了多项重要事件。",
+    "explanation": "1999年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105122Z"
   },
   {
     "id": 774,
-    "content": "900年发生的重要事件是？",
+    "content": "1990年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12371,13 +12371,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "900年发生了多项重要事件。",
+    "explanation": "1990年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105123Z"
   },
   {
     "id": 775,
-    "content": "910年发生的重要事件是？",
+    "content": "1991年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12388,13 +12388,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "910年发生了多项重要事件。",
+    "explanation": "1991年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105124Z"
   },
   {
     "id": 776,
-    "content": "920年发生的重要事件是？",
+    "content": "1992年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12405,13 +12405,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "920年发生了多项重要事件。",
+    "explanation": "1992年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105125Z"
   },
   {
     "id": 777,
-    "content": "930年发生的重要事件是？",
+    "content": "1993年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12422,13 +12422,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "930年发生了多项重要事件。",
+    "explanation": "1993年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105126Z"
   },
   {
     "id": 778,
-    "content": "940年发生的重要事件是？",
+    "content": "1994年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12439,13 +12439,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "940年发生了多项重要事件。",
+    "explanation": "1994年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105127Z"
   },
   {
     "id": 779,
-    "content": "950年发生的重要事件是？",
+    "content": "1995年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12456,13 +12456,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "950年发生了多项重要事件。",
+    "explanation": "1995年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105129Z"
   },
   {
     "id": 780,
-    "content": "960年发生的重要事件是？",
+    "content": "1996年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12473,13 +12473,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "960年发生了多项重要事件。",
+    "explanation": "1996年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105130Z"
   },
   {
     "id": 781,
-    "content": "970年发生的重要事件是？",
+    "content": "1997年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12490,13 +12490,13 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "970年发生了多项重要事件。",
+    "explanation": "1997年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105132Z"
   },
   {
     "id": 782,
-    "content": "980年发生的重要事件是？",
+    "content": "1998年发生的重要事件是？",
     "category": "事件",
     "difficulty": "困难",
     "echo_theme": "90年代事件",
@@ -12507,7 +12507,7 @@
       "以上都是"
     ],
     "correct_answer": 3,
-    "explanation": "980年发生了多项重要事件。",
+    "explanation": "1998年发生了多项重要事件。",
     "is_new": false,
     "created_at": "2025-11-05T16:08:01.105133Z"
   },

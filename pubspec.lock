@@ -189,7 +189,7 @@ packages:
     dependency: transitive
     description:
       name: dev_build
-      sha256: f526d1fbe68875f6119ffc333f114dfe6aa93ad04439276d53968f7977cc410e
+      sha256: f526d1fbe68875f619ffc333f114dfe6aa93ad04439276d53968f7977cc410e
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.0+11"
@@ -961,7 +961,7 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_linux
-      sha256: "4e9ba368772369e3e08f231d2301b4ef72b9ff87c31192ef471b380ef29a4935"
+      sha256: "4e9ba368772369e3e08f231d2301b4ef72b9ff87c3192ef471b380ef29a4935"
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.2.1"

@@ -14,11 +14,9 @@ import 'collection_screen.dart';
 import 'achievement_screen.dart';
 import 'settings_screen.dart';
 import 'memory_capsule_screen.dart';
-import 'memory_screen.dart';
-import 'memory_detail_screen.dart';
-import 'memory_view_screen.dart';
-import '../services/memory_service.dart';
-import '../models/memory_record.dart';
+import 'memory_capsule_detail_screen.dart';
+import '../services/memory_capsule_service.dart';
+import '../models/memory_capsule.dart';
 import 'statistics_screen.dart';
 import 'intelligent_learning_assistant_screen.dart';
 import 'test_record_list_screen.dart';
@@ -167,23 +165,36 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                '拾光机是一款专为怀旧爱好者打造的离线问答应用。无需网络连接，随时随地畅享80-90年代的经典回忆。通过答题拾光，系统会智能计算你的"拾光年龄"，让你了解自己对那个年代的记忆深度。',
+                '拾光机是一款专为怀旧爱好者打造的离线问答应用，带你重温80-90年代的美好时光。无需网络连接，随时随地畅享经典回忆，通过答题拾光，系统会智能计算你的"拾光年龄"，让你了解自己对那个年代的记忆深度。',
                 style: TextStyle(fontSize: 14, height: 1.5),
               ),
               const SizedBox(height: 16),
               const Text(
-                '核心功能：',
+                '核心特色：',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              const Text('• 离线答题：无需网络，随时随地使用'),
-              const Text('• 详细解析：提供解析、历史背景和知识点'),
-              const Text('• 拾光年龄：智能计算专属"拾光年龄"'),
+              const Text('✨ 完全离线运行：无需网络，保护隐私安全'),
+              const Text('🎬 怀旧主题设计：聚焦80-90年代经典内容'),
+              const Text('🧠 智能拾光年龄：专属的"拾光年龄"评估'),
+              const Text('💎 记忆胶囊功能：记录与题目相关的珍贵回忆'),
+              const Text('🎖️ 成就系统：8种不同的拾光成就等待解锁'),
+              const Text('📚 丰富题库：持续更新，涵盖影视、音乐、事件'),
+              const Text('👴 老年友好设计：大字体、语音读题，易于操作'),
+              const SizedBox(height: 16),
+              const Text(
+                '主要功能：',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              const Text('• 怀旧问答：随机出题，智能计算拾光年龄'),
+              const Text('• 记忆胶囊：记录回忆，按年代分类查找'),
+              const Text('• 拾光收藏夹：收藏喜欢的题目，添加个人笔记'),
               const Text('• 学习报告：自动生成日报/周报/月报'),
-              const Text('• 记忆胶囊：记录与题目相关的回忆'),
-              const Text('• 每日挑战：每天3个挑战任务'),
-              const Text('• 成就系统：8种成就徽章'),
-              const Text('• 老年友好：大字体、语音读题'),
+              const Text('• 每日挑战：每天3个挑战任务，完成获得奖励'),
+              const Text('• 成就系统：8种成就徽章，见证成长足迹'),
+              const Text('• 答题统计：可视化图表展示学习趋势'),
+              const Text('• 个性化设置：字体大小、语音读题等'),
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -318,14 +329,14 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                       context,
                       4,
                       Icons.photo_library_rounded,
-                      '时光回忆',
-                      '查看记录的回忆',
+                      '记忆胶囊',
+                      '查看记录的记忆',
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const MemoryScreen(),
+                            builder: (context) => const MemoryCapsuleScreen(),
                           ),
                         );
                       },
@@ -464,7 +475,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                       const SizedBox(width: 4),
                       Expanded(
                         child: FutureBuilder<int>(
-                          future: MemoryService().getAllMemories().then((memories) => memories.length),
+                          future: MemoryCapsuleService().getAllCapsules().then((capsules) => capsules.length),
                           builder: (context, snapshot) {
                             final memoryCount = snapshot.data ?? 0;
                             return _buildCompactStatItem(
@@ -681,6 +692,8 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
   late AnimationController _statsController;
   late Animation<double> _welcomeAnimation;
   late Animation<double> _statsAnimation;
+  int _memoryCapsuleRefreshKey = 0; // 用于强制刷新记忆胶囊区域
+  DateTime? _lastMemoryRefreshTime; // 记录最后刷新时间，避免过度刷新
 
   @override
   void initState() {
@@ -723,6 +736,26 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
     super.dispose();
   }
 
+  /// 当页面重新可见时刷新记忆胶囊数据
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 每次页面可见时都刷新一次，但添加防抖机制（至少间隔1秒）
+    final now = DateTime.now();
+    if (_lastMemoryRefreshTime == null || 
+        now.difference(_lastMemoryRefreshTime!).inSeconds > 1) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          print('🔄 首页可见，刷新记忆胶囊区域...');
+          setState(() {
+            _memoryCapsuleRefreshKey++; // 改变key强制刷新FutureBuilder
+          });
+          _lastMemoryRefreshTime = now;
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -744,7 +777,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                 
                 const SizedBox(height: 24),
                 
-                // 拾光回忆（提升权重，放在更靠前的位置）
+                // 记忆胶囊（提升权重，放在更靠前的位置）
                 _buildRecentMemoriesSection(),
                 
                 const SizedBox(height: 24),
@@ -1532,10 +1565,18 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
     );
   }
 
-  /// 构建拾光回忆区域
+  /// 构建记忆胶囊区域
   Widget _buildRecentMemoriesSection() {
-    return FutureBuilder<List<MemoryRecord>>(
-      future: MemoryService().getMemoriesSortedByTime(ascending: false),
+    return FutureBuilder<List<MemoryCapsule>>(
+      key: ValueKey<int>(_memoryCapsuleRefreshKey), // 使用key强制刷新
+      future: MemoryCapsuleService().getAllCapsules(forceReload: true).then((capsules) {
+        print('📦 首页加载记忆胶囊: ${capsules.length} 个');
+        // 按创建时间倒序排列
+        final mutableCapsules = List<MemoryCapsule>.from(capsules);
+        mutableCapsules.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        print('📦 首页记忆胶囊排序后: ${mutableCapsules.length} 个');
+        return mutableCapsules;
+      }),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(
@@ -1545,6 +1586,13 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
         }
         
         final memories = snapshot.data ?? [];
+        
+        // 调试日志
+        if (snapshot.hasError) {
+          print('❌ 首页加载记忆胶囊失败: ${snapshot.error}');
+        } else if (snapshot.hasData) {
+          print('✅ 首页记忆胶囊数据: ${memories.length} 个');
+        }
         
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1561,7 +1609,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                     ),
                     const SizedBox(width: 8),
                     const Text(
-                      '拾光回忆',
+                      '记忆胶囊',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -1572,14 +1620,21 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                 ),
                 if (memories.isNotEmpty)
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       HapticFeedback.lightImpact();
-                      Navigator.push(
+                      final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const MemoryScreen(),
+                          builder: (context) => const MemoryCapsuleScreen(),
                         ),
                       );
+                      // 如果返回true，说明数据有变化，需要刷新
+                      if (result == true && mounted) {
+                        print('🔄 从记忆胶囊页面返回，刷新首页数据...');
+                        setState(() {
+                          _memoryCapsuleRefreshKey++; // 改变key强制刷新FutureBuilder
+                        });
+                      }
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -1607,31 +1662,45 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
             
             if (memories.isEmpty)
               EnhancedUXComponents.buildSmartEmptyState(
-                title: '还没有回忆记录',
+                title: '还没有记忆记录',
                 subtitle: '记录下那些让你怀念的时光吧',
                 icon: Icons.photo_library_outlined,
-                actionText: '记录回忆',
-                onAction: () {
-                  Navigator.push(
+                actionText: '创建记忆胶囊',
+                onAction: () async {
+                  final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const MemoryScreen(),
+                      builder: (context) => const MemoryCapsuleScreen(),
                     ),
                   );
+                  // 如果返回true，说明创建成功，需要刷新
+                  if (result == true && mounted) {
+                    print('🔄 创建记忆胶囊后返回，刷新首页数据...');
+                    setState(() {
+                      _memoryCapsuleRefreshKey++; // 改变key强制刷新FutureBuilder
+                    });
+                  }
                 },
               )
             else ...[
               ...memories.take(4).map((memory) => _buildMemoryCard(memory)),
               if (memories.length > 4)
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     HapticFeedback.lightImpact();
-                    Navigator.push(
+                    final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const MemoryScreen(),
+                        builder: (context) => const MemoryCapsuleScreen(),
                       ),
                     );
+                    // 如果返回true，说明数据有变化，需要刷新
+                    if (result == true && mounted) {
+                      print('🔄 从记忆胶囊页面返回，刷新首页数据...');
+                      setState(() {
+                        _memoryCapsuleRefreshKey++; // 改变key强制刷新FutureBuilder
+                      });
+                    }
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 8),
@@ -1648,7 +1717,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '查看更多回忆 (${memories.length}条)',
+                          '查看更多记忆 (${memories.length}条)',
                           style: TextStyle(
                             fontSize: 14,
                             color: const Color(AppConstants.primaryColor),
@@ -1672,17 +1741,24 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
     );
   }
   
-  /// 构建回忆卡片
-  Widget _buildMemoryCard(MemoryRecord memory) {
+  /// 构建记忆胶囊卡片
+  Widget _buildMemoryCard(MemoryCapsule capsule) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         HapticFeedback.lightImpact();
-        Navigator.push(
+        final result = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MemoryViewScreen(memory: memory),
+            builder: (context) => MemoryCapsuleDetailScreen(capsule: capsule),
           ),
         );
+        // 如果返回true，说明数据有变化（删除或编辑），需要刷新
+        if (result == true && mounted) {
+          print('🔄 从记忆胶囊详情页返回，刷新首页数据...');
+          setState(() {
+            _memoryCapsuleRefreshKey++; // 改变key强制刷新FutureBuilder
+          });
+        }
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
@@ -1723,7 +1799,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    memory.getPreviewText(maxLength: 30),
+                    capsule.getPreviewText(maxLength: 30),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -1735,7 +1811,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                   Row(
                     children: [
                       Text(
-                        memory.era,
+                        capsule.era,
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey[600],
@@ -1743,7 +1819,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        memory.category,
+                        capsule.category,
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey[600],
@@ -1751,7 +1827,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        DateFormat('MM/dd').format(memory.createTime),
+                        DateFormat('MM/dd').format(capsule.createdAt),
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey[600],
@@ -1976,16 +2052,32 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
           }
           return;
         }
-      } catch (e) {
+      } catch (e, stackTrace) {
         print('❌ 启动拾光失败: $e');
+        print('❌ 错误堆栈: $stackTrace');
         // 关闭加载对话框
         if (mounted && Navigator.of(context).canPop()) {
           Navigator.of(context).pop();
         }
         // 显示错误提示
         if (mounted) {
+          String errorMessage = '启动拾光失败';
+          if (e.toString().contains('没有找到') || e.toString().contains('符合条件的题目')) {
+            errorMessage = '没有找到符合条件的题目，请调整筛选条件后重试';
+          } else if (e.toString().contains('数据库') || e.toString().contains('存储')) {
+            errorMessage = '数据加载失败，请检查应用数据文件';
+          } else if (e.toString().contains('题库') || e.toString().contains('题目')) {
+            errorMessage = '题库中没有题目，请检查数据文件';
+          } else {
+            errorMessage = '启动拾光失败：${e.toString()}';
+          }
+          
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('启动拾光失败：$e')),
+            SnackBar(
+              content: Text(errorMessage),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 4),
+            ),
           );
         }
         return;
@@ -2124,11 +2216,18 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
   }
 
   /// 打开记忆胶囊
-  void _openMemoryCapsules() {
-    Navigator.push(
+  void _openMemoryCapsules() async {
+    final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const MemoryCapsuleScreen()),
     );
+    // 如果返回true，说明数据有变化，需要刷新首页
+    if (result == true && mounted) {
+      print('🔄 从记忆胶囊页面返回，刷新首页数据...');
+      setState(() {
+        _memoryCapsuleRefreshKey++; // 改变key强制刷新FutureBuilder
+      });
+    }
   }
 
   /// 构建每日挑战区域
@@ -2306,7 +2405,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
               const Text('• 详细解析：提供解析、历史背景和知识点'),
               const Text('• 拾光年龄：智能计算专属"拾光年龄"'),
               const Text('• 学习报告：自动生成日报/周报/月报'),
-              const Text('• 记忆胶囊：记录与题目相关的回忆'),
+              const Text('• 记忆胶囊：记录与题目相关的记忆'),
               const Text('• 每日挑战：每天3个挑战任务'),
               const Text('• 成就系统：8种成就徽章'),
               const Text('• 老年友好：大字体、语音读题'),

@@ -2,7 +2,7 @@
 class MemoryCapsule {
   final int id;
   final int? questionId; // 关联的题目ID（可选）
-  final String title; // 记忆标题
+  final String? title; // 记忆标题（可选，快速创建时可为空）
   final String content; // 记忆内容
   final String? imagePath; // 图片路径（本地存储）
   final String? audioPath; // 音频路径（本地存储）
@@ -17,7 +17,7 @@ class MemoryCapsule {
   MemoryCapsule({
     required this.id,
     this.questionId,
-    required this.title,
+    this.title, // 标题可选，快速创建时可为空
     required this.content,
     this.imagePath,
     this.audioPath,
@@ -84,7 +84,7 @@ class MemoryCapsule {
     return MemoryCapsule(
       id: map['id'] ?? 0,
       questionId: map['question_id'],
-      title: map['title'] ?? '',
+      title: map['title'], // 标题可选
       content: map['content'] ?? '',
       imagePath: map['image_path'],
       audioPath: map['audio_path'],
@@ -147,6 +147,18 @@ class MemoryCapsule {
       mood: mood ?? this.mood,
       location: location ?? this.location,
     );
+  }
+
+  /// 获取显示标题（如果标题为空，返回内容预览）
+  String getDisplayTitle() {
+    if (title != null && title!.isNotEmpty) {
+      return title!;
+    }
+    // 如果没有标题，返回内容的前30个字符作为标题
+    if (content.length <= 30) {
+      return content;
+    }
+    return '${content.substring(0, 30)}...';
   }
 
   /// 获取简短的预览文本（用于列表显示）

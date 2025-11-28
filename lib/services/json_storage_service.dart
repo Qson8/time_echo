@@ -56,7 +56,8 @@ class JsonStorageService {
           directory = await getApplicationDocumentsDirectory();
           print('✅ 使用应用文档目录: ${directory.path}');
         } catch (e) {
-          print('⚠️ 获取应用文档目录失败: $e');
+          // HarmonyOS 平台可能不支持 path_provider，静默失败，继续尝试其他方案
+          print('⚠️ 获取应用文档目录失败（可能是不支持的平台）: $e');
         }
       }
 
@@ -71,7 +72,8 @@ class JsonStorageService {
           directory = appDataDir;
           print('✅ 使用临时目录: ${directory.path}');
         } catch (e) {
-          print('⚠️ 获取临时目录失败: $e');
+          // HarmonyOS 平台可能不支持 path_provider，静默失败，继续尝试系统临时目录
+          print('⚠️ 获取临时目录失败（可能是不支持的平台）: $e');
         }
       }
 

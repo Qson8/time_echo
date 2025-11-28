@@ -693,14 +693,28 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
           MaterialPageRoute(builder: (context) => const QuizScreen()),
         );
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('❌ 开始拾光失败: $e');
+      print('❌ 错误堆栈: $stackTrace');
       if (mounted) {
         Navigator.of(context).pop(); // 关闭加载对话框
+        
+        String errorMessage = '开始拾光失败';
+        if (e.toString().contains('没有找到') || e.toString().contains('符合条件的题目')) {
+          errorMessage = '没有找到符合条件的题目，请调整筛选条件后重试';
+        } else if (e.toString().contains('数据库') || e.toString().contains('存储')) {
+          errorMessage = '数据加载失败，请检查应用数据文件';
+        } else if (e.toString().contains('题库') || e.toString().contains('题目')) {
+          errorMessage = '题库中没有题目，请检查数据文件';
+        } else {
+          errorMessage = '开始拾光失败：${e.toString()}';
+        }
+        
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('开始拾光失败：$e'),
+            content: Text(errorMessage),
             backgroundColor: Colors.red,
-            duration: const Duration(seconds: 3),
+            duration: const Duration(seconds: 4),
           ),
         );
       }
