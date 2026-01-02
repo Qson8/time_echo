@@ -468,7 +468,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                 child: _buildQuickStartCard(
                   context,
                   '记忆胶囊',
-                  '记录你的记忆',
+                  '记录你的回忆',
                   Icons.photo_library,
                   () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => const MemoryScreen()),

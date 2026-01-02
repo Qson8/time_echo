@@ -770,6 +770,8 @@ class JsonStorageService {
       _achievementsFile,
       _settingsFile,
       _questionUpdateLogFile,
+      _memoriesFile,  // 记忆胶囊文件
+      _storiesFile,   // 故事文件
     ];
     
     for (final file in files) {

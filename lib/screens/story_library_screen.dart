@@ -675,7 +675,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
     if (result == true && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('记忆已记录到记忆胶囊'),
+          content: Text('回忆已记录到记忆胶囊'),
           backgroundColor: Colors.green,
         ),
       );

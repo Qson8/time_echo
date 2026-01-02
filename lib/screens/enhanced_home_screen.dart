@@ -13,10 +13,11 @@ import 'quiz_config_screen.dart';
 import 'collection_screen.dart';
 import 'achievement_screen.dart';
 import 'settings_screen.dart';
-import 'memory_capsule_screen.dart';
-import 'memory_capsule_detail_screen.dart';
-import '../services/memory_capsule_service.dart';
-import '../models/memory_capsule.dart';
+import 'memory_screen.dart';
+import 'memory_detail_screen.dart';
+import 'memory_view_screen.dart';
+import '../services/memory_service.dart';
+import '../models/memory_record.dart';
 import 'statistics_screen.dart';
 import 'intelligent_learning_assistant_screen.dart';
 import 'test_record_list_screen.dart';
@@ -330,7 +331,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                       4,
                       Icons.photo_library_rounded,
                       '记忆胶囊',
-                      '查看记录的记忆',
+                      '查看记录的回忆',
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.push(
@@ -687,17 +688,17 @@ class EnhancedHomeTab extends StatefulWidget {
 }
 
 class _EnhancedHomeTabState extends State<EnhancedHomeTab>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController _welcomeController;
   late AnimationController _statsController;
   late Animation<double> _welcomeAnimation;
   late Animation<double> _statsAnimation;
-  int _memoryCapsuleRefreshKey = 0; // 用于强制刷新记忆胶囊区域
-  DateTime? _lastMemoryRefreshTime; // 记录最后刷新时间，避免过度刷新
+  int _memoryRefreshKey = 0; // 用于刷新记忆胶囊列表的key
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _welcomeController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
@@ -728,9 +729,28 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
       _statsController.forward();
     });
   }
+  
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // 当应用从后台返回前台时，刷新记忆胶囊列表
+    if (state == AppLifecycleState.resumed) {
+      _refreshMemories();
+    }
+  }
+  
+  /// 刷新记忆胶囊列表
+  void _refreshMemories() {
+    if (mounted) {
+      setState(() {
+        _memoryRefreshKey++;
+      });
+    }
+  }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _welcomeController.dispose();
     _statsController.dispose();
     super.dispose();
@@ -1567,16 +1587,9 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
 
   /// 构建记忆胶囊区域
   Widget _buildRecentMemoriesSection() {
-    return FutureBuilder<List<MemoryCapsule>>(
-      key: ValueKey<int>(_memoryCapsuleRefreshKey), // 使用key强制刷新
-      future: MemoryCapsuleService().getAllCapsules(forceReload: true).then((capsules) {
-        print('📦 首页加载记忆胶囊: ${capsules.length} 个');
-        // 按创建时间倒序排列
-        final mutableCapsules = List<MemoryCapsule>.from(capsules);
-        mutableCapsules.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-        print('📦 首页记忆胶囊排序后: ${mutableCapsules.length} 个');
-        return mutableCapsules;
-      }),
+    return FutureBuilder<List<MemoryRecord>>(
+      key: ValueKey(_memoryRefreshKey), // 使用key来触发刷新
+      future: MemoryService().getMemoriesSortedByTime(ascending: false),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(
@@ -1622,19 +1635,14 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                   GestureDetector(
                     onTap: () async {
                       HapticFeedback.lightImpact();
-                      final result = await Navigator.push(
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MemoryCapsuleScreen(),
                         ),
                       );
-                      // 如果返回true，说明数据有变化，需要刷新
-                      if (result == true && mounted) {
-                        print('🔄 从记忆胶囊页面返回，刷新首页数据...');
-                        setState(() {
-                          _memoryCapsuleRefreshKey++; // 改变key强制刷新FutureBuilder
-                        });
-                      }
+                      // 从记忆胶囊页面返回时刷新列表
+                      _refreshMemories();
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -1662,24 +1670,19 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
             
             if (memories.isEmpty)
               EnhancedUXComponents.buildSmartEmptyState(
-                title: '还没有记忆记录',
-                subtitle: '记录下那些让你怀念的时光吧',
+                title: '还没有记忆胶囊',
+                subtitle: '创建你的记忆胶囊吧',
                 icon: Icons.photo_library_outlined,
                 actionText: '创建记忆胶囊',
                 onAction: () async {
-                  final result = await Navigator.push(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const MemoryCapsuleScreen(),
                     ),
                   );
-                  // 如果返回true，说明创建成功，需要刷新
-                  if (result == true && mounted) {
-                    print('🔄 创建记忆胶囊后返回，刷新首页数据...');
-                    setState(() {
-                      _memoryCapsuleRefreshKey++; // 改变key强制刷新FutureBuilder
-                    });
-                  }
+                  // 从记忆胶囊页面返回时刷新列表
+                  _refreshMemories();
                 },
               )
             else ...[
@@ -1688,19 +1691,14 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                 GestureDetector(
                   onTap: () async {
                     HapticFeedback.lightImpact();
-                    final result = await Navigator.push(
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const MemoryCapsuleScreen(),
                       ),
                     );
-                    // 如果返回true，说明数据有变化，需要刷新
-                    if (result == true && mounted) {
-                      print('🔄 从记忆胶囊页面返回，刷新首页数据...');
-                      setState(() {
-                        _memoryCapsuleRefreshKey++; // 改变key强制刷新FutureBuilder
-                      });
-                    }
+                    // 从记忆胶囊页面返回时刷新列表
+                    _refreshMemories();
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 8),
@@ -1717,7 +1715,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '查看更多记忆 (${memories.length}条)',
+                          '查看更多记忆胶囊 (${memories.length}条)',
                           style: TextStyle(
                             fontSize: 14,
                             color: const Color(AppConstants.primaryColor),
@@ -1742,7 +1740,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
   }
   
   /// 构建记忆胶囊卡片
-  Widget _buildMemoryCard(MemoryCapsule capsule) {
+  Widget _buildMemoryCard(MemoryRecord memory) {
     return GestureDetector(
       onTap: () async {
         HapticFeedback.lightImpact();
@@ -2219,7 +2217,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
   void _openMemoryCapsules() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const MemoryCapsuleScreen()),
+      MaterialPageRoute(builder: (context) => const MemoryScreen()),
     );
     // 如果返回true，说明数据有变化，需要刷新首页
     if (result == true && mounted) {

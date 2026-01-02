@@ -453,8 +453,8 @@ class _QuizResultScreenState extends State<QuizResultScreen>
           const SizedBox(height: 12),
           Text(
             hasMemory
-                ? '你已经为这次拾光之旅记录了记忆，可以在记忆胶囊中查看～'
-                : '记录下这段答题带来的记忆吧，让它成为你独特的怀旧档案～',
+                ? '你已经为这次拾光之旅记录了回忆，可以在记忆胶囊中查看～'
+                : '记录下这段答题带来的回忆吧，让它成为你独特的怀旧档案～',
             style: const TextStyle(
               fontSize: 14,
               color: Colors.black87,
@@ -621,7 +621,7 @@ class _QuizResultScreenState extends State<QuizResultScreen>
     if (result == true && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('记忆已记录到记忆胶囊'),
+          content: Text('回忆已记录到记忆胶囊'),
           backgroundColor: Colors.green,
           duration: Duration(seconds: 2),
         ),

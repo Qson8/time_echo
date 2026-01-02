@@ -8,6 +8,7 @@ import '../services/test_record_service.dart';
 import '../services/echo_achievement_service.dart';
 import '../services/echo_collection_service.dart';
 import '../services/local_storage_service.dart';
+import '../services/json_storage_service.dart';
 import '../services/question_update_service.dart';
 import '../services/font_size_service.dart';
 import '../services/theme_service.dart';
@@ -1039,7 +1040,11 @@ class AppStateProvider extends ChangeNotifier {
     try {
       print('🗑️ 开始清除所有数据...');
       
-      // 清除拾光记录
+      // 先清除所有文件（包括记忆胶囊和故事）
+      print('🗑️ 清除所有数据文件（包括记忆胶囊和故事）...');
+      await JsonStorageService().clearAllData();
+      
+      // 清除拾光记录（确保内存中的数据也被清除）
       print('🗑️ 清除拾光记录...');
       await _testRecordService.clearAllRecords();
       
