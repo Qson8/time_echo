@@ -77,10 +77,10 @@ dependencies:
   fl_chart: ^0.66.0
   
   # 震动反馈
-  vibration: ^1.8.4
+  vibration: ^3.1.4
   
   # 本地通知
-  flutter_local_notifications: ^16.3.2
+  flutter_local_notifications: ^17.2.3
   
   # 离线数据管理
   hive: ^2.2.3
@@ -110,6 +110,9 @@ dependencies:
   # PDF生成（支持鸿蒙）
   pdf: ^3.10.7
   printing: ^5.11.1
+  
+  # 原生启动屏（运行时依赖，用于移除启动屏）
+  flutter_native_splash: ^2.4.0
 
 dev_dependencies:
   flutter_test:
@@ -167,3 +170,31 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+flutter_native_splash:
+  # 启用平台
+  android: true
+  ios: true
+  web: false
+  
+  # 基础配置（浅色模式）- 使用主题色
+  color: "#8B6F47"
+  image: assets/images/icon.png
+  
+  # 暗色模式配置 - 使用更深的主题色
+  color_dark: "#5A4A2F"
+  image_dark: assets/images/icon.png
+  
+  # Android 12+ 配置（Material You 风格）
+  android_12:
+    image: assets/images/icon.png
+    color: "#8B6F47"
+    color_dark: "#5A4A2F"
+  
+  # 图片配置
+  android_gravity: center
+  ios_content_mode: center
+  
+  # 全屏模式
+  fullscreen: true

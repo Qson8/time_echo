@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_theme.dart';
 import '../services/app_state_provider.dart';
@@ -67,6 +68,9 @@ class _SplashScreenState extends State<SplashScreen>
       // 取消超时定时器
       _timeoutTimer?.cancel();
       
+      // 移除原生启动屏（在应用初始化完成后）
+      FlutterNativeSplash.remove();
+      
       // 延迟显示启动页
       await Future.delayed(const Duration(seconds: 2));
       
@@ -79,6 +83,8 @@ class _SplashScreenState extends State<SplashScreen>
       print('启动页初始化失败: $e');
       // 取消超时定时器
       _timeoutTimer?.cancel();
+      // 移除原生启动屏（即使出错也要移除）
+      FlutterNativeSplash.remove();
       // 即使出错也要跳转到首页
       if (mounted) {
         Navigator.of(context).pushReplacement(

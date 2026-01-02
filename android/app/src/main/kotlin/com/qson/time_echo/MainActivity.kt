@@ -1,4 +1,4 @@
-package com.example.time_echo
+package com.qson.time_echo
 
 import io.flutter.embedding.android.FlutterActivity
 
