@@ -403,13 +403,6 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
       decoration: AppTheme.vintageDecoration,
       child: Column(
         children: [
-          Image.asset(
-            'assets/images/icon.png',
-            width: 60,
-            height: 60,
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(height: 16),
           const Text(
             '欢迎来到拾光机',
             style: TextStyle(

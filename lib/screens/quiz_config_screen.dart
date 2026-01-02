@@ -206,27 +206,47 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                   return Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(
-                          '$count 道',
-                          style: const TextStyle(fontSize: 13),
-                        ),
-                        selected: isSelected,
-                        onSelected: (selected) {
-                          if (selected) {
-                            setState(() {
-                              _questionCount = count;
-                            });
-                            // 检查题目数量
-                            _checkAvailableQuestions();
-                          }
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _questionCount = count;
+                          });
+                          // 检查题目数量
+                          _checkAvailableQuestions();
                         },
-                        selectedColor: const Color(AppConstants.primaryColor),
-                        labelStyle: TextStyle(
-                          color: isSelected ? Colors.white : Colors.black87,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: isSelected 
+                                ? const Color(AppConstants.primaryColor).withOpacity(0.2) 
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: isSelected 
+                                  ? const Color(AppConstants.primaryColor) 
+                                  : Colors.grey[300]!,
+                              width: isSelected ? 2 : 1,
+                            ),
+                        
+                          ),
+                          child: Center(
+                            child: Text(
+                              '$count',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: isSelected 
+                                    ? const Color(AppConstants.primaryColor) 
+                                    : Colors.black87,
+                                fontWeight: isSelected 
+                                    ? FontWeight.bold 
+                                    : FontWeight.normal,
+                              ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                       ),
                     ),
                   );
@@ -249,33 +269,58 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
               child: Row(
                 children: _categories.map((category) {
                   final isSelected = _selectedCategories.contains(category);
+                  final categoryColor = _getCategoryColor(category);
                   return Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: FilterChip(
-                        label: Text(
-                          category,
-                          style: const TextStyle(fontSize: 13),
-                        ),
-                        selected: isSelected,
-                        onSelected: (selected) {
+                      child: InkWell(
+                        onTap: () {
                           setState(() {
-                            if (selected) {
-                              _selectedCategories.add(category);
-                            } else {
+                            if (isSelected) {
                               _selectedCategories.remove(category);
                               // 至少保留一个分类
                               if (_selectedCategories.isEmpty) {
                                 _selectedCategories.add(category);
                               }
+                            } else {
+                              _selectedCategories.add(category);
                             }
                           });
                           // 检查题目数量
                           _checkAvailableQuestions();
                         },
-                        selectedColor: _getCategoryColor(category).withOpacity(0.2),
-                        checkmarkColor: _getCategoryColor(category),
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: isSelected 
+                                ? categoryColor.withOpacity(0.2) 
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: isSelected 
+                                  ? categoryColor 
+                                  : Colors.grey[300]!,
+                              width: isSelected ? 2 : 1,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              category,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: isSelected 
+                                    ? categoryColor 
+                                    : Colors.black87,
+                                fontWeight: isSelected 
+                                    ? FontWeight.bold 
+                                    : FontWeight.normal,
+                              ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   );
@@ -301,30 +346,54 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                   return Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: FilterChip(
-                        label: Text(
-                          era,
-                          style: const TextStyle(fontSize: 13),
-                        ),
-                        selected: isSelected,
-                        onSelected: (selected) {
+                      child: InkWell(
+                        onTap: () {
                           setState(() {
-                            if (selected) {
-                              _selectedEras.add(era);
-                            } else {
+                            if (isSelected) {
                               _selectedEras.remove(era);
                               // 至少保留一个年代
                               if (_selectedEras.isEmpty) {
                                 _selectedEras.add(era);
                               }
+                            } else {
+                              _selectedEras.add(era);
                             }
                           });
                           // 检查题目数量
                           _checkAvailableQuestions();
                         },
-                        selectedColor: Colors.orange.withOpacity(0.2),
-                        checkmarkColor: Colors.orange,
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: isSelected 
+                                ? Colors.orange.withOpacity(0.2) 
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: isSelected 
+                                  ? Colors.orange 
+                                  : Colors.grey[300]!,
+                              width: isSelected ? 2 : 1,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              era,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: isSelected 
+                                    ? Colors.orange 
+                                    : Colors.black87,
+                                fontWeight: isSelected 
+                                    ? FontWeight.bold 
+                                    : FontWeight.normal,
+                              ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   );
@@ -347,45 +416,72 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
               child: Row(
                 children: _difficulties.map((difficulty) {
                   final isSelected = _selectedDifficulties.contains(difficulty);
+                  final difficultyColor = _getDifficultyColor(difficulty);
                   return Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: FilterChip(
-                        label: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.star,
-                              size: 14,
-                              color: _getDifficultyColor(difficulty),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              difficulty,
-                              style: const TextStyle(fontSize: 13),
-                            ),
-                          ],
-                        ),
-                        selected: isSelected,
-                        onSelected: (selected) {
+                      child: InkWell(
+                        onTap: () {
                           setState(() {
-                            if (selected) {
-                              _selectedDifficulties.add(difficulty);
-                            } else {
+                            if (isSelected) {
                               _selectedDifficulties.remove(difficulty);
                               // 至少保留一个难度
                               if (_selectedDifficulties.isEmpty) {
                                 _selectedDifficulties.add(difficulty);
                               }
+                            } else {
+                              _selectedDifficulties.add(difficulty);
                             }
                           });
                           // 检查题目数量
                           _checkAvailableQuestions();
                         },
-                        selectedColor: _getDifficultyColor(difficulty).withOpacity(0.2),
-                        checkmarkColor: _getDifficultyColor(difficulty),
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: isSelected 
+                                ? difficultyColor.withOpacity(0.2) 
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: isSelected 
+                                  ? difficultyColor 
+                                  : Colors.grey[300]!,
+                              width: isSelected ? 2 : 1,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.star,
+                                size: 14,
+                                color: isSelected 
+                                    ? difficultyColor 
+                                    : difficultyColor.withOpacity(0.7),
+                              ),
+                              const SizedBox(width: 4),
+                              Flexible(
+                                child: Text(
+                                  difficulty,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: isSelected 
+                                        ? difficultyColor 
+                                        : Colors.black87,
+                                    fontWeight: isSelected 
+                                        ? FontWeight.bold 
+                                        : FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   );

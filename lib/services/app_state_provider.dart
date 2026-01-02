@@ -1085,6 +1085,17 @@ class AppStateProvider extends ChangeNotifier {
       await _loadNewQuestionCount(); // 重新加载新题目数量
       await _loadUserSettings();
       
+      // 清除记忆胶囊服务的内存缓存（强制重新加载）
+      print('🗑️ 清除记忆胶囊缓存...');
+      try {
+        final memoryCapsuleService = MemoryCapsuleService();
+        await memoryCapsuleService.getAllCapsules(forceReload: true);
+        print('✅ 记忆胶囊缓存已清除');
+      } catch (e) {
+        print('⚠️ 清除记忆胶囊缓存失败: $e');
+        // 不抛出异常，继续执行
+      }
+      
       print('🗑️ ✅ 所有数据清除完成');
       
       // 强制通知所有监听者

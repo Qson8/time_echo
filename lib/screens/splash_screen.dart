@@ -125,7 +125,6 @@ class _SplashScreenState extends State<SplashScreen>
                         width: 120,
                         height: 120,
                         decoration: BoxDecoration(
-                          color: Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
@@ -140,7 +139,7 @@ class _SplashScreenState extends State<SplashScreen>
                             'assets/images/icon.png',
                             width: 120,
                             height: 120,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                           ),
                         ),
                       ),

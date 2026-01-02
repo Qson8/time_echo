@@ -3,11 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../constants/app_constants.dart';
-import '../constants/app_theme.dart';
 import '../services/app_state_provider.dart';
 import '../models/test_record.dart';
 import '../widgets/enhanced_ux_components.dart';
-import '../widgets/animated_widgets.dart';
 import 'quiz_screen.dart';
 import 'quiz_config_screen.dart';
 import 'collection_screen.dart';
@@ -15,9 +13,11 @@ import 'achievement_screen.dart';
 import 'settings_screen.dart';
 import 'memory_screen.dart';
 import 'memory_detail_screen.dart';
-import 'memory_view_screen.dart';
 import '../services/memory_service.dart';
 import '../models/memory_record.dart';
+import 'memory_capsule_detail_screen.dart';
+import 'memory_capsule_creation_screen.dart';
+import '../models/memory_capsule.dart';
 import 'statistics_screen.dart';
 import 'intelligent_learning_assistant_screen.dart';
 import 'test_record_list_screen.dart';
@@ -26,6 +26,8 @@ import '../services/daily_challenge_service.dart';
 import '../models/daily_challenge.dart';
 import '../services/local_storage_service.dart';
 import '../services/app_state_provider.dart' show QuestionSelectionMode;
+import 'memory_capsule_screen.dart';
+import '../services/memory_capsule_service.dart';
 
 /// 增强的首页
 class EnhancedHomeScreen extends StatefulWidget {
@@ -42,6 +44,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
   late Animation<double> _fadeAnimation;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late final List<Widget> _screens;
+  int _memoryCapsuleRefreshKey = 0; // 用于刷新记忆胶囊统计的key
 
   @override
   void initState() {
@@ -476,7 +479,9 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                       const SizedBox(width: 4),
                       Expanded(
                         child: FutureBuilder<int>(
-                          future: MemoryCapsuleService().getAllCapsules().then((capsules) => capsules.length),
+                          // 使用 appState 的数据变化来触发刷新，确保清除数据后能正确更新
+                          key: ValueKey('capsule_count_${appState.testRecords.length}_$_memoryCapsuleRefreshKey'),
+                          future: MemoryCapsuleService().getAllCapsules(forceReload: true).then((capsules) => capsules.length),
                           builder: (context, snapshot) {
                             final memoryCount = snapshot.data ?? 0;
                             return _buildCompactStatItem(
@@ -694,6 +699,8 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
   late Animation<double> _welcomeAnimation;
   late Animation<double> _statsAnimation;
   int _memoryRefreshKey = 0; // 用于刷新记忆胶囊列表的key
+  int _memoryCapsuleRefreshKey = 0; // 用于刷新记忆胶囊FutureBuilder的key
+  DateTime? _lastMemoryRefreshTime; // 上次刷新记忆胶囊的时间
 
   @override
   void initState() {
@@ -908,13 +915,6 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
           children: [
             Row(
               children: [
-                Image.asset(
-                  'assets/images/icon.png',
-                  width: 32,
-                  height: 32,
-                  fit: BoxFit.contain,
-                ),
-                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1587,9 +1587,14 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
 
   /// 构建记忆胶囊区域
   Widget _buildRecentMemoriesSection() {
-    return FutureBuilder<List<MemoryRecord>>(
-      key: ValueKey(_memoryRefreshKey), // 使用key来触发刷新
-      future: MemoryService().getMemoriesSortedByTime(ascending: false),
+    return FutureBuilder<List<MemoryCapsule>>(
+      key: ValueKey('capsules_$_memoryRefreshKey'), // 使用key来触发刷新
+      future: MemoryCapsuleService().getAllCapsules(forceReload: false).then((capsules) {
+        // 创建新列表并排序（因为 getAllCapsules 返回的是不可修改的列表）
+        final sortedCapsules = List<MemoryCapsule>.from(capsules);
+        sortedCapsules.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        return sortedCapsules;
+      }),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(
@@ -1598,13 +1603,13 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
           );
         }
         
-        final memories = snapshot.data ?? [];
+        final capsules = snapshot.data ?? [];
         
         // 调试日志
         if (snapshot.hasError) {
           print('❌ 首页加载记忆胶囊失败: ${snapshot.error}');
         } else if (snapshot.hasData) {
-          print('✅ 首页记忆胶囊数据: ${memories.length} 个');
+          print('✅ 首页记忆胶囊数据: ${capsules.length} 个');
         }
         
         return Column(
@@ -1631,18 +1636,20 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                     ),
                   ],
                 ),
-                if (memories.isNotEmpty)
+                if (capsules.isNotEmpty)
                   GestureDetector(
                     onTap: () async {
                       HapticFeedback.lightImpact();
-                      await Navigator.push(
+                      final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MemoryCapsuleScreen(),
                         ),
                       );
                       // 从记忆胶囊页面返回时刷新列表
-                      _refreshMemories();
+                      if (result == true || mounted) {
+                        _refreshMemories();
+                      }
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -1668,37 +1675,41 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
             ),
             const SizedBox(height: 16),
             
-            if (memories.isEmpty)
+            if (capsules.isEmpty)
               EnhancedUXComponents.buildSmartEmptyState(
                 title: '还没有记忆胶囊',
                 subtitle: '创建你的记忆胶囊吧',
                 icon: Icons.photo_library_outlined,
                 actionText: '创建记忆胶囊',
                 onAction: () async {
-                  await Navigator.push(
+                  final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const MemoryCapsuleScreen(),
+                      builder: (context) => const MemoryCapsuleCreationScreen(),
                     ),
                   );
-                  // 从记忆胶囊页面返回时刷新列表
-                  _refreshMemories();
+                  // 如果创建成功，刷新列表
+                  if (result == true) {
+                    _refreshMemories();
+                  }
                 },
               )
             else ...[
-              ...memories.take(4).map((memory) => _buildMemoryCard(memory)),
-              if (memories.length > 4)
+              ...capsules.take(4).map((capsule) => _buildMemoryCard(capsule)),
+              if (capsules.length > 4)
                 GestureDetector(
                   onTap: () async {
                     HapticFeedback.lightImpact();
-                    await Navigator.push(
+                    final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const MemoryCapsuleScreen(),
                       ),
                     );
                     // 从记忆胶囊页面返回时刷新列表
-                    _refreshMemories();
+                    if (result == true || mounted) {
+                      _refreshMemories();
+                    }
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 8),
@@ -1715,7 +1726,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '查看更多记忆胶囊 (${memories.length}条)',
+                          '查看更多记忆胶囊 (${capsules.length}条)',
                           style: TextStyle(
                             fontSize: 14,
                             color: const Color(AppConstants.primaryColor),
@@ -1740,7 +1751,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
   }
   
   /// 构建记忆胶囊卡片
-  Widget _buildMemoryCard(MemoryRecord memory) {
+  Widget _buildMemoryCard(MemoryCapsule capsule) {
     return GestureDetector(
       onTap: () async {
         HapticFeedback.lightImpact();
@@ -1754,7 +1765,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
         if (result == true && mounted) {
           print('🔄 从记忆胶囊详情页返回，刷新首页数据...');
           setState(() {
-            _memoryCapsuleRefreshKey++; // 改变key强制刷新FutureBuilder
+            _memoryRefreshKey++; // 改变key强制刷新FutureBuilder
           });
         }
       },
