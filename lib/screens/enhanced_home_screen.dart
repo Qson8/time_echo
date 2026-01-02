@@ -13,7 +13,6 @@ import 'quiz_config_screen.dart';
 import 'collection_screen.dart';
 import 'achievement_screen.dart';
 import 'settings_screen.dart';
-import 'memory_capsule_screen.dart';
 import 'memory_screen.dart';
 import 'memory_detail_screen.dart';
 import 'memory_view_screen.dart';
@@ -318,7 +317,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                       context,
                       4,
                       Icons.photo_library_rounded,
-                      '时光回忆',
+                      '记忆胶囊',
                       '查看记录的回忆',
                       onTap: () {
                         Navigator.pop(context);
@@ -676,15 +675,17 @@ class EnhancedHomeTab extends StatefulWidget {
 }
 
 class _EnhancedHomeTabState extends State<EnhancedHomeTab>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController _welcomeController;
   late AnimationController _statsController;
   late Animation<double> _welcomeAnimation;
   late Animation<double> _statsAnimation;
+  int _memoryRefreshKey = 0; // 用于刷新记忆胶囊列表的key
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _welcomeController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
@@ -715,9 +716,28 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
       _statsController.forward();
     });
   }
+  
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // 当应用从后台返回前台时，刷新记忆胶囊列表
+    if (state == AppLifecycleState.resumed) {
+      _refreshMemories();
+    }
+  }
+  
+  /// 刷新记忆胶囊列表
+  void _refreshMemories() {
+    if (mounted) {
+      setState(() {
+        _memoryRefreshKey++;
+      });
+    }
+  }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _welcomeController.dispose();
     _statsController.dispose();
     super.dispose();
@@ -744,7 +764,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                 
                 const SizedBox(height: 24),
                 
-                // 拾光回忆（提升权重，放在更靠前的位置）
+                // 记忆胶囊（提升权重，放在更靠前的位置）
                 _buildRecentMemoriesSection(),
                 
                 const SizedBox(height: 24),
@@ -1532,9 +1552,10 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
     );
   }
 
-  /// 构建拾光回忆区域
+  /// 构建记忆胶囊区域
   Widget _buildRecentMemoriesSection() {
     return FutureBuilder<List<MemoryRecord>>(
+      key: ValueKey(_memoryRefreshKey), // 使用key来触发刷新
       future: MemoryService().getMemoriesSortedByTime(ascending: false),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -1561,7 +1582,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                     ),
                     const SizedBox(width: 8),
                     const Text(
-                      '拾光回忆',
+                      '记忆胶囊',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -1572,14 +1593,16 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                 ),
                 if (memories.isNotEmpty)
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       HapticFeedback.lightImpact();
-                      Navigator.push(
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MemoryScreen(),
                         ),
                       );
+                      // 从记忆胶囊页面返回时刷新列表
+                      _refreshMemories();
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -1607,31 +1630,35 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
             
             if (memories.isEmpty)
               EnhancedUXComponents.buildSmartEmptyState(
-                title: '还没有回忆记录',
-                subtitle: '记录下那些让你怀念的时光吧',
+                title: '还没有记忆胶囊',
+                subtitle: '创建你的记忆胶囊吧',
                 icon: Icons.photo_library_outlined,
-                actionText: '记录回忆',
-                onAction: () {
-                  Navigator.push(
+                actionText: '创建记忆胶囊',
+                onAction: () async {
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const MemoryScreen(),
                     ),
                   );
+                  // 从记忆胶囊页面返回时刷新列表
+                  _refreshMemories();
                 },
               )
             else ...[
               ...memories.take(4).map((memory) => _buildMemoryCard(memory)),
               if (memories.length > 4)
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     HapticFeedback.lightImpact();
-                    Navigator.push(
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const MemoryScreen(),
                       ),
                     );
+                    // 从记忆胶囊页面返回时刷新列表
+                    _refreshMemories();
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 8),
@@ -1648,7 +1675,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '查看更多回忆 (${memories.length}条)',
+                          '查看更多记忆胶囊 (${memories.length}条)',
                           style: TextStyle(
                             fontSize: 14,
                             color: const Color(AppConstants.primaryColor),
@@ -1672,7 +1699,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
     );
   }
   
-  /// 构建回忆卡片
+  /// 构建记忆胶囊卡片
   Widget _buildMemoryCard(MemoryRecord memory) {
     return GestureDetector(
       onTap: () {
@@ -2127,7 +2154,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
   void _openMemoryCapsules() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const MemoryCapsuleScreen()),
+      MaterialPageRoute(builder: (context) => const MemoryScreen()),
     );
   }
 

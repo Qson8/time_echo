@@ -1,4 +1,4 @@
-/// 时光回忆数据模型
+/// 记忆胶囊数据模型
 class MemoryRecord {
   final int id;
   final String content;           // 回忆内容

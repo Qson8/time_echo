@@ -1,7 +1,7 @@
 import '../models/memory_record.dart';
 import 'json_storage_service.dart';
 
-/// 时光回忆服务类（使用JSON文件存储）
+/// 记忆胶囊服务类（使用JSON文件存储）
 class MemoryService {
   static final MemoryService _instance = MemoryService._internal();
   factory MemoryService() => _instance;

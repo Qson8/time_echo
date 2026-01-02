@@ -515,7 +515,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                 offset: const Offset(50, 0),
                 child: _buildQuickStartCard(
                   context,
-                  '时光回忆',
+                  '记忆胶囊',
                   '记录你的回忆',
                   Icons.photo_library,
                   () => Navigator.of(context).push(

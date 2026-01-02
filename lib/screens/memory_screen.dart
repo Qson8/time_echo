@@ -7,7 +7,7 @@ import '../services/memory_service.dart';
 import 'memory_detail_screen.dart';
 import 'memory_view_screen.dart';
 
-/// 时光回忆页面
+/// 记忆胶囊页面
 class MemoryScreen extends StatefulWidget {
   const MemoryScreen({super.key});
 
@@ -83,7 +83,7 @@ class _MemoryScreenState extends State<MemoryScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('时光回忆'),
+        title: const Text('记忆胶囊'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -159,7 +159,7 @@ class _MemoryScreenState extends State<MemoryScreen>
             ),
             const SizedBox(height: 24),
             const Text(
-              '时光回忆还是空的',
+              '记忆胶囊还是空的',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
