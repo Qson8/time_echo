@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../constants/app_constants.dart';
 import '../services/intelligent_learning_assistant.dart';
 import '../services/app_state_provider.dart';
+import '../utils/theme_adapter.dart';
 
 /// 智能学习助手界面
 class IntelligentLearningAssistantScreen extends StatefulWidget {
@@ -174,30 +175,39 @@ class _IntelligentLearningAssistantScreenState extends State<IntelligentLearning
 
   /// 构建应用栏
   PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      title: const Text('智能学习助手'),
-      centerTitle: true,
-      elevation: 0,
-      backgroundColor: Colors.white,
-      iconTheme: const IconThemeData(color: Colors.black87),
-      titleTextStyle: const TextStyle(
-        color: Colors.black87,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.refresh),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            setState(() {
-              _isLoading = true;
-            });
-            _loadLearningData();
-          },
-          tooltip: '刷新',
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(kToolbarHeight),
+      child: Builder(
+        builder: (context) => AppBar(
+          title: Text(
+            '智能学习助手',
+            style: TextStyle(
+              color: ThemeAdapter.getTextColor(context),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: ThemeAdapter.getSurfaceColor(context),
+          iconTheme: IconThemeData(
+            color: ThemeAdapter.getIconColor(context),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                setState(() {
+                  _isLoading = true;
+                });
+                _loadLearningData();
+              },
+              tooltip: '刷新',
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 

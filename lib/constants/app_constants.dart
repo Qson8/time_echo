@@ -3,7 +3,7 @@ class AppConstants {
   // 应用信息
   static const String appName = '拾光机';
   static const String appNameEn = 'Time Echo';
-  static const String appVersion = '1.0.0';
+  static const String appVersion = '1.0.1';
   
   // 颜色主题 - 拾光复古主题色系
   static const int primaryColor = 0xFF8B6F47; // 拾光棕（优化后的温暖棕色，更柔和）

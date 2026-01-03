@@ -5,6 +5,7 @@ import '../models/memory_capsule.dart';
 import '../services/memory_capsule_service.dart';
 import '../services/question_service.dart';
 import '../models/question.dart';
+import '../utils/theme_adapter.dart';
 
 /// 记忆胶囊创建/编辑页面
 class MemoryCapsuleCreationScreen extends StatefulWidget {
@@ -278,11 +279,14 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
               const SizedBox(height: 24),
 
               // 年代选择
-              const Text(
-                '年代',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+              Builder(
+                builder: (context) => Text(
+                  '年代',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: ThemeAdapter.getTextColor(context),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
@@ -291,14 +295,16 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
                 children: _eras.map((era) {
                   final isSelected = _selectedEra == era;
                   return FilterChip(
-                    label: Text(
-                      era,
-                      style: TextStyle(
-                        color: isSelected 
-                            ? const Color(AppConstants.primaryColor)
-                            : const Color(AppConstants.textPrimaryColor),
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                        fontSize: 14,
+                    label: Builder(
+                      builder: (context) => Text(
+                        era,
+                        style: TextStyle(
+                          color: isSelected 
+                              ? ThemeAdapter.getPrimaryColor(context)
+                              : ThemeAdapter.getTextColor(context),
+                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                     selected: isSelected,
@@ -310,7 +316,7 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
                       }
                     },
                     selectedColor: const Color(AppConstants.primaryColor).withOpacity(0.2),
-                    backgroundColor: Colors.white,
+                    backgroundColor: ThemeAdapter.getSurfaceColor(context),
                     checkmarkColor: const Color(AppConstants.primaryColor),
                     side: BorderSide(
                       color: isSelected 
@@ -324,11 +330,14 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
               const SizedBox(height: 24),
 
               // 分类选择
-              const Text(
-                '分类',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+              Builder(
+                builder: (context) => Text(
+                  '分类',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: ThemeAdapter.getTextColor(context),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
@@ -337,12 +346,14 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
                 children: _categories.map((category) {
                   final isSelected = _selectedCategory == category;
                   return FilterChip(
-                    label: Text(
-                      category,
-                      style: TextStyle(
-                        color: isSelected ? Colors.green : const Color(AppConstants.textPrimaryColor),
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                        fontSize: 14,
+                    label: Builder(
+                      builder: (context) => Text(
+                        category,
+                        style: TextStyle(
+                          color: isSelected ? Colors.green : ThemeAdapter.getTextColor(context),
+                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                     selected: isSelected,
@@ -354,7 +365,7 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
                       }
                     },
                     selectedColor: Colors.green.withOpacity(0.2),
-                    backgroundColor: Colors.white,
+                    backgroundColor: ThemeAdapter.getSurfaceColor(context),
                     checkmarkColor: Colors.green,
                     side: BorderSide(
                       color: isSelected ? Colors.green : Colors.grey.withOpacity(0.3),
@@ -366,11 +377,14 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
               const SizedBox(height: 24),
 
               // 心情选择
-              const Text(
-                '心情',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+              Builder(
+                builder: (context) => Text(
+                  '心情',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: ThemeAdapter.getTextColor(context),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
@@ -379,12 +393,14 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
                 children: _moods.map((mood) {
                   final isSelected = _selectedMood == mood;
                   return FilterChip(
-                    label: Text(
-                      mood,
-                      style: TextStyle(
-                        color: isSelected ? Colors.orange : const Color(AppConstants.textPrimaryColor),
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                        fontSize: 14,
+                    label: Builder(
+                      builder: (context) => Text(
+                        mood,
+                        style: TextStyle(
+                          color: isSelected ? Colors.orange : ThemeAdapter.getTextColor(context),
+                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                     selected: isSelected,
@@ -396,7 +412,7 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
                       }
                     },
                     selectedColor: Colors.orange.withOpacity(0.2),
-                    backgroundColor: Colors.white,
+                    backgroundColor: ThemeAdapter.getSurfaceColor(context),
                     checkmarkColor: Colors.orange,
                     side: BorderSide(
                       color: isSelected ? Colors.orange : Colors.grey.withOpacity(0.3),
@@ -408,17 +424,34 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
               const SizedBox(height: 24),
 
               // 记忆时间
-              ListTile(
-                leading: const Icon(Icons.calendar_today),
-                title: const Text('记忆时间'),
-                subtitle: Text(
-                  _selectedMemoryDate == null
-                      ? '未设置'
-                      : DateFormat('yyyy年MM月dd日').format(_selectedMemoryDate!),
+              Builder(
+                builder: (context) => ListTile(
+                  leading: Icon(
+                    Icons.calendar_today,
+                    color: ThemeAdapter.getIconColor(context),
+                  ),
+                  title: Text(
+                    '记忆时间',
+                    style: TextStyle(
+                      color: ThemeAdapter.getTextColor(context),
+                    ),
+                  ),
+                  subtitle: Text(
+                    _selectedMemoryDate == null
+                        ? '未设置'
+                        : DateFormat('yyyy年MM月dd日').format(_selectedMemoryDate!),
+                    style: TextStyle(
+                      color: ThemeAdapter.getSecondaryTextColor(context),
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                    color: ThemeAdapter.getSecondaryTextColor(context),
+                  ),
+                  onTap: _selectMemoryDate,
+                  contentPadding: EdgeInsets.zero,
                 ),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: _selectMemoryDate,
-                contentPadding: EdgeInsets.zero,
               ),
               const SizedBox(height: 16),
 
@@ -435,11 +468,14 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
               const SizedBox(height: 24),
 
               // 标签
-              const Text(
-                '标签',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+              Builder(
+                builder: (context) => Text(
+                  '标签',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: ThemeAdapter.getTextColor(context),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
@@ -470,17 +506,19 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
                   spacing: 8,
                   runSpacing: 8,
                   children: _tags.map((tag) {
-                    return Chip(
-                      label: Text(
-                        tag,
-                        style: const TextStyle(
-                          color: Color(AppConstants.textPrimaryColor),
-                          fontWeight: FontWeight.w500,
+                    return Builder(
+                      builder: (context) => Chip(
+                        label: Text(
+                          tag,
+                          style: TextStyle(
+                            color: ThemeAdapter.getTextColor(context),
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
+                        onDeleted: () => _removeTag(tag),
+                        backgroundColor: Colors.blue.withOpacity(0.1),
+                        deleteIconColor: Colors.blue,
                       ),
-                      onDeleted: () => _removeTag(tag),
-                      backgroundColor: Colors.blue.withOpacity(0.1),
-                      deleteIconColor: Colors.blue,
                     );
                   }).toList(),
                 ),
@@ -489,13 +527,14 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
 
               // 关联题目
               if (_relatedQuestion != null)
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.blue.withOpacity(0.3)),
-                  ),
+                Builder(
+                  builder: (context) => Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: ThemeAdapter.getAccentColor(context).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: ThemeAdapter.getAccentColor(context).withOpacity(0.3)),
+                    ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -527,13 +566,16 @@ class _MemoryCapsuleCreationScreenState extends State<MemoryCapsuleCreationScree
                         style: const TextStyle(fontSize: 14),
                       ),
                     ],
+                    ),
                   ),
                 )
               else
-                OutlinedButton.icon(
-                  onPressed: _selectRelatedQuestion,
-                  icon: const Icon(Icons.link),
-                  label: const Text('关联题目（可选）'),
+                Builder(
+                  builder: (context) => OutlinedButton.icon(
+                    onPressed: _selectRelatedQuestion,
+                    icon: const Icon(Icons.link),
+                    label: const Text('关联题目（可选）'),
+                  ),
                 ),
               const SizedBox(height: 32),
 
@@ -663,177 +705,201 @@ class _QuestionSelectionDialogState extends State<_QuestionSelectionDialog> {
       minChildSize: 0.5,
       maxChildSize: 0.95,
       builder: (context, scrollController) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: Column(
-            children: [
-              // 标题栏
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      const Color(AppConstants.primaryColor),
-                      const Color(AppConstants.primaryColor).withOpacity(0.8),
+        return Builder(
+          builder: (context) => Container(
+            decoration: BoxDecoration(
+              color: ThemeAdapter.getSurfaceColor(context),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              children: [
+                // 标题栏
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(AppConstants.primaryColor),
+                        const Color(AppConstants.primaryColor).withOpacity(0.8),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.quiz, color: Colors.white, size: 28),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Text(
+                          '选择关联题目',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white),
+                        onPressed: () => Navigator.pop(context),
+                      ),
                     ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
                   ),
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
                 ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.quiz, color: Colors.white, size: 28),
-                    const SizedBox(width: 12),
-                    const Expanded(
-                      child: Text(
-                        '选择关联题目',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                
+                // 搜索框
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Builder(
+                    builder: (context) => TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: '搜索题目内容、分类或主题...',
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: _searchQuery.isNotEmpty
+                            ? IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: () {
+                                  _searchController.clear();
+                                },
+                              )
+                            : null,
+                        filled: true,
+                        fillColor: ThemeAdapter.getDividerColor(context).withOpacity(0.1),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: ThemeAdapter.getBorderColor(context).withOpacity(0.3),
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
                         ),
                       ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close, color: Colors.white),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ],
-                ),
-              ),
-              
-              // 搜索框
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: '搜索题目内容、分类或主题...',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: _searchQuery.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              _searchController.clear();
-                            },
-                          )
-                        : null,
-                    filled: true,
-                    fillColor: Colors.grey[100],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
                     ),
                   ),
                 ),
-              ),
-              
-              // 筛选器
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    // 分类筛选
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: DropdownButton<String>(
-                          value: _selectedCategoryFilter,
-                          isExpanded: true,
-                          hint: const Text('所有分类'),
-                          underline: const SizedBox(),
-                          items: [
-                            const DropdownMenuItem<String>(
-                              value: null,
-                              child: Text('所有分类'),
+                
+                // 筛选器
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      // 分类筛选
+                      Expanded(
+                        child: Builder(
+                          builder: (context) => Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: ThemeAdapter.getDividerColor(context).withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            ...['影视', '音乐', '事件'].map((category) {
-                              return DropdownMenuItem<String>(
-                                value: category,
-                                child: Text(category),
-                              );
-                            }),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedCategoryFilter = value;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    // 年代筛选
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: DropdownButton<String>(
-                          value: _selectedEraFilter,
-                          isExpanded: true,
-                          hint: const Text('所有年代'),
-                          underline: const SizedBox(),
-                          items: [
-                            const DropdownMenuItem<String>(
-                              value: null,
-                              child: Text('所有年代'),
+                            child: DropdownButton<String>(
+                              value: _selectedCategoryFilter,
+                              isExpanded: true,
+                              hint: Builder(
+                                builder: (context) => Text(
+                                  '所有分类',
+                                  style: TextStyle(
+                                    color: ThemeAdapter.getSecondaryTextColor(context),
+                                  ),
+                                ),
+                              ),
+                              underline: const SizedBox(),
+                              items: [
+                                const DropdownMenuItem<String>(
+                                  value: null,
+                                  child: Text('所有分类'),
+                                ),
+                                ...['影视', '音乐', '事件'].map((category) {
+                                  return DropdownMenuItem<String>(
+                                    value: category,
+                                    child: Text(category),
+                                  );
+                                }),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedCategoryFilter = value;
+                                });
+                              },
                             ),
-                            ...['80年代', '90年代', '00年代'].map((era) {
-                              return DropdownMenuItem<String>(
-                                value: era,
-                                child: Text(era),
-                              );
-                            }),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedEraFilter = value;
-                            });
-                          },
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              
-              const SizedBox(height: 8),
-              
-              // 结果统计
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Text(
-                      '找到 ${filteredQuestions.length} 道题目',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
+                      const SizedBox(width: 8),
+                      // 年代筛选
+                      Expanded(
+                        child: Builder(
+                          builder: (context) => Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: ThemeAdapter.getDividerColor(context).withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: DropdownButton<String>(
+                              value: _selectedEraFilter,
+                              isExpanded: true,
+                              hint: Builder(
+                                builder: (context) => Text(
+                                  '所有年代',
+                                  style: TextStyle(
+                                    color: ThemeAdapter.getSecondaryTextColor(context),
+                                  ),
+                                ),
+                              ),
+                              underline: const SizedBox(),
+                              items: [
+                                const DropdownMenuItem<String>(
+                                  value: null,
+                                  child: Text('所有年代'),
+                                ),
+                                ...['80年代', '90年代', '00年代'].map((era) {
+                                  return DropdownMenuItem<String>(
+                                    value: era,
+                                    child: Text(era),
+                                  );
+                                }),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedEraFilter = value;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              
-              const SizedBox(height: 8),
-              
-              // 题目列表
-              Expanded(
+                const SizedBox(height: 8),
+                
+                // 结果统计
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Builder(
+                        builder: (context) => Text(
+                          '找到 ${filteredQuestions.length} 道题目',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: ThemeAdapter.getSecondaryTextColor(context),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 8),
+                
+                // 题目列表
+                Expanded(
                 child: filteredQuestions.isEmpty
                     ? Center(
                         child: Column(
@@ -845,19 +911,23 @@ class _QuestionSelectionDialogState extends State<_QuestionSelectionDialog> {
                               color: Colors.grey[400],
                             ),
                             const SizedBox(height: 16),
-                            Text(
-                              '没有找到相关题目',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[600],
+                            Builder(
+                              builder: (context) => Text(
+                                '没有找到相关题目',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: ThemeAdapter.getSecondaryTextColor(context),
+                                ),
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Text(
-                              '试试调整搜索条件',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[500],
+                            Builder(
+                              builder: (context) => Text(
+                                '试试调整搜索条件',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: ThemeAdapter.getSecondaryTextColor(context),
+                                ),
                               ),
                             ),
                           ],
@@ -907,20 +977,22 @@ class _QuestionSelectionDialogState extends State<_QuestionSelectionDialog> {
                                           ),
                                         ),
                                         const SizedBox(width: 8),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
-                                            vertical: 4,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[200],
-                                            borderRadius: BorderRadius.circular(6),
-                                          ),
-                                          child: Text(
-                                            question.echoTheme,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.grey[700],
+                                        Builder(
+                                          builder: (context) => Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                              vertical: 4,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: ThemeAdapter.getDividerColor(context).withOpacity(0.3),
+                                              borderRadius: BorderRadius.circular(6),
+                                            ),
+                                            child: Text(
+                                              question.echoTheme,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: ThemeAdapter.getSecondaryTextColor(context),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -928,15 +1000,18 @@ class _QuestionSelectionDialogState extends State<_QuestionSelectionDialog> {
                                     ),
                                     const SizedBox(height: 12),
                                     // 题目内容
-                                    Text(
-                                      question.content,
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                        height: 1.4,
+                                    Builder(
+                                      builder: (context) => Text(
+                                        question.content,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          height: 1.4,
+                                          color: ThemeAdapter.getTextColor(context),
+                                        ),
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
                                     const SizedBox(height: 8),
                                     // 难度标签
@@ -952,11 +1027,13 @@ class _QuestionSelectionDialogState extends State<_QuestionSelectionDialog> {
                                                   : Colors.green,
                                         ),
                                         const SizedBox(width: 4),
-                                        Text(
-                                          question.difficulty,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey[600],
+                                        Builder(
+                                          builder: (context) => Text(
+                                            question.difficulty,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: ThemeAdapter.getSecondaryTextColor(context),
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -968,8 +1045,9 @@ class _QuestionSelectionDialogState extends State<_QuestionSelectionDialog> {
                           );
                         },
                       ),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         );
       },

@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import '../constants/app_constants.dart';
 import '../services/learning_report_service.dart';
 import '../models/test_record.dart';
+import '../utils/theme_adapter.dart';
 
 /// 学习报告页面
 class LearningReportScreen extends StatefulWidget {
@@ -287,7 +288,7 @@ class _LearningReportScreenState extends State<LearningReportScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: ThemeAdapter.getSurfaceColor(context),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: color.withOpacity(0.3),
@@ -295,7 +296,7 @@ class _LearningReportScreenState extends State<LearningReportScreen> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(ThemeAdapter.isDarkMode(context) ? 0.2 : 0.05),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -314,11 +315,13 @@ class _LearningReportScreenState extends State<LearningReportScreen> {
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.black54,
+          Builder(
+            builder: (context) => Text(
+              title,
+              style: TextStyle(
+                fontSize: 12,
+                color: ThemeAdapter.getSecondaryTextColor(context),
+              ),
             ),
           ),
         ],
@@ -367,12 +370,14 @@ class _LearningReportScreenState extends State<LearningReportScreen> {
               children: [
                 const Text('• ', style: TextStyle(fontSize: 16)),
                 Expanded(
-                  child: Text(
-                    insight,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      height: 1.5,
-                      color: Colors.black87,
+                  child: Builder(
+                    builder: (context) => Text(
+                      insight,
+                      style: TextStyle(
+                        fontSize: 15,
+                        height: 1.5,
+                        color: ThemeAdapter.getTextColor(context),
+                      ),
                     ),
                   ),
                 ),
@@ -425,12 +430,14 @@ class _LearningReportScreenState extends State<LearningReportScreen> {
               children: [
                 const Text('💡 ', style: TextStyle(fontSize: 16)),
                 Expanded(
-                  child: Text(
-                    suggestion,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      height: 1.5,
-                      color: Colors.black87,
+                  child: Builder(
+                    builder: (context) => Text(
+                      suggestion,
+                      style: TextStyle(
+                        fontSize: 15,
+                        height: 1.5,
+                        color: ThemeAdapter.getTextColor(context),
+                      ),
                     ),
                   ),
                 ),

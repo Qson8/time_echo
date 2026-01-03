@@ -94,6 +94,30 @@ class EchoCollectionService {
     }
   }
 
+  /// 根据题目ID获取收藏时间
+  Future<DateTime?> getCollectionTime(int questionId) async {
+    try {
+      final collections = await getAllCollections();
+      final collection = collections.firstWhere(
+        (c) => c.questionId == questionId,
+        orElse: () => throw Exception('收藏不存在'),
+      );
+      return collection.collectionTime;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// 获取所有收藏的映射表（questionId -> collectionTime）
+  Future<Map<int, DateTime>> getCollectionTimeMap() async {
+    try {
+      final collections = await getAllCollections();
+      return {for (var c in collections) c.questionId: c.collectionTime};
+    } catch (e) {
+      return {};
+    }
+  }
+
   /// 获取收藏的题目详情
   Future<List<Question>> getCollectedQuestions() async {
     try {

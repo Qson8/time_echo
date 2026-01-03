@@ -303,9 +303,9 @@ class _OfflineSettingsScreenState extends State<OfflineSettingsScreen>
             const SizedBox(height: 20),
             
             _buildInfoItem('应用名称', AppConstants.appName),
-            _buildInfoItem('版本号', '1.0.0'),
-            _buildInfoItem('构建时间', '2024-01-01'),
-            _buildInfoItem('数据版本', '1.0.0'),
+            _buildInfoItem('版本号', '1.0.1'),
+            _buildInfoItem('构建时间', '2026-01-01'),
+            _buildInfoItem('数据版本', '1.0.1'),
             _buildInfoItem('本地题目', '${_stats['total_questions'] ?? 0} 道'),
             _buildInfoItem('拾光次数', '${_stats['total_tests'] ?? 0} 次'),
             _buildInfoItem('成就解锁', '${_stats['unlocked_achievements'] ?? 0}/${_stats['total_achievements'] ?? 0}'),
@@ -699,7 +699,7 @@ class _OfflineSettingsScreenState extends State<OfflineSettingsScreen>
       context: context,
       builder: (context) => OfflineFriendlyComponents.buildOfflineTipDialog(
         title: '关于拾光机',
-        content: '拾光机 v1.0.0\n\n'
+        content: '拾光机 v1.0.1\n\n'
                 '一款专注于离线怀旧问答的Flutter应用。\n\n'
                 '核心功能：\n'
                 '• 离线答题：无需网络，随时随地使用\n'
@@ -717,8 +717,8 @@ class _OfflineSettingsScreenState extends State<OfflineSettingsScreen>
                 '✅ 无广告，纯净体验\n'
                 '✅ 数据安全，本地存储\n'
                 '✅ 怀旧主题，沉浸式体验\n\n'
-                '开发者：拾光团队\n'
-                '版本：1.0.0',
+                '开发者：拾光团队 qiubite2013@126.com\n'
+                '版本：1.0.1',
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

@@ -5,6 +5,7 @@ import '../constants/app_theme.dart';
 import '../models/question.dart';
 import '../services/app_state_provider.dart';
 import '../services/question_service.dart';
+import '../utils/theme_adapter.dart';
 
 /// 题目详情页面
 class QuestionDetailScreen extends StatefulWidget {
@@ -135,388 +136,471 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
 
   /// 构建题目卡片
   Widget _buildQuestionCard() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: AppTheme.vintageDecoration,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 分类和难度标签
-          Row(
+    return Builder(
+      builder: (context) {
+        final isDark = ThemeAdapter.isDarkMode(context);
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: ThemeAdapter.getSurfaceColor(context),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: const Color(AppConstants.primaryColor).withOpacity(isDark ? 0.5 : 1.0),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(isDark ? 0.2 : 0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildCategoryTag(widget.question.category),
-              const SizedBox(width: 8),
-              _buildDifficultyTag(widget.question.difficulty),
-              const Spacer(),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(AppConstants.primaryColor).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  widget.question.echoTheme,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: Color(AppConstants.primaryColor),
+              // 分类和难度标签
+              Row(
+                children: [
+                  _buildCategoryTag(widget.question.category),
+                  const SizedBox(width: 8),
+                  _buildDifficultyTag(widget.question.difficulty),
+                  const Spacer(),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(AppConstants.primaryColor).withOpacity(isDark ? 0.2 : 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      widget.question.echoTheme,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: Color(AppConstants.primaryColor),
+                      ),
+                    ),
                   ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              
+              // 题目内容
+              Text(
+                widget.question.content,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  height: 1.5,
+                  color: ThemeAdapter.getTextColor(context),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          
-          // 题目内容
-          Text(
-            widget.question.content,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              height: 1.5,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   /// 构建选项区域
   Widget _buildOptionsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          '选项',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color(AppConstants.primaryColor),
-          ),
-        ),
-        const SizedBox(height: 12),
-        
-        ...widget.question.options.asMap().entries.map((entry) {
-          final index = entry.key;
-          final option = entry.value;
-          final isCorrect = index == widget.question.correctAnswer;
-          
-          return Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: isCorrect 
-                  ? const Color(AppConstants.accentColor).withOpacity(0.1)
-                  : Colors.grey.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: isCorrect 
-                    ? const Color(AppConstants.accentColor)
-                    : Colors.grey.withOpacity(0.3),
-                width: 2,
-              ),
+    return Builder(
+      builder: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '选项',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: ThemeAdapter.getPrimaryColor(context),
             ),
-            child: Row(
-              children: [
-                // 选项标识
-                Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: isCorrect 
-                        ? const Color(AppConstants.accentColor)
-                        : Colors.grey,
-                  ),
-                  child: Center(
-                    child: Text(
-                      String.fromCharCode(65 + index), // A, B, C, D
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+          ),
+          const SizedBox(height: 12),
+          
+          ...widget.question.options.asMap().entries.map((entry) {
+            final index = entry.key;
+            final option = entry.value;
+            final isCorrect = index == widget.question.correctAnswer;
+            final isDark = ThemeAdapter.isDarkMode(context);
+            
+            return Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: isCorrect 
+                    ? const Color(AppConstants.accentColor).withOpacity(0.1)
+                    : isDark
+                        ? Colors.grey.withOpacity(0.15)
+                        : Colors.grey.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: isCorrect 
+                      ? const Color(AppConstants.accentColor)
+                      : isDark
+                          ? Colors.grey.withOpacity(0.5)
+                          : Colors.grey.withOpacity(0.3),
+                  width: 2,
+                ),
+              ),
+              child: Row(
+                children: [
+                  // 选项标识
+                  Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: isCorrect 
+                          ? const Color(AppConstants.accentColor)
+                          : isDark
+                              ? Colors.grey[700]
+                              : Colors.grey,
+                    ),
+                    child: Center(
+                      child: Text(
+                        String.fromCharCode(65 + index), // A, B, C, D
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                ),
                 const SizedBox(width: 12),
                 
-                // 选项内容
-                Expanded(
-                  child: Text(
-                    option,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: isCorrect 
-                          ? const Color(AppConstants.accentColor)
-                          : Colors.black87,
-                      fontWeight: isCorrect 
-                          ? FontWeight.w500 
-                          : FontWeight.normal,
+                  // 选项内容
+                  Expanded(
+                    child: Text(
+                      option,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: isCorrect 
+                            ? const Color(AppConstants.accentColor)
+                            : ThemeAdapter.getTextColor(context),
+                        fontWeight: isCorrect 
+                            ? FontWeight.w500 
+                            : FontWeight.normal,
+                      ),
                     ),
                   ),
-                ),
-                
-                // 正确答案标识
-                if (isCorrect)
-                  const Icon(
-                    Icons.check_circle,
-                    color: Color(AppConstants.accentColor),
-                    size: 20,
-                  ),
-              ],
-            ),
-          );
-        }).toList(),
-      ],
+                  
+                  // 正确答案标识
+                  if (isCorrect)
+                    const Icon(
+                      Icons.check_circle,
+                      color: Color(AppConstants.accentColor),
+                      size: 20,
+                    ),
+                ],
+              ),
+            );
+          }).toList(),
+        ],
+      ),
     );
   }
 
   /// 构建答案解析区域
   Widget _buildExplanationSection() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: AppTheme.photoPaperDecoration,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
-            children: [
-              Icon(
-                Icons.lightbulb_outline,
-                color: Color(AppConstants.primaryColor),
-                size: 20,
+    return Builder(
+      builder: (context) {
+        final isDark = ThemeAdapter.isDarkMode(context);
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: ThemeAdapter.getSurfaceColor(context),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: const Color(AppConstants.primaryColor).withOpacity(isDark ? 0.5 : 1.0),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(isDark ? 0.2 : 0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
               ),
-              SizedBox(width: 8),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.lightbulb_outline,
+                    color: ThemeAdapter.getPrimaryColor(context),
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '答案解析',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: ThemeAdapter.getPrimaryColor(context),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
               Text(
-                '答案解析',
+                widget.question.detailedExplanation ?? widget.question.explanation,
                 style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(AppConstants.primaryColor),
+                  height: 1.5,
+                  color: ThemeAdapter.getTextColor(context),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          Text(
-            widget.question.detailedExplanation ?? widget.question.explanation,
-            style: const TextStyle(
-              fontSize: 16,
-              height: 1.5,
-              color: Colors.black87,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   /// 构建知识点标签区域
   Widget _buildKnowledgePointsSection() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.blue.withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
+    return Builder(
+      builder: (context) {
+        final isDark = ThemeAdapter.isDarkMode(context);
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: isDark
+                ? Colors.blue.withOpacity(0.15)
+                : Colors.blue.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isDark
+                  ? Colors.blue.withOpacity(0.5)
+                  : Colors.blue.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                Icons.school_outlined,
-                color: Colors.blue,
-                size: 20,
+              const Row(
+                children: [
+                  Icon(
+                    Icons.school_outlined,
+                    color: Colors.blue,
+                    size: 20,
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    '知识点',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(width: 8),
-              Text(
-                '知识点',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: widget.question.knowledgePoints.map((point) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      point,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: widget.question.knowledgePoints.map((point) {
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Text(
-                  point,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   /// 构建历史背景区域
   Widget _buildBackgroundSection() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.orange.withOpacity(0.1),
-            Colors.red.withOpacity(0.05),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.orange.withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
+    return Builder(
+      builder: (context) {
+        final isDark = ThemeAdapter.isDarkMode(context);
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: isDark
+                  ? [
+                      Colors.orange.withOpacity(0.2),
+                      Colors.red.withOpacity(0.1),
+                    ]
+                  : [
+                      Colors.orange.withOpacity(0.1),
+                      Colors.red.withOpacity(0.05),
+                    ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isDark
+                  ? Colors.orange.withOpacity(0.5)
+                  : Colors.orange.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                Icons.history,
-                color: Colors.orange,
-                size: 20,
+              const Row(
+                children: [
+                  Icon(
+                    Icons.history,
+                    color: Colors.orange,
+                    size: 20,
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    '历史背景',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.orange,
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(width: 8),
+              const SizedBox(height: 12),
               Text(
-                '历史背景',
+                widget.question.background!,
                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.orange,
+                  fontSize: 15,
+                  height: 1.6,
+                  color: ThemeAdapter.getTextColor(context),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          Text(
-            widget.question.background!,
-            style: const TextStyle(
-              fontSize: 15,
-              height: 1.6,
-              color: Colors.black87,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   /// 构建相关题目区域
   Widget _buildRelatedQuestionsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Row(
-          children: [
-            Icon(
-              Icons.link,
-              color: Color(AppConstants.primaryColor),
-              size: 20,
-            ),
-            SizedBox(width: 8),
-            Text(
-              '相关题目',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(AppConstants.primaryColor),
+    return Builder(
+      builder: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.link,
+                color: ThemeAdapter.getPrimaryColor(context),
+                size: 20,
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        if (_loadingRelated)
-          const Center(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: CircularProgressIndicator(),
-            ),
-          )
-        else if (_relatedQuestions == null || _relatedQuestions!.isEmpty)
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Center(
-              child: Text(
-                '暂无相关题目',
+              const SizedBox(width: 8),
+              Text(
+                '相关题目',
                 style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: ThemeAdapter.getPrimaryColor(context),
                 ),
               ),
-            ),
-          )
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (_loadingRelated)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: CircularProgressIndicator(),
+              ),
+            )
+          else if (_relatedQuestions == null || _relatedQuestions!.isEmpty)
+            Builder(
+              builder: (context) {
+                final isDark = ThemeAdapter.isDarkMode(context);
+                return Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? Colors.grey.withOpacity(0.15)
+                        : Colors.grey.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '暂无相关题目',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: ThemeAdapter.getSecondaryTextColor(context),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            )
         else
           ..._relatedQuestions!.map((q) {
-            return Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.grey.withOpacity(0.3),
-                  width: 1,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
+            return Builder(
+              builder: (context) => Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: ThemeAdapter.getSurfaceColor(context),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: ThemeAdapter.getBorderColor(context).withOpacity(0.3),
+                    width: 1,
                   ),
-                ],
-              ),
-              child: ListTile(
-                title: Text(
-                  q.content,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(ThemeAdapter.isDarkMode(context) ? 0.2 : 0.05),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
-                subtitle: Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: Row(
-                    children: [
-                      _buildCategoryTag(q.category),
-                      const SizedBox(width: 8),
-                      _buildDifficultyTag(q.difficulty),
-                    ],
+                child: ListTile(
+                  title: Text(
+                    q.content,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: ThemeAdapter.getTextColor(context),
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Row(
+                      children: [
+                        _buildCategoryTag(q.category),
+                        const SizedBox(width: 8),
+                        _buildDifficultyTag(q.difficulty),
+                      ],
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                    color: ThemeAdapter.getSecondaryTextColor(context),
+                  ),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -526,9 +610,11 @@ class _QuestionDetailScreenState extends State<QuestionDetailScreen> {
                   );
                 },
               ),
+              ),
             );
           }).toList(),
-      ],
+        ],
+      ),
     );
   }
 

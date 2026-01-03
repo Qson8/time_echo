@@ -5,6 +5,7 @@ import '../models/memory_capsule.dart';
 import '../services/memory_capsule_service.dart';
 import 'memory_capsule_creation_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
+import '../utils/theme_adapter.dart';
 
 /// 记忆胶囊详情页面
 class MemoryCapsuleDetailScreen extends StatefulWidget {
@@ -77,12 +78,34 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('确认删除'),
-        content: const Text('确定要删除这个记忆胶囊吗？此操作不可恢复。'),
+        backgroundColor: ThemeAdapter.getSurfaceColor(context),
+        title: Builder(
+          builder: (context) => Text(
+            '确认删除',
+            style: TextStyle(
+              color: ThemeAdapter.getTextColor(context),
+            ),
+          ),
+        ),
+        content: Builder(
+          builder: (context) => Text(
+            '确定要删除这个记忆胶囊吗？此操作不可恢复。',
+            style: TextStyle(
+              color: ThemeAdapter.getTextColor(context),
+            ),
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('取消'),
+            child: Builder(
+              builder: (context) => Text(
+                '取消',
+                style: TextStyle(
+                  color: ThemeAdapter.getPrimaryColor(context),
+                ),
+              ),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
@@ -114,7 +137,7 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(AppConstants.backgroundColor),
+      backgroundColor: ThemeAdapter.getBackgroundColor(context),
       appBar: AppBar(
         title: const Text('记忆胶囊详情'),
         centerTitle: true,
@@ -140,10 +163,10 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
               width: double.infinity,
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: ThemeAdapter.getSurfaceColor(context),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withOpacity(ThemeAdapter.isDarkMode(context) ? 0.2 : 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, 2),
                   ),
@@ -153,13 +176,15 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // 标题
-                  Text(
-                    widget.capsule.getDisplayTitle(),
-                    style: const TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Color(AppConstants.textPrimaryColor),
-                      height: 1.3,
+                  Builder(
+                    builder: (context) => Text(
+                      widget.capsule.getDisplayTitle(),
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: ThemeAdapter.getTextColor(context),
+                        height: 1.3,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -278,7 +303,7 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: ThemeAdapter.getSurfaceColor(context),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: const Color(AppConstants.primaryColor).withOpacity(0.15),
@@ -311,12 +336,14 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      const Text(
-                        '记忆内容',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(AppConstants.textPrimaryColor),
+                      Builder(
+                        builder: (context) => Text(
+                          '记忆内容',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: ThemeAdapter.getTextColor(context),
+                          ),
                         ),
                       ),
                     ],
@@ -324,13 +351,15 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
                   const SizedBox(height: 16),
                   
                   // 内容文本
-                  Text(
-                    widget.capsule.content,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      height: 1.8,
-                      color: Color(AppConstants.textPrimaryColor),
-                      letterSpacing: 0.3,
+                  Builder(
+                    builder: (context) => Text(
+                      widget.capsule.content,
+                      style: TextStyle(
+                        fontSize: 17,
+                        height: 1.8,
+                        color: ThemeAdapter.getTextColor(context),
+                        letterSpacing: 0.3,
+                      ),
                     ),
                   ),
                 ],
@@ -339,26 +368,28 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
 
             // 图片卡片
             if (widget.capsule.hasImage)
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
+              Builder(
+                builder: (context) => Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: ThemeAdapter.getShadowColor(context),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.file(
+                      File(widget.capsule.imagePath!),
+                      fit: BoxFit.cover,
+                      height: 300,
+                      width: double.infinity,
                     ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.file(
-                    File(widget.capsule.imagePath!),
-                    fit: BoxFit.cover,
-                    height: 300,
-                    width: double.infinity,
                   ),
                 ),
               ),
@@ -371,7 +402,7 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: ThemeAdapter.getSurfaceColor(context),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: Colors.orange.withOpacity(0.2),
@@ -403,24 +434,28 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '录音',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Color(AppConstants.textPrimaryColor),
+                          Builder(
+                            builder: (context) => Text(
+                              '录音',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: ThemeAdapter.getTextColor(context),
+                              ),
                             ),
                           ),
-                          SizedBox(height: 4),
-                          Text(
-                            '点击播放按钮收听',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey,
+                          const SizedBox(height: 4),
+                          Builder(
+                            builder: (context) => Text(
+                              '点击播放按钮收听',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: ThemeAdapter.getSecondaryTextColor(context),
+                              ),
                             ),
                           ),
                         ],
@@ -438,22 +473,24 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: ThemeAdapter.getSurfaceColor(context),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: Colors.grey.withOpacity(0.2),
+                    color: ThemeAdapter.getBorderColor(context).withOpacity(0.2),
                     width: 1,
                   ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      '标签',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Color(AppConstants.textPrimaryColor),
+                    Builder(
+                      builder: (context) => Text(
+                        '标签',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: ThemeAdapter.getTextColor(context),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -467,19 +504,21 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.grey[100],
+                            color: ThemeAdapter.getDividerColor(context).withOpacity(0.3),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: Colors.grey[300]!,
+                              color: ThemeAdapter.getBorderColor(context),
                               width: 0.5,
                             ),
                           ),
-                          child: Text(
-                            tag,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey[700],
-                              fontWeight: FontWeight.w500,
+                          child: Builder(
+                            builder: (context) => Text(
+                              tag,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: ThemeAdapter.getSecondaryTextColor(context),
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         );
@@ -491,22 +530,23 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
             if (widget.capsule.tags.isNotEmpty) const SizedBox(height: 16),
 
             // 信息卡片
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: Colors.grey.withOpacity(0.2),
-                  width: 1,
+            Builder(
+              builder: (context) => Container(
+                width: double.infinity,
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: ThemeAdapter.getSurfaceColor(context),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: ThemeAdapter.getBorderColor(context).withOpacity(0.2),
+                    width: 1,
+                  ),
                 ),
-              ),
-              child: Column(
-                children: [
-                  // 位置信息
-                  if (widget.capsule.location != null) ...[
+                child: Column(
+                  children: [
+                    // 位置信息
+                    if (widget.capsule.location != null) ...[
                     _buildInfoRow(
                       icon: Icons.location_on,
                       iconColor: Colors.red,
@@ -533,6 +573,7 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
                     value: _formatDateTime(widget.capsule.createdAt),
                   ),
                 ],
+                ),
               ),
             ),
             const SizedBox(height: 32),
@@ -564,20 +605,24 @@ class _MemoryCapsuleDetailScreenState extends State<MemoryCapsuleDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
+              Builder(
+                builder: (context) => Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: ThemeAdapter.getSecondaryTextColor(context),
+                  ),
                 ),
               ),
               const SizedBox(height: 4),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: Color(AppConstants.textPrimaryColor),
+              Builder(
+                builder: (context) => Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: ThemeAdapter.getTextColor(context),
+                  ),
                 ),
               ),
             ],

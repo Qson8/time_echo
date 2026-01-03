@@ -6,6 +6,7 @@ import '../models/memory_record.dart';
 import '../services/memory_service.dart';
 import '../services/question_service.dart';
 import '../models/question.dart';
+import '../utils/theme_adapter.dart';
 
 /// 回忆详情/编辑页面
 class MemoryDetailScreen extends StatefulWidget {
@@ -612,15 +613,16 @@ class _QuestionSelectionDialogState extends State<_QuestionSelectionDialog> {
       minChildSize: 0.5,
       maxChildSize: 0.95,
       builder: (context, scrollController) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: Column(
-            children: [
-              // 标题栏
-              Container(
+        return Builder(
+          builder: (context) => Container(
+            decoration: BoxDecoration(
+              color: ThemeAdapter.getSurfaceColor(context),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              children: [
+                // 标题栏
+                Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -917,8 +919,9 @@ class _QuestionSelectionDialogState extends State<_QuestionSelectionDialog> {
                           );
                         },
                       ),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         );
       },

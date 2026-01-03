@@ -9,6 +9,7 @@ import '../services/quiz_theme_service.dart';
 import '../services/quiz_sound_service.dart';
 import '../widgets/celebration_animation.dart';
 import 'quiz_result_screen.dart';
+import '../utils/theme_adapter.dart';
 
 /// 答题页面
 class QuizScreen extends StatefulWidget {
@@ -156,41 +157,62 @@ class _QuizScreenState extends State<QuizScreen>
     return Consumer<AppStateProvider>(
       builder: (context, appState, child) {
         // 根据当前题目获取主题
-        final theme = _themeService.getThemeForQuestion(appState.currentQuestion);
-        final gradient = _themeService.getBackgroundGradient(appState.currentQuestion);
+        final isDarkMode = ThemeAdapter.isDarkMode(context);
+        final theme = _themeService.getThemeForQuestion(
+          appState.currentQuestion,
+          isDarkMode: isDarkMode,
+        );
+        final gradient = _themeService.getBackgroundGradient(
+          appState.currentQuestion,
+          isDarkMode: isDarkMode,
+        );
 
         return Theme(
           data: theme,
           child: Scaffold(
-            appBar: AppBar(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('拾光'),
-                  if (_streakCount > 0) ...[
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        '连击 $_streakCount',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(kToolbarHeight),
+              child: Builder(
+                builder: (context) => AppBar(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '拾光',
+                        style: TextStyle(
+                          color: ThemeAdapter.getTextColor(context),
                         ),
                       ),
-                    ),
-                  ],
-                ],
-              ),
-              centerTitle: true,
-              leading: IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () => _showExitDialog(context, appState),
+                      if (_streakCount > 0) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: ThemeAdapter.getAccentColor(context),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            '连击 $_streakCount',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: ThemeAdapter.getTextColor(context),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  centerTitle: true,
+                  backgroundColor: ThemeAdapter.getSurfaceColor(context),
+                  iconTheme: IconThemeData(
+                    color: ThemeAdapter.getIconColor(context),
+                  ),
+                  leading: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => _showExitDialog(context, appState),
+                  ),
+                ),
               ),
             ),
             body: Consumer<AppStateProvider>(
@@ -262,43 +284,52 @@ class _QuizScreenState extends State<QuizScreen>
 
   /// 构建进度条
   Widget _buildProgressBar(AppStateProvider appState) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '第 ${appState.currentQuestionIndex + 1} 题',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+    return Builder(
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(16),
+        color: ThemeAdapter.getSurfaceColor(context),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Builder(
+                  builder: (context) => Text(
+                    '第 ${appState.currentQuestionIndex + 1} 题',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: ThemeAdapter.getTextColor(context),
+                    ),
+                  ),
                 ),
-              ),
-              Text(
-                '${appState.currentTestQuestions.length} 题',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                Builder(
+                  builder: (context) => Text(
+                    '${appState.currentTestQuestions.length} 题',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: ThemeAdapter.getTextColor(context),
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          AnimatedBuilder(
-            animation: _progressAnimation,
-            builder: (context, child) {
-              return LinearProgressIndicator(
-                value: appState.testProgress,
-                backgroundColor: Colors.grey[300],
-                valueColor: const AlwaysStoppedAnimation<Color>(
-                  Color(AppConstants.primaryColor),
-                ),
-              );
-            },
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: 8),
+            AnimatedBuilder(
+              animation: _progressAnimation,
+              builder: (context, child) {
+                return LinearProgressIndicator(
+                  value: appState.testProgress,
+                  backgroundColor: ThemeAdapter.getDividerColor(context),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    ThemeAdapter.getPrimaryColor(context),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -319,13 +350,14 @@ class _QuizScreenState extends State<QuizScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 题目卡片
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            decoration: AppTheme.vintageDecoration,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          Builder(
+            builder: (context) => Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: ThemeAdapter.getVintageDecoration(context),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                 // 题目分类和难度标签
                 Row(
                   children: [
@@ -344,16 +376,20 @@ class _QuizScreenState extends State<QuizScreen>
                 const SizedBox(height: 16),
                 
                 // 题目内容
-                Text(
-                  question.content,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    height: 1.5,
+                Builder(
+                  builder: (context) => Text(
+                    question.content,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      height: 1.5,
+                      color: ThemeAdapter.getTextColor(context),
+                    ),
                   ),
                 ),
               ],
             ),
+          ),
           ),
           
           const SizedBox(height: 24),
@@ -434,30 +470,46 @@ class _QuizScreenState extends State<QuizScreen>
           const SizedBox(height: 32),
           
           // 操作按钮
-          Row(
-            children: [
-              // 上一题按钮
-              if (appState.currentQuestionIndex > 0)
+          Builder(
+            builder: (context) => Row(
+              children: [
+                // 上一题按钮
+                if (appState.currentQuestionIndex > 0)
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => _previousQuestion(appState),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: ThemeAdapter.getPrimaryColor(context),
+                        side: BorderSide(
+                          color: ThemeAdapter.getPrimaryColor(context),
+                        ),
+                      ),
+                      child: const Text('上一题'),
+                    ),
+                  ),
+                
+                if (appState.currentQuestionIndex > 0) const SizedBox(width: 16),
+                
+                // 下一题/完成按钮
                 Expanded(
-                  child: OutlinedButton(
-                    onPressed: () => _previousQuestion(appState),
-                    child: const Text('上一题'),
+                  flex: 2,
+                  child: ElevatedButton(
+                    onPressed: hasAnswered ? () => _nextQuestion(appState) : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: hasAnswered 
+                          ? ThemeAdapter.getPrimaryColor(context)
+                          : ThemeAdapter.getDividerColor(context),
+                      foregroundColor: hasAnswered 
+                          ? Colors.white
+                          : ThemeAdapter.getSecondaryTextColor(context),
+                    ),
+                    child: Text(
+                      appState.isLastQuestion ? '完成拾光' : '下一题',
+                    ),
                   ),
                 ),
-              
-              if (appState.currentQuestionIndex > 0) const SizedBox(width: 16),
-              
-              // 下一题/完成按钮
-              Expanded(
-                flex: 2,
-                child: ElevatedButton(
-                  onPressed: hasAnswered ? () => _nextQuestion(appState) : null,
-                  child: Text(
-                    appState.isLastQuestion ? '完成拾光' : '下一题',
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
@@ -466,62 +518,73 @@ class _QuizScreenState extends State<QuizScreen>
 
   /// 构建分类标签
   Widget _buildCategoryTag(String category) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color(AppConstants.primaryColor).withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: const Color(AppConstants.primaryColor),
-          width: 1,
-        ),
-      ),
-      child: Text(
-        category,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Color(AppConstants.primaryColor),
-          fontWeight: FontWeight.w500,
-        ),
-      ),
+    return Builder(
+      builder: (context) {
+        final primaryColor = ThemeAdapter.getPrimaryColor(context);
+        final isDark = ThemeAdapter.isDarkMode(context);
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: primaryColor.withOpacity(isDark ? 0.2 : 0.1),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: primaryColor,
+              width: 1,
+            ),
+          ),
+          child: Text(
+            category,
+            style: TextStyle(
+              fontSize: 12,
+              color: primaryColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        );
+      },
     );
   }
 
   /// 构建难度标签
   Widget _buildDifficultyTag(String difficulty) {
-    Color color;
-    switch (difficulty) {
-      case '简单':
-        color = Colors.green;
-        break;
-      case '中等':
-        color = Colors.orange;
-        break;
-      case '困难':
-        color = Colors.red;
-        break;
-      default:
-        color = Colors.grey;
-    }
+    return Builder(
+      builder: (context) {
+        final isDark = ThemeAdapter.isDarkMode(context);
+        Color color;
+        switch (difficulty) {
+          case '简单':
+            color = Colors.green;
+            break;
+          case '中等':
+            color = Colors.orange;
+            break;
+          case '困难':
+            color = Colors.red;
+            break;
+          default:
+            color = isDark ? Colors.grey[400]! : Colors.grey;
+        }
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: color,
-          width: 1,
-        ),
-      ),
-      child: Text(
-        difficulty,
-        style: TextStyle(
-          fontSize: 12,
-          color: color,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: color.withOpacity(isDark ? 0.2 : 0.1),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: color,
+              width: 1,
+            ),
+          ),
+          child: Text(
+            difficulty,
+            style: TextStyle(
+              fontSize: 12,
+              color: color,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -619,19 +682,48 @@ class _QuizScreenState extends State<QuizScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('退出拾光'),
-        content: const Text('确定要退出当前拾光吗？进度将不会保存。'),
+        backgroundColor: ThemeAdapter.getSurfaceColor(context),
+        title: Builder(
+          builder: (context) => Text(
+            '退出拾光',
+            style: TextStyle(
+              color: ThemeAdapter.getTextColor(context),
+            ),
+          ),
+        ),
+        content: Builder(
+          builder: (context) => Text(
+            '确定要退出当前拾光吗？进度将不会保存。',
+            style: TextStyle(
+              color: ThemeAdapter.getTextColor(context),
+            ),
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('取消'),
+            child: Builder(
+              builder: (context) => Text(
+                '取消',
+                style: TextStyle(
+                  color: ThemeAdapter.getPrimaryColor(context),
+                ),
+              ),
+            ),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(); // 关闭对话框
               Navigator.of(context).pop(); // 返回上一页
             },
-            child: const Text('确定'),
+            child: Builder(
+              builder: (context) => Text(
+                '确定',
+                style: TextStyle(
+                  color: ThemeAdapter.getPrimaryColor(context),
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -725,20 +817,26 @@ class _CollectionButtonState extends State<_CollectionButton> {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = ThemeAdapter.getPrimaryColor(context);
+    final isDark = ThemeAdapter.isDarkMode(context);
+    
     if (_isLoading) {
       return Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: const Color(AppConstants.primaryColor),
+            color: primaryColor,
             width: 2,
           ),
         ),
-        child: const SizedBox(
+        child: SizedBox(
           width: 20,
           height: 20,
-          child: CircularProgressIndicator(strokeWidth: 2),
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+          ),
         ),
       );
     }
@@ -748,16 +846,20 @@ class _CollectionButtonState extends State<_CollectionButton> {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: _isCollected ? Colors.amber.withOpacity(0.2) : Colors.transparent,
+          color: _isCollected 
+              ? Colors.amber.withOpacity(isDark ? 0.3 : 0.2) 
+              : Colors.transparent,
           shape: BoxShape.circle,
           border: Border.all(
-            color: _isCollected ? Colors.amber : const Color(AppConstants.primaryColor),
+            color: _isCollected ? Colors.amber : primaryColor,
             width: 2,
           ),
         ),
         child: Icon(
           _isCollected ? Icons.star : Icons.star_border,
-          color: _isCollected ? Colors.amber[700] : const Color(AppConstants.primaryColor),
+          color: _isCollected 
+              ? Colors.amber[isDark ? 600 : 700] 
+              : primaryColor,
           size: 20,
         ),
       ),

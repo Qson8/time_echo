@@ -499,9 +499,11 @@ class _InteractiveOptionCardState extends State<InteractiveOptionCard>
       borderColor = const Color(AppConstants.primaryColor);
       textColor = const Color(AppConstants.primaryColor);
     } else {
-      backgroundColor = Colors.white;
-      borderColor = Colors.grey.withOpacity(0.3);
-      textColor = Colors.black87;
+      final theme = Theme.of(context);
+      backgroundColor = theme.cardColor;
+      borderColor = theme.dividerColor;
+      textColor = theme.textTheme.bodyLarge?.color ?? 
+                  (theme.brightness == Brightness.dark ? Colors.white : Colors.black87);
     }
 
     return AnimatedBuilder(

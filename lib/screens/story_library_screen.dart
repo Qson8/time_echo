@@ -9,6 +9,7 @@ import '../services/memory_capsule_service.dart';
 import 'memory_capsule_creation_screen.dart';
 import 'question_detail_screen.dart';
 import '../services/question_service.dart';
+import '../utils/theme_adapter.dart';
 
 /// 时光故事馆页面
 class StoryLibraryScreen extends StatefulWidget {
@@ -22,7 +23,6 @@ class _StoryLibraryScreenState extends State<StoryLibraryScreen>
     with SingleTickerProviderStateMixin {
   final StoryService _storyService = StoryService();
   final QuestionService _questionService = QuestionService();
-  final MemoryService _memoryService = MemoryService();
   
   List<NostalgicStory> _stories = [];
   bool _isLoading = true;
@@ -314,15 +314,17 @@ class _StoryLibraryScreenState extends State<StoryLibraryScreen>
               const SizedBox(height: 8),
               
               // 故事预览
-              Text(
-                story.getPreviewText(maxLength: 120),
-                style: const TextStyle(
-                  fontSize: 14,
-                  height: 1.5,
-                  color: Colors.black87,
+              Builder(
+                builder: (context) => Text(
+                  story.getPreviewText(maxLength: 120),
+                  style: TextStyle(
+                    fontSize: 14,
+                    height: 1.5,
+                    color: ThemeAdapter.getTextColor(context),
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
               ),
               
               // 标签
@@ -612,7 +614,6 @@ class StoryDetailScreen extends StatefulWidget {
 
 class _StoryDetailScreenState extends State<StoryDetailScreen> {
   final StoryService _storyService = StoryService();
-  final MemoryService _memoryService = MemoryService();
   bool _isFavorite = false;
 
   @override
@@ -770,12 +771,14 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: AppTheme.photoPaperDecoration,
-              child: Text(
-                widget.story.content,
-                style: const TextStyle(
-                  fontSize: 16,
-                  height: 1.8,
-                  color: Colors.black87,
+              child: Builder(
+                builder: (context) => Text(
+                  widget.story.content,
+                  style: TextStyle(
+                    fontSize: 16,
+                    height: 1.8,
+                    color: ThemeAdapter.getTextColor(context),
+                  ),
                 ),
               ),
             ),

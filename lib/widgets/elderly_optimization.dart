@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_theme.dart';
+import '../utils/theme_adapter.dart';
 
 /// 老年用户优化组件
 class ElderlyOptimization {
@@ -42,9 +43,9 @@ class ElderlyOptimization {
   }
 
   /// 构建老年友好版卡片样式
-  static BoxDecoration buildElderlyCardDecoration() {
+  static BoxDecoration buildElderlyCardDecoration(BuildContext context) {
     return BoxDecoration(
-      color: Colors.white,
+      color: ThemeAdapter.getSurfaceColor(context),
       borderRadius: BorderRadius.circular(16),
       border: Border.all(
         color: const Color(AppConstants.primaryColor),
@@ -52,7 +53,7 @@ class ElderlyOptimization {
       ),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.1),
+          color: Colors.black.withOpacity(ThemeAdapter.isDarkMode(context) ? 0.2 : 0.1),
           blurRadius: 8,
           offset: const Offset(0, 4),
         ),
@@ -88,57 +89,60 @@ class ElderlyOptimization {
 
   /// 构建老年友好版列表项
   static Widget buildElderlyListTile({
+    required BuildContext context,
     required String title,
     required String subtitle,
     required IconData icon,
     VoidCallback? onTap,
     Widget? trailing,
   }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.grey.withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        leading: Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: const Color(AppConstants.primaryColor).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(25),
+    return Builder(
+      builder: (context) => Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        decoration: BoxDecoration(
+          color: ThemeAdapter.getSurfaceColor(context),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: ThemeAdapter.getBorderColor(context).withOpacity(0.3),
+            width: 1,
           ),
-          child: Icon(
-            icon,
-            color: const Color(AppConstants.primaryColor),
+        ),
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          leading: Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: const Color(AppConstants.primaryColor).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Icon(
+              icon,
+              color: const Color(AppConstants.primaryColor),
+              size: 24,
+            ),
+          ),
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          subtitle: Text(
+            subtitle,
+            style: TextStyle(
+              fontSize: 16,
+              color: ThemeAdapter.getSecondaryTextColor(context),
+            ),
+          ),
+          trailing: trailing ?? const Icon(
+            Icons.chevron_right,
+            color: Colors.grey,
             size: 24,
           ),
+          onTap: onTap,
         ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        subtitle: Text(
-          subtitle,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.black54,
-          ),
-        ),
-        trailing: trailing ?? const Icon(
-          Icons.chevron_right,
-          color: Colors.grey,
-          size: 24,
-        ),
-        onTap: onTap,
       ),
     );
   }
@@ -185,91 +189,97 @@ class ElderlyOptimization {
 
   /// 构建老年友好版开关
   static Widget buildElderlySwitch({
+    required BuildContext context,
     required String title,
     required String subtitle,
     required bool value,
     required ValueChanged<bool> onChanged,
   }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.grey.withOpacity(0.3),
-          width: 1,
+    return Builder(
+      builder: (context) => Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: ThemeAdapter.getSurfaceColor(context),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: ThemeAdapter.getBorderColor(context).withOpacity(0.3),
+            width: 1,
+          ),
         ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black54,
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: ThemeAdapter.getSecondaryTextColor(context),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-            activeColor: const Color(AppConstants.primaryColor),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-        ],
+            Switch(
+              value: value,
+              onChanged: onChanged,
+              activeColor: const Color(AppConstants.primaryColor),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+          ],
+        ),
       ),
     );
   }
 
   /// 构建老年友好版进度指示器
   static Widget buildElderlyProgressIndicator({
+    required BuildContext context,
     required double value,
     String? label,
   }) {
-    return Column(
-      children: [
-        if (label != null) ...[
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+    return Builder(
+      builder: (context) => Column(
+        children: [
+          if (label != null) ...[
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
+            const SizedBox(height: 8),
+          ],
+          LinearProgressIndicator(
+            value: value,
+            backgroundColor: ThemeAdapter.getDividerColor(context),
+            valueColor: const AlwaysStoppedAnimation<Color>(
+              Color(AppConstants.primaryColor),
+            ),
+            minHeight: 8,
           ),
           const SizedBox(height: 8),
+          Text(
+            '${(value * 100).toStringAsFixed(1)}%',
+            style: TextStyle(
+              fontSize: 14,
+              color: ThemeAdapter.getSecondaryTextColor(context),
+            ),
+          ),
         ],
-        LinearProgressIndicator(
-          value: value,
-          backgroundColor: Colors.grey[300],
-          valueColor: const AlwaysStoppedAnimation<Color>(
-            Color(AppConstants.primaryColor),
-          ),
-          minHeight: 8,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          '${(value * 100).toStringAsFixed(1)}%',
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.black54,
-          ),
-        ),
-      ],
+      ),
     );
   }
 

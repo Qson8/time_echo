@@ -15,6 +15,7 @@ import '../services/memory_capsule_service.dart';
 import '../models/memory_capsule.dart';
 import '../services/share_service.dart';
 import 'package:share_plus/share_plus.dart';
+import '../utils/theme_adapter.dart';
 
 /// 拾光结果页面
 class QuizResultScreen extends StatefulWidget {
@@ -120,21 +121,30 @@ class _QuizResultScreenState extends State<QuizResultScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('拾光结果'),
+        title: Text(
+          '拾光结果',
+          style: TextStyle(
+            color: ThemeAdapter.getTextColor(context),
+          ),
+        ),
         centerTitle: true,
         automaticallyImplyLeading: false,
+        backgroundColor: ThemeAdapter.getSurfaceColor(context),
+        iconTheme: IconThemeData(
+          color: ThemeAdapter.getIconColor(context),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
-            onPressed: () => _shareResult(context),
-            tooltip: '分享成绩',
-          ),
-          IconButton(
-            icon: const Icon(Icons.home),
-            onPressed: () => _goHome(context),
-          ),
-        ],
-      ),
+              onPressed: () => _shareResult(context),
+              tooltip: '分享成绩',
+            ),
+            IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () => _goHome(context),
+            ),
+          ],
+        ),
       body: AnimatedBuilder(
         animation: _animationController,
         builder: (context, child) {
@@ -183,71 +193,77 @@ class _QuizResultScreenState extends State<QuizResultScreen>
 
   /// 构建拾光年龄卡片
   Widget _buildEchoAgeCard() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            const Color(AppConstants.primaryColor),
-            const Color(AppConstants.primaryColor).withOpacity(0.8),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(AppConstants.primaryColor).withOpacity(0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                '你的拾光年龄',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white70,
-                  fontWeight: FontWeight.w500,
-                ),
+    return Builder(
+      builder: (context) {
+        final isDark = ThemeAdapter.isDarkMode(context);
+        final primaryColor = ThemeAdapter.getPrimaryColor(context);
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                primaryColor,
+                primaryColor.withOpacity(0.8),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: primaryColor.withOpacity(isDark ? 0.4 : 0.3),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
               ),
-              const SizedBox(height: 4),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${widget.testRecord.echoAge}',
-                    style: const TextStyle(
-                      fontSize: 56,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      height: 1.0,
+                  const Text(
+                    '你的拾光年龄',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 8, bottom: 8),
-                    child: Text(
-                      '岁',
-                      style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.white70,
-                        fontWeight: FontWeight.w500,
+                  const SizedBox(height: 4),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${widget.testRecord.echoAge}',
+                        style: const TextStyle(
+                          fontSize: 56,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          height: 1.0,
+                        ),
                       ),
-                    ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 8, bottom: 8),
+                        child: Text(
+                          '岁',
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -287,23 +303,26 @@ class _QuizResultScreenState extends State<QuizResultScreen>
 
   /// 构建统计卡片
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: color.withOpacity(0.3),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+    return Builder(
+      builder: (context) {
+        final isDark = ThemeAdapter.isDarkMode(context);
+        return Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: ThemeAdapter.getSurfaceColor(context),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: color.withOpacity(isDark ? 0.4 : 0.3),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-        ],
-      ),
       child: Column(
         children: [
           Icon(
@@ -321,83 +340,97 @@ class _QuizResultScreenState extends State<QuizResultScreen>
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.black54,
+          Builder(
+            builder: (context) => Text(
+              title,
+              style: TextStyle(
+                fontSize: 12,
+                color: ThemeAdapter.getSecondaryTextColor(context),
+              ),
             ),
           ),
         ],
       ),
+        );
+      },
     );
   }
 
   /// 构建评语卡片
   Widget _buildCommentCard() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: AppTheme.photoPaperDecoration,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Row(
-            children: [
-              Icon(
-                Icons.lightbulb_outline,
-                color: Color(AppConstants.primaryColor),
-                size: 20,
-              ),
-              SizedBox(width: 8),
-              Text(
-                '拾光评语',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(AppConstants.primaryColor),
+    return Builder(
+      builder: (context) => Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: ThemeAdapter.getPhotoPaperDecoration(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.lightbulb_outline,
+                  color: ThemeAdapter.getPrimaryColor(context),
+                  size: 20,
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            widget.testRecord.comment,
-            style: const TextStyle(
-              fontSize: 16,
-              height: 1.5,
-              color: Colors.black87,
+                const SizedBox(width: 8),
+                Text(
+                  '拾光评语',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: ThemeAdapter.getPrimaryColor(context),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 12),
+            Text(
+              widget.testRecord.comment,
+              style: TextStyle(
+                fontSize: 16,
+                height: 1.5,
+                color: ThemeAdapter.getTextColor(context),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   /// 构建记录回忆提示卡片
   Widget _buildMemoryPromptCard(BuildContext context) {
+    final isDark = ThemeAdapter.isDarkMode(context);
+    
     // 如果正在加载，显示加载状态
     if (_isLoadingMemory) {
-      return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.purple.withOpacity(0.1),
-              Colors.pink.withOpacity(0.1),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      return Builder(
+        builder: (context) => Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.purple.withOpacity(isDark ? 0.2 : 0.1),
+                Colors.pink.withOpacity(isDark ? 0.2 : 0.1),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Colors.purple.withOpacity(isDark ? 0.5 : 0.3),
+              width: 1,
+            ),
           ),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: Colors.purple.withOpacity(0.3),
-            width: 1,
+          child: Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                ThemeAdapter.getPrimaryColor(context),
+              ),
+            ),
           ),
-        ),
-        child: const Center(
-          child: CircularProgressIndicator(),
         ),
       );
     }
@@ -405,31 +438,32 @@ class _QuizResultScreenState extends State<QuizResultScreen>
     // 如果已记录回忆，显示已记录状态
     final hasMemory = _relatedMemory != null;
     
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: hasMemory
-              ? [
-                  Colors.green.withOpacity(0.1),
-                  Colors.teal.withOpacity(0.1),
-                ]
-              : [
-                  Colors.purple.withOpacity(0.1),
-                  Colors.pink.withOpacity(0.1),
-                ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+    return Builder(
+      builder: (context) => Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: hasMemory
+                ? [
+                    Colors.green.withOpacity(isDark ? 0.2 : 0.1),
+                    Colors.teal.withOpacity(isDark ? 0.2 : 0.1),
+                  ]
+                : [
+                    Colors.purple.withOpacity(isDark ? 0.2 : 0.1),
+                    Colors.pink.withOpacity(isDark ? 0.2 : 0.1),
+                  ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: hasMemory
+                ? Colors.green.withOpacity(isDark ? 0.5 : 0.3)
+                : Colors.purple.withOpacity(isDark ? 0.5 : 0.3),
+            width: 1,
+          ),
         ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: hasMemory
-              ? Colors.green.withOpacity(0.3)
-              : Colors.purple.withOpacity(0.3),
-          width: 1,
-        ),
-      ),
       child: Column(
         children: [
           Row(
@@ -451,16 +485,18 @@ class _QuizResultScreenState extends State<QuizResultScreen>
             ],
           ),
           const SizedBox(height: 12),
-          Text(
-            hasMemory
-                ? '你已经为这次拾光之旅记录了回忆，可以在记忆胶囊中查看～'
-                : '记录下这段答题带来的回忆吧，让它成为你独特的怀旧档案～',
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
-              height: 1.5,
+          Builder(
+            builder: (context) => Text(
+              hasMemory
+                  ? '你已经为这次拾光之旅记录了回忆，可以在记忆胶囊中查看～'
+                  : '记录下这段答题带来的回忆吧，让它成为你独特的怀旧档案～',
+              style: TextStyle(
+                fontSize: 14,
+                color: ThemeAdapter.getTextColor(context),
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
           if (hasMemory) ...[
@@ -519,6 +555,7 @@ class _QuizResultScreenState extends State<QuizResultScreen>
             ),
           ],
         ],
+      ),
       ),
     );
   }
@@ -631,33 +668,35 @@ class _QuizResultScreenState extends State<QuizResultScreen>
 
   /// 构建操作按钮
   Widget _buildActionButtons(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () async {
-              print('🔄 再来一次按钮被点击');
-              await _startNewTest(context);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(AppConstants.primaryColor),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+    return Builder(
+      builder: (context) => Column(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () async {
+                print('🔄 再来一次按钮被点击');
+                await _startNewTest(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ThemeAdapter.getPrimaryColor(context),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
-            ),
-            child: const Text(
-              '再来一次',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+              child: const Text(
+                '再来一次',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -727,14 +766,34 @@ class _QuizResultScreenState extends State<QuizResultScreen>
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('分享内容'),
+                backgroundColor: ThemeAdapter.getSurfaceColor(context),
+                title: Builder(
+                  builder: (context) => Text(
+                    '分享内容',
+                    style: TextStyle(
+                      color: ThemeAdapter.getTextColor(context),
+                    ),
+                  ),
+                ),
                 content: SingleChildScrollView(
-                  child: SelectableText(shareText),
+                  child: SelectableText(
+                    shareText,
+                    style: TextStyle(
+                      color: ThemeAdapter.getTextColor(context),
+                    ),
+                  ),
                 ),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('关闭'),
+                    child: Builder(
+                      builder: (context) => Text(
+                        '关闭',
+                        style: TextStyle(
+                          color: ThemeAdapter.getPrimaryColor(context),
+                        ),
+                      ),
+                    ),
                   ),
                   TextButton(
                     onPressed: () async {
@@ -747,7 +806,14 @@ class _QuizResultScreenState extends State<QuizResultScreen>
                         );
                       }
                     },
-                    child: const Text('复制'),
+                    child: Builder(
+                      builder: (context) => Text(
+                        '复制',
+                        style: TextStyle(
+                          color: ThemeAdapter.getPrimaryColor(context),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

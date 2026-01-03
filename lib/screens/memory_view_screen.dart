@@ -4,6 +4,7 @@ import '../models/memory_record.dart';
 import '../services/question_service.dart';
 import '../models/question.dart';
 import 'memory_detail_screen.dart';
+import '../utils/theme_adapter.dart';
 
 /// 回忆详情查看页面（只读）
 class MemoryViewScreen extends StatefulWidget {
@@ -243,11 +244,11 @@ class _MemoryViewScreenState extends State<MemoryViewScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: ThemeAdapter.getSurfaceColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withOpacity(ThemeAdapter.isDarkMode(context) ? 0.2 : 0.08),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -271,26 +272,30 @@ class _MemoryViewScreenState extends State<MemoryViewScreen> {
                 ),
               ),
               const SizedBox(width: 12),
-              const Expanded(
-                child: Text(
-                  '回忆内容',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+              Expanded(
+                child: Builder(
+                  builder: (context) => Text(
+                    '回忆内容',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: ThemeAdapter.getTextColor(context),
+                    ),
                   ),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 20),
-          Text(
-            widget.memory.content,
-            style: const TextStyle(
-              fontSize: 16,
-              height: 1.8,
-              color: Colors.black87,
-              letterSpacing: 0.5,
+          Builder(
+            builder: (context) => Text(
+              widget.memory.content,
+              style: TextStyle(
+                fontSize: 16,
+                height: 1.8,
+                color: ThemeAdapter.getTextColor(context),
+                letterSpacing: 0.5,
+              ),
             ),
           ),
         ],
@@ -304,11 +309,11 @@ class _MemoryViewScreenState extends State<MemoryViewScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: ThemeAdapter.getSurfaceColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withOpacity(ThemeAdapter.isDarkMode(context) ? 0.2 : 0.08),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -317,12 +322,14 @@ class _MemoryViewScreenState extends State<MemoryViewScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '回忆信息',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+          Builder(
+            builder: (context) => Text(
+              '回忆信息',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: ThemeAdapter.getTextColor(context),
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -398,11 +405,11 @@ class _MemoryViewScreenState extends State<MemoryViewScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: ThemeAdapter.getSurfaceColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withOpacity(ThemeAdapter.isDarkMode(context) ? 0.2 : 0.08),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -538,13 +545,15 @@ class _MemoryViewScreenState extends State<MemoryViewScreen> {
                 ),
               ),
               const SizedBox(width: 12),
-              const Expanded(
-                child: Text(
-                  '关联题目',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+              Expanded(
+                child: Builder(
+                  builder: (context) => Text(
+                    '关联题目',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: ThemeAdapter.getTextColor(context),
+                    ),
                   ),
                 ),
               ),

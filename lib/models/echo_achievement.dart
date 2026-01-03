@@ -1,3 +1,13 @@
+/// 奖励类型枚举
+enum RewardType {
+  badge,           // 徽章（仅展示）
+  points,          // 积分
+  theme,           // 主题解锁
+  quote,           // 语录
+  decoration,      // 装饰
+  special,         // 特殊奖励
+}
+
 /// 拾光成就数据模型
 class EchoAchievement {
   final int id;
@@ -7,6 +17,8 @@ class EchoAchievement {
   final String condition; // 达成条件
   final bool isUnlocked; // 是否已解锁
   final DateTime unlockedAt; // 解锁时间
+  final RewardType? rewardType; // 奖励类型（可选，向后兼容）
+  final int? rewardValue; // 奖励值（可选，如积分数量等）
 
   EchoAchievement({
     required this.id,
@@ -16,6 +28,8 @@ class EchoAchievement {
     required this.condition,
     this.isUnlocked = false,
     required this.unlockedAt,
+    this.rewardType,
+    this.rewardValue,
   });
 
   factory EchoAchievement.fromMap(Map<String, dynamic> map) {
@@ -34,6 +48,19 @@ class EchoAchievement {
       unlockedTime = DateTime(1970, 1, 1);
     }
     
+    // 解析奖励类型（可选，向后兼容）
+    RewardType? rewardType;
+    if (map['reward_type'] != null) {
+      try {
+        rewardType = RewardType.values.firstWhere(
+          (e) => e.name == map['reward_type'],
+          orElse: () => RewardType.badge,
+        );
+      } catch (e) {
+        rewardType = null;
+      }
+    }
+    
     return EchoAchievement(
       id: map['id'],
       achievementName: map['achievement_name'],
@@ -42,11 +69,13 @@ class EchoAchievement {
       condition: map['condition'],
       isUnlocked: map['is_unlocked'] == 1,
       unlockedAt: unlockedTime,
+      rewardType: rewardType,
+      rewardValue: map['reward_value'] as int?,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    final map = {
       'id': id,
       'achievement_name': achievementName,
       'achievement_icon': achievementIcon,
@@ -55,5 +84,15 @@ class EchoAchievement {
       'is_unlocked': isUnlocked ? 1 : 0,
       'unlocked_at': unlockedAt.toIso8601String(),
     };
+    
+    // 可选字段，仅在存在时添加
+    if (rewardType != null) {
+      map['reward_type'] = rewardType!.name;
+    }
+    if (rewardValue != null) {
+      map['reward_value'] = rewardValue!;
+    }
+    
+    return map;
   }
 }

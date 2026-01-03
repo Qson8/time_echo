@@ -5,6 +5,7 @@ import '../services/app_state_provider.dart';
 import '../services/theme_service.dart';
 import '../providers/theme_provider.dart';
 import 'quiz_config_screen.dart';
+import '../utils/theme_adapter.dart';
 
 /// 设置页面
 class SettingsScreen extends StatefulWidget {
@@ -273,16 +274,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
         ),
         const SizedBox(height: 12),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: Colors.grey.withOpacity(0.3),
-              width: 1,
+        Builder(
+          builder: (context) => Container(
+            decoration: BoxDecoration(
+              color: ThemeAdapter.getSurfaceColor(context),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: ThemeAdapter.getBorderColor(context).withOpacity(0.3),
+                width: 1,
+              ),
             ),
+            child: Column(children: children),
           ),
-          child: Column(children: children),
         ),
       ],
     );
@@ -309,9 +312,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       subtitle: Text(
         subtitle,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 14,
-          color: Colors.black54,
+          color: ThemeAdapter.getSecondaryTextColor(context),
         ),
       ),
       trailing: onTap != null
@@ -346,9 +349,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       subtitle: Text(
         subtitle,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 14,
-          color: Colors.black54,
+          color: ThemeAdapter.getSecondaryTextColor(context),
         ),
       ),
       trailing: Switch(

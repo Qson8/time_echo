@@ -6,6 +6,7 @@ import '../services/local_storage_service.dart';
 import '../services/question_service.dart';
 import '../models/question.dart';
 import 'quiz_screen.dart';
+import '../utils/theme_adapter.dart';
 
 /// 题目配置页面
 class QuizConfigScreen extends StatefulWidget {
@@ -193,15 +194,16 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
             // 题目数量
             _buildSectionTitle('题目数量', Icons.numbers),
             const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[300]!),
-              ),
-              child: Row(
-                children: _questionCountOptions.map((count) {
+            Builder(
+              builder: (context) => Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: ThemeAdapter.getSurfaceColor(context),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: ThemeAdapter.getBorderColor(context)),
+                ),
+                child: Row(
+                  children: _questionCountOptions.map((count) {
                   final isSelected = _questionCount == count;
                   return Expanded(
                     child: Padding(
@@ -225,7 +227,7 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                             border: Border.all(
                               color: isSelected 
                                   ? const Color(AppConstants.primaryColor) 
-                                  : Colors.grey[300]!,
+                                  : ThemeAdapter.getBorderColor(context),
                               width: isSelected ? 2 : 1,
                             ),
                         
@@ -237,7 +239,7 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                                 fontSize: 13,
                                 color: isSelected 
                                     ? const Color(AppConstants.primaryColor) 
-                                    : Colors.black87,
+                                    : ThemeAdapter.getTextColor(context),
                                 fontWeight: isSelected 
                                     ? FontWeight.bold 
                                     : FontWeight.normal,
@@ -251,23 +253,25 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                     ),
                   );
                 }).toList(),
+                  ),
+                ),
               ),
-            ),
             
             const SizedBox(height: 24),
             
             // 分类选择
             _buildSectionTitle('题目分类', Icons.category),
             const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[300]!),
-              ),
-              child: Row(
-                children: _categories.map((category) {
+            Builder(
+              builder: (context) => Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: ThemeAdapter.getSurfaceColor(context),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: ThemeAdapter.getBorderColor(context)),
+                ),
+                child: Row(
+                  children: _categories.map((category) {
                   final isSelected = _selectedCategories.contains(category);
                   final categoryColor = _getCategoryColor(category);
                   return Expanded(
@@ -300,7 +304,7 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                             border: Border.all(
                               color: isSelected 
                                   ? categoryColor 
-                                  : Colors.grey[300]!,
+                                  : ThemeAdapter.getBorderColor(context),
                               width: isSelected ? 2 : 1,
                             ),
                           ),
@@ -311,7 +315,7 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                                 fontSize: 13,
                                 color: isSelected 
                                     ? categoryColor 
-                                    : Colors.black87,
+                                    : ThemeAdapter.getTextColor(context),
                                 fontWeight: isSelected 
                                     ? FontWeight.bold 
                                     : FontWeight.normal,
@@ -325,23 +329,25 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                     ),
                   );
                 }).toList(),
+                  ),
+                ),
               ),
-            ),
             
             const SizedBox(height: 24),
             
             // 年代选择
             _buildSectionTitle('怀旧年代', Icons.calendar_today),
             const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[300]!),
-              ),
-              child: Row(
-                children: _eras.map((era) {
+            Builder(
+              builder: (context) => Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: ThemeAdapter.getSurfaceColor(context),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: ThemeAdapter.getBorderColor(context)),
+                ),
+                child: Row(
+                  children: _eras.map((era) {
                   final isSelected = _selectedEras.contains(era);
                   return Expanded(
                     child: Padding(
@@ -373,7 +379,7 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                             border: Border.all(
                               color: isSelected 
                                   ? Colors.orange 
-                                  : Colors.grey[300]!,
+                                  : ThemeAdapter.getBorderColor(context),
                               width: isSelected ? 2 : 1,
                             ),
                           ),
@@ -384,7 +390,7 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                                 fontSize: 13,
                                 color: isSelected 
                                     ? Colors.orange 
-                                    : Colors.black87,
+                                    : ThemeAdapter.getTextColor(context),
                                 fontWeight: isSelected 
                                     ? FontWeight.bold 
                                     : FontWeight.normal,
@@ -398,24 +404,26 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                     ),
                   );
                 }).toList(),
+                  ),
+                ),
               ),
-            ),
             
             const SizedBox(height: 24),
             
             // 难度选择
             _buildSectionTitle('题目难度', Icons.star),
             const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[300]!),
-              ),
-              child: Row(
-                children: _difficulties.map((difficulty) {
-                  final isSelected = _selectedDifficulties.contains(difficulty);
+            Builder(
+              builder: (context) => Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: ThemeAdapter.getSurfaceColor(context),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: ThemeAdapter.getBorderColor(context)),
+                ),
+                child: Row(
+                  children: _difficulties.map((difficulty) {
+                    final isSelected = _selectedDifficulties.contains(difficulty);
                   final difficultyColor = _getDifficultyColor(difficulty);
                   return Expanded(
                     child: Padding(
@@ -447,7 +455,7 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                             border: Border.all(
                               color: isSelected 
                                   ? difficultyColor 
-                                  : Colors.grey[300]!,
+                                  : ThemeAdapter.getBorderColor(context),
                               width: isSelected ? 2 : 1,
                             ),
                           ),
@@ -470,7 +478,7 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                                     fontSize: 13,
                                     color: isSelected 
                                         ? difficultyColor 
-                                        : Colors.black87,
+                                        : ThemeAdapter.getTextColor(context),
                                     fontWeight: isSelected 
                                         ? FontWeight.bold 
                                         : FontWeight.normal,
@@ -485,42 +493,45 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                       ),
                     ),
                   );
-                }).toList(),
+                  }).toList(),
+                  ),
+                ),
               ),
-            ),
             
             const SizedBox(height: 24),
             
             // 组题模式
             _buildSectionTitle('组题模式', Icons.settings),
             const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[300]!),
-              ),
-              child: Column(
-                children: QuestionSelectionMode.values.map((mode) {
-                  final isSelected = _selectionMode == mode;
-                  return RadioListTile<QuestionSelectionMode>(
-                    title: Text(_getModeName(mode)),
-                    subtitle: Text(_getModeDescription(mode)),
-                    value: mode,
-                    groupValue: _selectionMode,
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          _selectionMode = value;
-                        });
-                      }
-                    },
-                    activeColor: const Color(AppConstants.primaryColor),
-                  );
+            Builder(
+              builder: (context) => Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: ThemeAdapter.getSurfaceColor(context),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: ThemeAdapter.getBorderColor(context)),
+                ),
+                child: Column(
+                  children: QuestionSelectionMode.values.map((mode) {
+                    final isSelected = _selectionMode == mode;
+                    return RadioListTile<QuestionSelectionMode>(
+                      title: Text(_getModeName(mode)),
+                      subtitle: Text(_getModeDescription(mode)),
+                      value: mode,
+                      groupValue: _selectionMode,
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            _selectionMode = value;
+                          });
+                        }
+                      },
+                      activeColor: const Color(AppConstants.primaryColor),
+                    );
                 }).toList(),
+                  ),
+                ),
               ),
-            ),
             
             const SizedBox(height: 32),
             

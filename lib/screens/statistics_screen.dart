@@ -7,6 +7,7 @@ import '../constants/app_theme.dart';
 import '../services/app_state_provider.dart';
 import '../models/test_record.dart';
 import 'learning_report_screen.dart';
+import '../utils/theme_adapter.dart';
 
 /// 拾光统计页面
 class StatisticsScreen extends StatefulWidget {
@@ -161,28 +162,34 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.bar_chart,
-              size: 80,
-              color: Colors.grey,
+            Builder(
+              builder: (context) => Icon(
+                Icons.bar_chart,
+                size: 80,
+                color: ThemeAdapter.getSecondaryTextColor(context),
+              ),
             ),
             const SizedBox(height: 24),
-            const Text(
-              '暂无统计数据',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
+            Builder(
+              builder: (context) => Text(
+                '暂无统计数据',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ThemeAdapter.getTextColor(context),
+                ),
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              '完成几次拾光后，这里会显示你的统计图表',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
+            Builder(
+              builder: (context) => Text(
+                '完成几次拾光后，这里会显示你的统计图表',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: ThemeAdapter.getSecondaryTextColor(context),
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -192,24 +199,26 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   /// 构建 Tab 切换栏
   Widget _buildTabBar() {
-    return Container(
-      margin: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _buildTabButton('拾光年龄', 0),
-          ),
-          Expanded(
-            child: _buildTabButton('准确率', 1),
-          ),
-          Expanded(
-            child: _buildTabButton('统计概览', 2),
-          ),
-        ],
+    return Builder(
+      builder: (context) => Container(
+        margin: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: ThemeAdapter.getDividerColor(context).withOpacity(0.3),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: _buildTabButton('拾光年龄', 0),
+            ),
+            Expanded(
+              child: _buildTabButton('准确率', 1),
+            ),
+            Expanded(
+              child: _buildTabButton('统计概览', 2),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -237,7 +246,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            color: isSelected ? Colors.white : Colors.black87,
+            color: isSelected 
+                ? Colors.white 
+                : ThemeAdapter.getTextColor(context),
           ),
         ),
       ),
@@ -290,7 +301,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: ThemeAdapter.getSurfaceColor(context),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: color.withOpacity(0.3),
@@ -298,7 +309,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(ThemeAdapter.isDarkMode(context) ? 0.2 : 0.05),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -317,11 +328,13 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.black54,
+          Builder(
+            builder: (context) => Text(
+              title,
+              style: TextStyle(
+                fontSize: 12,
+                color: ThemeAdapter.getSecondaryTextColor(context),
+              ),
             ),
           ),
         ],
@@ -343,7 +356,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       height: 300,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: ThemeAdapter.getSurfaceColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -356,11 +369,14 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '拾光年龄趋势',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+          Builder(
+            builder: (context) => Text(
+              '拾光年龄趋势',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: ThemeAdapter.getTextColor(context),
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -373,7 +389,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                   horizontalInterval: 10,
                   getDrawingHorizontalLine: (value) {
                     return FlLine(
-                      color: Colors.grey[300]!,
+                      color: ThemeAdapter.getDividerColor(context),
                       strokeWidth: 1,
                     );
                   },
@@ -384,11 +400,13 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                       showTitles: true,
                       reservedSize: 40,
                       getTitlesWidget: (value, meta) {
-                        return Text(
-                          '${value.toInt()}',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
+                        return Builder(
+                          builder: (context) => Text(
+                            '${value.toInt()}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: ThemeAdapter.getSecondaryTextColor(context),
+                            ),
                           ),
                         );
                       },
@@ -403,11 +421,13 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                         final index = value.toInt();
                         if (index < sortedRecords.length) {
                           final date = sortedRecords[index].testTime;
-                          return Text(
-                            DateFormat('MM/dd').format(date),
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.grey,
+                          return Builder(
+                            builder: (context) => Text(
+                              DateFormat('MM/dd').format(date),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: ThemeAdapter.getSecondaryTextColor(context),
+                              ),
                             ),
                           );
                         }
@@ -428,8 +448,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                 borderData: FlBorderData(
                   show: true,
                   border: Border(
-                    bottom: BorderSide(color: Colors.grey[300]!),
-                    left: BorderSide(color: Colors.grey[300]!),
+                    bottom: BorderSide(color: ThemeAdapter.getDividerColor(context)),
+                    left: BorderSide(color: ThemeAdapter.getDividerColor(context)),
                   ),
                 ),
                 lineBarsData: [
@@ -483,7 +503,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       height: 300,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: ThemeAdapter.getSurfaceColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -496,11 +516,14 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '准确率趋势',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+          Builder(
+            builder: (context) => Text(
+              '准确率趋势',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: ThemeAdapter.getTextColor(context),
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -543,11 +566,13 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                         final index = value.toInt();
                         if (index < sortedRecords.length) {
                           final date = sortedRecords[index].testTime;
-                          return Text(
-                            DateFormat('MM/dd').format(date),
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.grey,
+                          return Builder(
+                            builder: (context) => Text(
+                              DateFormat('MM/dd').format(date),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: ThemeAdapter.getSecondaryTextColor(context),
+                              ),
                             ),
                           );
                         }
@@ -568,8 +593,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                 borderData: FlBorderData(
                   show: true,
                   border: Border(
-                    bottom: BorderSide(color: Colors.grey[300]!),
-                    left: BorderSide(color: Colors.grey[300]!),
+                    bottom: BorderSide(color: ThemeAdapter.getDividerColor(context)),
+                    left: BorderSide(color: ThemeAdapter.getDividerColor(context)),
                   ),
                 ),
                 lineBarsData: [
@@ -623,30 +648,32 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     return Column(
       children: [
         // 每日答题次数
-        Container(
-          height: 300,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                '每日答题次数',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+        Builder(
+          builder: (context) => Container(
+            height: 300,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: ThemeAdapter.getSurfaceColor(context),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: ThemeAdapter.getShadowColor(context),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
                 ),
-              ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '每日答题次数',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: ThemeAdapter.getTextColor(context),
+                  ),
+                ),
               const SizedBox(height: 16),
               Expanded(
                 child: BarChart(
@@ -660,7 +687,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                       drawVerticalLine: false,
                       getDrawingHorizontalLine: (value) {
                         return FlLine(
-                          color: Colors.grey[300]!,
+                          color: ThemeAdapter.getDividerColor(context),
                           strokeWidth: 1,
                         );
                       },
@@ -734,6 +761,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                 ),
               ),
             ],
+            ),
           ),
         ),
       ],
@@ -897,28 +925,32 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          '分类统计',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+        Builder(
+          builder: (context) => Text(
+            '分类统计',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: ThemeAdapter.getTextColor(context),
+            ),
           ),
         ),
         const SizedBox(height: 12),
-        Container(
-          height: 300,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
+        Builder(
+          builder: (context) => Container(
+            height: 300,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: ThemeAdapter.getSurfaceColor(context),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: ThemeAdapter.getShadowColor(context),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
           child: BarChart(
             BarChartData(
               alignment: BarChartAlignment.spaceAround,
@@ -960,11 +992,13 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                       final category = categories[value.toInt()];
                       return Padding(
                         padding: const EdgeInsets.only(top: 8),
-                        child: Text(
-                          category,
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey,
+                        child: Builder(
+                          builder: (context) => Text(
+                            category,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: ThemeAdapter.getSecondaryTextColor(context),
+                            ),
                           ),
                         ),
                       );
@@ -1010,6 +1044,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                 );
               }).toList(),
             ),
+          ),
           ),
         ),
       ],

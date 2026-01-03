@@ -13,9 +13,14 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
   
-  /// 获取主题数据
+  /// 获取主题数据（浅色主题）
   ThemeData getThemeData() {
     return _themeService.getThemeData();
+  }
+  
+  /// 获取深色主题数据
+  ThemeData getDarkThemeData() {
+    return _themeService.getDarkThemeData();
   }
   
   /// 获取主题名称

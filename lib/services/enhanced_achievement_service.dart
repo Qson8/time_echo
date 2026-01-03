@@ -44,7 +44,7 @@ class EnhancedAchievementSystem {
       unlockedAchievements.add(_createAchievement(
         '拾光初遇',
         '完成首次拾光',
-        '解锁拾光徽章・初遇',
+        '解锁「拾光初遇」称号',
         '完成你的第一次拾光',
         Icons.star,
       ));
@@ -56,7 +56,7 @@ class EnhancedAchievementSystem {
       unlockedAchievements.add(_createAchievement(
         '影视拾光者',
         '影视分类正确率≥90%',
-        '解锁影视徽章+收藏夹容量+5题',
+        '解锁「影视拾光者」称号',
         '你对80-90年代影视作品了如指掌',
         Icons.movie,
       ));
@@ -68,7 +68,7 @@ class EnhancedAchievementSystem {
       unlockedAchievements.add(_createAchievement(
         '音乐回响者',
         '音乐分类正确率≥90%',
-        '解锁音乐徽章+收藏夹容量+5题',
+        '解锁「音乐回响者」称号',
         '经典旋律在你心中回响',
         Icons.music_note,
       ));
@@ -80,7 +80,7 @@ class EnhancedAchievementSystem {
       unlockedAchievements.add(_createAchievement(
         '时代见证者',
         '事件分类正确率≥90%',
-        '解锁事件徽章+收藏夹容量+5题',
+        '解锁「时代见证者」称号',
         '你是那个时代的见证者',
         Icons.history,
       ));
@@ -102,7 +102,7 @@ class EnhancedAchievementSystem {
       unlockedAchievements.add(_createAchievement(
         '拾光速答手',
         '单题平均耗时≤15秒',
-        '解锁速答徽章+拾光年龄-1岁',
+        '解锁「拾光速答手」称号',
         '你的反应速度令人惊叹',
         Icons.speed,
       ));
@@ -114,7 +114,7 @@ class EnhancedAchievementSystem {
       unlockedAchievements.add(_createAchievement(
         '拾光挑战者',
         '困难题正确率100%',
-        '解锁挑战徽章+拾光年龄-2岁',
+        '解锁「拾光挑战者」称号',
         '你征服了最困难的挑战',
         Icons.emoji_events,
       ));
@@ -126,7 +126,7 @@ class EnhancedAchievementSystem {
       unlockedAchievements.add(_createAchievement(
         '拾光收藏家',
         '收藏题目≥20道',
-        '解锁收藏徽章+收藏夹容量+10题',
+        '解锁「拾光收藏家」称号',
         '你是一个真正的收藏家',
         Icons.favorite,
       ));
@@ -138,7 +138,7 @@ class EnhancedAchievementSystem {
       unlockedAchievements.add(_createAchievement(
         '拾光全勤人',
         '连续7天每天拾光',
-        '解锁全勤徽章+随机语录',
+        '解锁「拾光全勤人」称号',
         '你的坚持令人敬佩',
         Icons.calendar_today,
       ));

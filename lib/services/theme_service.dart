@@ -115,7 +115,7 @@ class ThemeService {
     }
   }
   
-  /// 获取主题数据
+  /// 获取主题数据（浅色主题）
   ThemeData getThemeData() {
     switch (_currentTheme) {
       case ThemeType.vintage:
@@ -127,6 +127,11 @@ class ThemeService {
       case ThemeType.elderly:
         return _getElderlyTheme();
     }
+  }
+  
+  /// 获取深色主题数据（用于系统深色模式）
+  ThemeData getDarkThemeData() {
+    return _getDarkTheme();
   }
   
   /// 拾光复古主题（统一主题）

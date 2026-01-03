@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../constants/app_constants.dart';
 import '../widgets/animated_widgets.dart';
+import '../utils/theme_adapter.dart';
 
 /// 增强的用户体验组件
 class EnhancedUXComponents {
@@ -86,11 +87,13 @@ class EnhancedUXComponents {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Text(
-              '${(progress * 100).toInt()}%',
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
+            Builder(
+              builder: (context) => Text(
+                '${(progress * 100).toInt()}%',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: ThemeAdapter.getSecondaryTextColor(context),
+                ),
               ),
             ),
           ],
@@ -98,11 +101,13 @@ class EnhancedUXComponents {
         
         const SizedBox(height: 8),
         
-        AnimatedProgressBar(
-          progress: progress,
-          height: height,
-          progressColor: progressColor ?? const Color(AppConstants.primaryColor),
-          backgroundColor: backgroundColor ?? Colors.grey.withOpacity(0.3),
+        Builder(
+          builder: (context) => AnimatedProgressBar(
+            progress: progress,
+            height: height,
+            progressColor: progressColor ?? const Color(AppConstants.primaryColor),
+            backgroundColor: backgroundColor ?? ThemeAdapter.getDividerColor(context).withOpacity(0.3),
+          ),
         ),
       ],
     );
@@ -114,17 +119,19 @@ class EnhancedUXComponents {
     required ValueChanged<String> onChanged,
     VoidCallback? onClear,
     String? initialValue,
+    required BuildContext context,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.grey.withOpacity(0.3),
+    return Builder(
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: ThemeAdapter.getDividerColor(context).withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: ThemeAdapter.getBorderColor(context).withOpacity(0.3),
+          ),
         ),
-      ),
-      child: TextField(
-        controller: TextEditingController(text: initialValue),
+        child: TextField(
+          controller: TextEditingController(text: initialValue),
         onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hintText,
@@ -141,6 +148,7 @@ class EnhancedUXComponents {
             vertical: 12,
           ),
         ),
+        ),
       ),
     );
   }
@@ -148,6 +156,7 @@ class EnhancedUXComponents {
   /// 创建智能卡片
   static Widget buildSmartCard({
     required Widget child,
+    required BuildContext context,
     VoidCallback? onTap,
     EdgeInsets? padding,
     EdgeInsets? margin,
@@ -155,19 +164,21 @@ class EnhancedUXComponents {
     double? elevation,
     bool enableAnimation = true,
   }) {
-    Widget card = Card(
-      elevation: elevation ?? 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      color: backgroundColor ?? Colors.white,
-      margin: margin ?? const EdgeInsets.all(8),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: padding ?? const EdgeInsets.all(16),
-          child: child,
+    Widget card = Builder(
+      builder: (context) => Card(
+        elevation: elevation ?? 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        color: backgroundColor ?? ThemeAdapter.getSurfaceColor(context),
+        margin: margin ?? const EdgeInsets.all(8),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: padding ?? const EdgeInsets.all(16),
+            child: child,
+          ),
         ),
       ),
     );
@@ -266,16 +277,20 @@ class EnhancedUXComponents {
           fontWeight: FontWeight.w500,
         ),
       ),
-      subtitle: Text(
-        subtitle,
-        style: const TextStyle(
-          fontSize: 14,
-          color: Colors.grey,
+      subtitle: Builder(
+        builder: (context) => Text(
+          subtitle,
+          style: TextStyle(
+            fontSize: 14,
+            color: ThemeAdapter.getSecondaryTextColor(context),
+          ),
         ),
       ),
-      trailing: trailing ?? const Icon(
-        Icons.chevron_right,
-        color: Colors.grey,
+      trailing: trailing ?? Builder(
+        builder: (context) => Icon(
+          Icons.chevron_right,
+          color: ThemeAdapter.getSecondaryTextColor(context),
+        ),
       ),
       onTap: onTap,
     );
@@ -397,11 +412,13 @@ class EnhancedUXComponents {
             ),
           ),
           const SizedBox(height: 16),
-          Text(
-            message,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
+          Builder(
+            builder: (context) => Text(
+              message,
+              style: TextStyle(
+                fontSize: 16,
+                color: ThemeAdapter.getSecondaryTextColor(context),
+              ),
             ),
           ),
         ],
@@ -423,28 +440,34 @@ class EnhancedUXComponents {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: 80,
-              color: Colors.grey.withOpacity(0.5),
+            Builder(
+              builder: (context) => Icon(
+                icon,
+                size: 80,
+                color: ThemeAdapter.getSecondaryTextColor(context).withOpacity(0.5),
+              ),
             ),
             const SizedBox(height: 24),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
+            Builder(
+              builder: (context) => Text(
+                title,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ThemeAdapter.getSecondaryTextColor(context),
+                ),
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              subtitle,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
+            Builder(
+              builder: (context) => Text(
+                subtitle,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: ThemeAdapter.getSecondaryTextColor(context),
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
             if (onAction != null && actionText != null) ...[
               const SizedBox(height: 24),

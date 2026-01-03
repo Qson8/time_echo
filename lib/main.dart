@@ -54,9 +54,15 @@ class TimeEchoApp extends StatelessWidget {
           // 监听appState.fontSize的变化
           final textScaleFactor = fontSizeService.getFontScaleFactor();
           
+          // 根据系统深色模式选择主题
+          final lightTheme = themeProvider.getThemeData();
+          final darkTheme = themeProvider.getDarkThemeData();
+          
           return MaterialApp(
             title: '拾光机',
-            theme: themeProvider.getThemeData(),
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: ThemeMode.system, // 跟随系统设置（支持鸿蒙系统深色模式）
             home: const SplashScreen(),
             debugShowCheckedModeBanner: false,
             builder: (context, child) {

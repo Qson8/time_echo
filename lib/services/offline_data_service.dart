@@ -69,7 +69,7 @@ class OfflineDataService {
         'achievements': _offlineData['achievements'] ?? [],
         'settings': _offlineData['settings'] ?? {},
         'backupTime': DateTime.now().millisecondsSinceEpoch,
-        'version': '1.0.0',
+        'version': '1.0.1',
       };
       
       final backupFile = File('${_dataDirectory!.path}/backup_${DateTime.now().millisecondsSinceEpoch}.json');
@@ -266,7 +266,7 @@ class OfflineDataService {
         'achievements': _offlineData['achievements'] ?? [],
         'settings': _offlineData['settings'] ?? {},
         'exportTime': DateTime.now().millisecondsSinceEpoch,
-        'version': '1.0.0',
+        'version': '1.0.1',
       };
       
       final exportFile = File('${_dataDirectory!.path}/export_${DateTime.now().millisecondsSinceEpoch}.json');

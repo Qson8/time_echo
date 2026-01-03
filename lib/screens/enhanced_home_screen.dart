@@ -28,6 +28,7 @@ import '../services/local_storage_service.dart';
 import '../services/app_state_provider.dart' show QuestionSelectionMode;
 import 'memory_capsule_screen.dart';
 import '../services/memory_capsule_service.dart';
+import '../utils/theme_adapter.dart';
 
 /// 增强的首页
 class EnhancedHomeScreen extends StatefulWidget {
@@ -249,7 +250,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
             end: Alignment.bottomRight,
             colors: [
               const Color(AppConstants.secondaryColor),
-              Colors.white,
+              ThemeAdapter.getWhiteOrAdaptive(context),
             ],
           ),
       ),
@@ -361,16 +362,20 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    Divider(
-                      color: Colors.grey[300],
-                      height: 1,
+                    Builder(
+                      builder: (context) => Divider(
+                        color: ThemeAdapter.getDividerColor(context),
+                        height: 1,
+                      ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      '版本 ${AppConstants.appVersion}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
+                    Builder(
+                      builder: (context) => Text(
+                        '版本 ${AppConstants.appVersion}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: ThemeAdapter.getSecondaryTextColor(context),
+                        ),
                       ),
                     ),
                   ],
@@ -442,12 +447,12 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-                  const Text(
+                  Text(
                     '数据统计',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: ThemeAdapter.getTextColor(context),
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -498,10 +503,12 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
               ),
             ),
             const SizedBox(width: 4),
-            Icon(
-              Icons.chevron_right,
-              size: 18,
-              color: Colors.grey[400],
+            Builder(
+              builder: (context) => Icon(
+                Icons.chevron_right,
+                size: 18,
+                color: ThemeAdapter.getSecondaryTextColor(context),
+              ),
             ),
           ],
         ),
@@ -530,12 +537,13 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
 
   /// 构建统计项
   Widget _buildStatItem(IconData icon, String label, String value, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.7),
-        borderRadius: BorderRadius.circular(12),
-      ),
+    return Builder(
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: ThemeAdapter.getSurfaceColor(context).withOpacity(0.7),
+          borderRadius: BorderRadius.circular(12),
+        ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -552,9 +560,9 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
           const SizedBox(height: 2),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 11,
-              color: Colors.black54,
+              color: ThemeAdapter.getSecondaryTextColor(context),
             ),
             textAlign: TextAlign.center,
             maxLines: 1,
@@ -562,6 +570,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
           ),
         ],
       ),
+    ),
     );
   }
 
@@ -625,7 +634,7 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                         ],
                       )
                     : null,
-                color: isSelected ? null : Colors.grey[200],
+                color: isSelected ? null : ThemeAdapter.getDividerColor(context),
                 shape: BoxShape.circle,
                 boxShadow: isSelected
                     ? [
@@ -637,10 +646,14 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                       ]
                     : null,
               ),
-              child: Icon(
-                icon,
-                color: isSelected ? Colors.white : Colors.grey[700],
-                size: 24,
+              child: Builder(
+                builder: (context) => Icon(
+                  icon,
+                  color: isSelected 
+                      ? ThemeAdapter.getTextColor(context) 
+                      : ThemeAdapter.getSecondaryTextColor(context),
+                  size: 24,
+                ),
               ),
             ),
             const SizedBox(width: 16),
@@ -655,15 +668,17 @@ class _EnhancedHomeScreenState extends State<EnhancedHomeScreen>
                       fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
                 color: isSelected 
                     ? const Color(AppConstants.primaryColor)
-                          : Colors.black87,
+                          : ThemeAdapter.getTextColor(context),
               ),
             ),
             const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-              style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[600],
+                  Builder(
+                    builder: (context) => Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: ThemeAdapter.getSecondaryTextColor(context),
+                      ),
                     ),
                   ),
                 ],
@@ -842,18 +857,20 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
   /// 构建增强的应用栏
   PreferredSizeWidget _buildEnhancedAppBar() {
     return AppBar(
-      title: Text(
-        AppConstants.appName,
-        style: const TextStyle(
-          color: Colors.black87,
-          fontWeight: FontWeight.bold,
+      title: Builder(
+        builder: (context) => Text(
+          AppConstants.appName,
+          style: TextStyle(
+            color: ThemeAdapter.getTextColor(context),
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       centerTitle: true,
       elevation: 0,
-      backgroundColor: Colors.white.withOpacity(0.95), // 使用半透明白色背景
-      iconTheme: const IconThemeData(
-        color: Colors.black87, // 设置图标颜色为深色
+      backgroundColor: ThemeAdapter.getWhiteOrAdaptive(context).withOpacity(0.95), // 使用半透明背景（适配深色模式）
+      iconTheme: IconThemeData(
+        color: ThemeAdapter.getIconColor(context), // 适配深色模式的图标颜色
       ),
       leading: Builder(
         builder: (context) {
@@ -926,11 +943,13 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        '让每一份时光记忆都值得珍藏',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
+                      Builder(
+                        builder: (context) => Text(
+                          '让每一份时光记忆都值得珍藏',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: ThemeAdapter.getSecondaryTextColor(context),
+                          ),
                         ),
                       ),
                     ],
@@ -971,11 +990,12 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
 
   /// 构建统计卡片
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+    return Builder(
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: ThemeAdapter.getSurfaceColor(context),
+          borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: color.withOpacity(0.1),
@@ -998,13 +1018,14 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
           ),
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
-              color: Colors.grey,
+              color: ThemeAdapter.getSecondaryTextColor(context),
             ),
           ),
         ],
       ),
+    ),
     );
   }
 
@@ -1117,7 +1138,8 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
               );
             },
             child: EnhancedUXComponents.buildSmartCard(
-            child: Column(
+              context: context,
+              child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1128,17 +1150,19 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                         children: [
                     Text(
                       '${appState.testRecords.isNotEmpty ? appState.testRecords.last.accuracy.clamp(0.0, 100.0).toInt() : 0}%',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green,
+                        color: ThemeAdapter.getSuccessColor(context),
                       ),
                     ),
                           const SizedBox(width: 4),
-                          Icon(
-                            Icons.chevron_right,
-                            size: 18,
-                            color: Colors.grey[400],
+                          Builder(
+                            builder: (context) => Icon(
+                              Icons.chevron_right,
+                              size: 18,
+                              color: ThemeAdapter.getSecondaryTextColor(context),
+                            ),
                           ),
                         ],
                     ),
@@ -1193,6 +1217,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
         );
       },
       child: EnhancedUXComponents.buildSmartCard(
+        context: context,
         child: Column(
           children: [
             Icon(Icons.category, color: color, size: 24),
@@ -1347,6 +1372,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
         const SizedBox(height: 16),
         
         EnhancedUXComponents.buildSmartCard(
+          context: context,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -1368,11 +1394,13 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                 ],
               ),
               const SizedBox(height: 12),
-              Text(
-                recommendation,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
+              Builder(
+                builder: (context) => Text(
+                  recommendation,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: ThemeAdapter.getSecondaryTextColor(context),
+                  ),
                 ),
               ),
             ],
@@ -1507,6 +1535,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
         );
       },
       child: EnhancedUXComponents.buildSmartCard(
+        context: context,
         margin: const EdgeInsets.only(bottom: 8),
         child: Row(
           children: [
@@ -1535,11 +1564,13 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Text(
-                    '准确率: ${record.accuracy.clamp(0.0, 100.0).toInt()}%',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
+                  Builder(
+                    builder: (context) => Text(
+                      '准确率: ${record.accuracy.clamp(0.0, 100.0).toInt()}%',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: ThemeAdapter.getSecondaryTextColor(context),
+                      ),
                     ),
                   ),
                 ],
@@ -1715,10 +1746,10 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                     margin: const EdgeInsets.only(top: 8),
                     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                     decoration: BoxDecoration(
-                      color: Colors.grey[50],
+                      color: ThemeAdapter.getSurfaceColor(context),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: Colors.grey[300]!,
+                        color: ThemeAdapter.getBorderColor(context),
                         width: 1,
                       ),
                     ),
@@ -1769,37 +1800,40 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
           });
         }
       },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: Colors.purple.withOpacity(0.2),
-            width: 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+      child: Builder(
+        builder: (context) => Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: ThemeAdapter.getSurfaceColor(context),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: ThemeAdapter.getAccentColor(context).withOpacity(0.2),
+              width: 1,
             ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: Colors.purple.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: ThemeAdapter.getShadowColor(context),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
               ),
-              child: const Icon(
-                Icons.photo_library,
-                color: Colors.purple,
-                size: 24,
+            ],
+          ),
+          child: Row(
+            children: [
+            Builder(
+              builder: (context) => Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: ThemeAdapter.getAccentColor(context).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Icon(
+                  Icons.photo_library,
+                  color: ThemeAdapter.getAccentColor(context),
+                  size: 24,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -1819,27 +1853,33 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Text(
-                        capsule.era,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
+                      Builder(
+                        builder: (context) => Text(
+                          capsule.era,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: ThemeAdapter.getSecondaryTextColor(context),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        capsule.category,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
+                      Builder(
+                        builder: (context) => Text(
+                          capsule.category,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: ThemeAdapter.getSecondaryTextColor(context),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        DateFormat('MM/dd').format(capsule.createdAt),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
+                      Builder(
+                        builder: (context) => Text(
+                          DateFormat('MM/dd').format(capsule.createdAt),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: ThemeAdapter.getSecondaryTextColor(context),
+                          ),
                         ),
                       ),
                     ],
@@ -1847,7 +1887,8 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                 ],
               ),
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -1949,6 +1990,7 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
         );
       },
       child: EnhancedUXComponents.buildSmartCard(
+        context: context,
         child: Column(
           children: [
             Icon(
@@ -2271,11 +2313,13 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  '$completedCount/${challenges.length}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
+                Builder(
+                  builder: (context) => Text(
+                    '$completedCount/${challenges.length}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: ThemeAdapter.getSecondaryTextColor(context),
+                    ),
                   ),
                 ),
               ],
@@ -2300,24 +2344,25 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
           _startQuiz(appState);
         }
       },
-      child: Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: challenge.isCompleted
-            ? Colors.green.withOpacity(0.1)
-            : Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: challenge.isCompleted
-              ? Colors.green
-              : const Color(AppConstants.primaryColor).withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      child: Builder(
+        builder: (context) => Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: challenge.isCompleted
+                ? Colors.green.withOpacity(0.1)
+                : ThemeAdapter.getSurfaceColor(context),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: challenge.isCompleted
+                  ? Colors.green
+                  : const Color(AppConstants.primaryColor).withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
           Row(
             children: [
               Icon(
@@ -2327,12 +2372,16 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(
-                  challenge.title,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: challenge.isCompleted ? Colors.green : null,
+                child: Builder(
+                  builder: (context) => Text(
+                    challenge.title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: challenge.isCompleted 
+                          ? Colors.green 
+                          : ThemeAdapter.getTextColor(context),
+                    ),
                   ),
                 ),
               ),
@@ -2354,36 +2403,43 @@ class _EnhancedHomeTabState extends State<EnhancedHomeTab>
             ],
           ),
           const SizedBox(height: 8),
-          Text(
-            challenge.description,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[700],
+          Builder(
+            builder: (context) => Text(
+              challenge.description,
+              style: TextStyle(
+                fontSize: 14,
+                color: ThemeAdapter.getSecondaryTextColor(context),
+              ),
             ),
           ),
           const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
-                child: LinearProgressIndicator(
-                  value: challenge.progress,
-                  backgroundColor: Colors.grey[200],
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    challenge.isCompleted ? Colors.green : const Color(AppConstants.primaryColor),
+                child: Builder(
+                  builder: (context) => LinearProgressIndicator(
+                    value: challenge.progress,
+                    backgroundColor: ThemeAdapter.getDividerColor(context),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      challenge.isCompleted ? Colors.green : const Color(AppConstants.primaryColor),
+                    ),
                   ),
                 ),
               ),
               const SizedBox(width: 8),
-              Text(
-                '${challenge.currentValue}/${challenge.targetValue}',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
+              Builder(
+                builder: (context) => Text(
+                  '${challenge.currentValue}/${challenge.targetValue}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: ThemeAdapter.getSecondaryTextColor(context),
+                  ),
                 ),
               ),
             ],
           ),
-        ],
+            ],
+          ),
         ),
       ),
     );
