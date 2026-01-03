@@ -828,7 +828,7 @@ class JsonStorageService {
       'stories': (await getAllStories()).map((s) => s.toMap()).toList(),
       'settings': await getAllSettings(),
       'export_time': DateTime.now().toIso8601String(),
-      'version': '1.0.0',
+      'version': '1.0.1',
     };
   }
 
